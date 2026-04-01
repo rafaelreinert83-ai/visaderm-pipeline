@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Visaderm · v15</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f5fc;--s1:#fff;--s2:#e8eef8;
+  --brd:rgba(26,53,96,.13);--brd2:rgba(26,53,96,.26);
+  --navy:#1a3560;--blue:#1565c0;--blue2:rgba(21,101,192,.10);--blue3:rgba(21,101,192,.18);
+  --white:#1a2d4a;--gray:#6b7a99;
+  --green:#2e7d32;--red:#c62828;--orange:#e65100;--purple:#6a1b9a;
+  --fh:'Playfair Display',serif;--fb:'DM Sans',sans-serif;
+  --r:16px;--r2:10px;--r3:8px;
+  --sh:0 2px 12px rgba(26,53,96,.10);--sh2:0 6px 28px rgba(21,101,192,.18);
+}
+html,body{background:var(--bg);color:var(--white);font-family:var(--fb);min-height:100vh;}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;z-index:9999;background:radial-gradient(ellipse at 50% 0%,#0d3a8c,#002b7f 40%,#001657 100%);display:flex;align-items:center;justify-content:center;padding:24px;}
+#login-screen.hidden{display:none!important;}
+#login-screen::before{content:’’;position:fixed;inset:0;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.022) 0,rgba(255,255,255,.022) 1px,transparent 1px,transparent 48px),repeating-linear-gradient(90deg,rgba(255,255,255,.022) 0,rgba(255,255,255,.022) 1px,transparent 1px,transparent 48px);pointer-events:none;}
+.lbox{position:relative;z-index:1;width:100%;max-width:360px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:44px 32px 38px;text-align:center;backdrop-filter:blur(24px);box-shadow:0 12px 60px rgba(0,0,0,.45);}
+.lbox::before{content:’’;position:absolute;top:0;left:32px;right:32px;height:2px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),#fff,rgba(255,255,255,.5),transparent);}
+.lbox svg{width:48px;height:48px;margin:0 auto 12px;}
+.l-logo{font-family:var(–fh);font-size:28px;font-weight:800;color:#fff;letter-spacing:.18em;}
+.l-tag{font-size:9px;color:rgba(255,255,255,.5);letter-spacing:.22em;text-transform:uppercase;margin-top:6px;}
+.l-ver{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:2px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.1em;margin-top:8px;}
+.l-div{width:36px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);margin:14px auto 24px;}
+.lf{margin-bottom:14px;text-align:left;}
+.lf label{display:block;font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:6px;}
+.lf input{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:13px 16px;color:#fff;font-size:15px;font-family:var(–fb);outline:none;transition:border .2s;}
+.lf input:focus{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.13);}
+.lf input::placeholder{color:rgba(255,255,255,.25);}
+.l-btn{width:100%;margin-top:6px;padding:15px;border-radius:10px;border:none;cursor:pointer;background:#fff;color:#002b7f;font-family:var(–fb);font-size:15px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;box-shadow:0 4px 20px rgba(0,0,0,.3);transition:background .2s,transform .15s;}
+.l-btn:hover{background:#dce8ff;}.l-btn:active{transform:scale(.98);}
+.l-err{min-height:14px;margin-top:9px;font-size:12px;color:#ffb3a7;}
+.l-foot{margin-top:24px;font-size:9px;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;}
+
+/* APP */
+#app{display:none;}
+.app-hdr{background:var(–navy);padding:16px 20px 12px;text-align:center;position:relative;}
+.app-hdr .brand{font-size:9px;color:rgba(255,255,255,.5);letter-spacing:.18em;text-transform:uppercase;margin-bottom:2px;}
+.app-hdr h1{font-family:var(–fh);font-size:24px;color:#fff;letter-spacing:.1em;}
+.app-hdr .dg{width:38px;height:2px;background:rgba(255,255,255,.4);margin:7px auto 3px;}
+.app-hdr .sub{font-size:10px;color:rgba(255,255,255,.6);}
+.ver-badge{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:2px 8px;font-size:9px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.08em;}
+
+/* TABS */
+.tabs-nav{display:flex;background:#fff;border-bottom:2px solid var(–brd);overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tabs-nav::-webkit-scrollbar{height:0;}
+.tab-btn{flex:1;min-width:58px;padding:10px 3px 9px;border:none;background:transparent;font-family:var(–fb);font-size:9px;font-weight:600;color:var(–gray);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;display:flex;flex-direction:column;align-items:center;gap:2px;transition:color .2s;}
+.tab-btn .ti{font-size:14px;}
+.tab-btn.act{color:var(–blue);border-bottom-color:var(–blue);}
+.tab-panel{display:none;padding:14px 14px 100px;}
+.tab-panel.active{display:block;}
+
+/* SECTION */
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:12px;margin-top:10px;}
+.si{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ig{background:var(–blue2);border:1px solid var(–blue3);}
+.igr{background:rgba(46,125,50,.12);border:1px solid rgba(46,125,50,.25);}
+.ird{background:rgba(198,40,40,.10);border:1px solid rgba(198,40,40,.22);}
+.ipu{background:rgba(106,27,154,.10);border:1px solid rgba(106,27,154,.25);}
+.ior{background:rgba(230,81,0,.10);border:1px solid rgba(230,81,0,.25);}
+.st{font-family:var(–fh);font-size:14px;color:var(–navy);font-weight:700;}
+.ss{font-size:11px;color:var(–gray);}
+
+/* FORM */
+.fgt{font-size:10px;font-weight:700;color:var(–gray);letter-spacing:.1em;text-transform:uppercase;margin:14px 0 9px;padding-bottom:4px;border-bottom:1px solid var(–brd);}
+.div{height:1px;background:var(–brd);margin:16px 0;}
+.fr{display:flex;gap:9px;margin-bottom:9px;}
+.fr.full{flex-direction:column;}
+.f{flex:1;display:flex;flex-direction:column;gap:4px;}
+.f label{font-size:11px;font-weight:600;color:var(–gray);}
+.f input,.f select,.f textarea{width:100%;background:var(–s1);border:1px solid var(–brd2);border-radius:var(–r3);padding:9px 11px;font-family:var(–fb);font-size:14px;color:var(–white);outline:none;transition:border .2s,box-shadow .2s;}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(–blue);box-shadow:0 0 0 3px var(–blue2);}
+.f textarea{resize:vertical;}
+.f select{appearance:none;background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%236b7a99’ stroke-width=‘1.5’ fill=‘none’/%3E%3C/svg%3E”);background-repeat:no-repeat;background-position:right 11px center;}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:9px;}
+.cg.c3{grid-template-columns:1fr 1fr 1fr;}
+.ci{display:flex;align-items:center;gap:7px;background:var(–s1);border:1px solid var(–brd);border-radius:var(–r3);padding:8px 10px;cursor:pointer;transition:border .2s,background .2s;}
+.ci:has(input:checked){border-color:var(–blue);background:var(–blue2);}
+.ci input{accent-color:var(–blue);width:14px;height:14px;flex-shrink:0;}
+.ci span{font-size:11.5px;color:var(–white);font-weight:500;line-height:1.3;}
+
+/* ALERTS */
+.ab{border-radius:var(–r2);padding:11px 13px;margin-bottom:11px;font-size:13px;font-weight:500;}
+.ab.ar{background:rgba(198,40,40,.08);border:1px solid rgba(198,40,40,.25);color:var(–red);}
+.ab.ag{background:rgba(46,125,50,.08);border:1px solid rgba(46,125,50,.25);color:var(–green);}
+.ab.aa{background:rgba(21,101,192,.08);border:1px solid rgba(21,101,192,.25);color:var(–blue);}
+.ab.ao{background:rgba(230,81,0,.08);border:1px solid rgba(230,81,0,.25);color:var(–orange);}
+
+/* METRIC CARDS */
+.mrow{display:flex;gap:9px;margin-bottom:9px;}
+.mc{flex:1;background:var(–s1);border:1px solid var(–brd);border-radius:var(–r2);padding:11px;}
+.ml{font-size:9.5px;font-weight:700;color:var(–gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
+.mc input{width:100%;border:1px solid var(–brd2);border-radius:6px;padding:7px;font-size:17px;font-weight:700;color:var(–blue);background:var(–bg);text-align:center;font-family:var(–fb);outline:none;}
+.mu{font-size:10px;color:var(–gray);margin-top:4px;text-align:center;}
+
+/* SCORE BADGES */
+.sbr{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;}
+.sb{flex:1;min-width:58px;background:var(–s1);border:1px solid var(–brd);border-radius:var(–r2);padding:9px;text-align:center;}
+.sb .sbl{font-size:9px;font-weight:700;color:var(–gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.sb input{width:100%;border:1px solid var(–brd2);border-radius:5px;padding:5px;font-size:16px;font-weight:800;color:var(–blue);background:var(–bg);text-align:center;font-family:var(–fb);outline:none;}
+
+/* PHOTO GRID */
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:11px;}
+.ph{position:relative;aspect-ratio:1;border-radius:var(–r2);overflow:hidden;background:var(–s2);border:1.5px dashed var(–brd2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;}
+.ph img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.ph .pl{font-size:8.5px;color:var(–gray);text-align:center;padding:3px;position:relative;z-index:1;}
+.ph .pi{font-size:18px;position:relative;z-index:1;}
+
+/* BUTTONS */
+.sav-btn{width:100%;padding:13px;border-radius:var(–r2);border:none;background:var(–blue);color:#fff;font-family:var(–fb);font-size:14px;font-weight:700;cursor:pointer;margin-top:14px;letter-spacing:.04em;transition:background .2s;}
+.sav-btn:hover{background:var(–navy);}
+.sav-toast{display:none;margin-top:9px;text-align:center;font-size:13px;color:var(–green);font-weight:600;}
+.ai-btn{width:100%;padding:12px;border-radius:var(–r2);border:none;background:var(–blue);color:#fff;font-family:var(–fb);font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;}
+.ai-btn:hover{background:var(–navy);}
+.ai-btn:disabled{background:var(–gray);cursor:wait;}
+
+/* PÓS-OP TABS */
+.pot{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap;}
+.ptb{padding:7px 13px;border-radius:18px;border:1px solid var(–brd2);font-size:12px;font-weight:600;color:var(–gray);cursor:pointer;background:var(–s1);transition:all .2s;}
+.ptb.act{background:var(–blue);color:#fff;border-color:var(–blue);}
+.pp{display:none;}.pp.active{display:block;}
+
+/* GRAFTSCAN */
+.gflt{padding:5px 9px;border-radius:14px;border:1px solid var(–brd2);font-size:11px;font-weight:600;color:var(–gray);background:var(–s1);cursor:pointer;transition:all .15s;}
+.gflt.act{background:var(–blue);color:#fff;border-color:var(–blue);}
+.gtool{padding:5px 10px;border-radius:14px;border:1px solid var(–brd2);font-size:11px;font-weight:600;color:var(–gray);background:var(–s1);cursor:pointer;transition:all .15s;}
+.gtool.act{background:var(–navy);color:#fff;border-color:var(–navy);}
+.gctrl{padding:6px 10px;border-radius:7px;border:1px solid var(–brd2);font-size:12px;font-weight:600;color:var(–white);background:var(–s1);cursor:pointer;}
+.gmodo{padding:5px 10px;border-radius:14px;border:1px solid var(–brd2);font-size:11px;font-weight:600;color:var(–gray);background:var(–s1);cursor:pointer;transition:all .15s;}
+.gmodo.act{background:var(–blue);color:#fff;border-color:var(–blue);}
+
+/* UPLOAD SLOTS */
+.up-slot{display:flex;align-items:center;gap:10px;background:var(–bg);border:1.5px dashed var(–brd2);border-radius:var(–r2);padding:11px 13px;cursor:pointer;margin-bottom:7px;transition:border .2s;}
+.up-item{display:flex;align-items:center;gap:9px;background:var(–s1);border:1px solid var(–brd);border-radius:var(–r3);padding:9px 11px;margin-bottom:5px;}
+.up-dl{font-size:11px;color:var(–blue);font-weight:600;text-decoration:none;flex-shrink:0;}
+
+/* TRICO TAGS */
+.tt{display:inline-block;padding:4px 9px;border-radius:11px;font-size:11px;font-weight:600;margin:3px 2px;cursor:pointer;border:1px solid var(–brd2);background:var(–s1);transition:all .2s;}
+.tt.sel{background:var(–blue);color:#fff;border-color:var(–blue);}
+
+/* DOPPLER TABLE */
+.dop-table{width:100%;border-collapse:collapse;font-size:10px;color:#fff;min-width:320px;}
+.dop-table th{text-align:left;padding:4px 6px;color:rgba(255,255,255,.6);font-weight:600;border-bottom:1px solid rgba(255,255,255,.2);}
+.dop-table td{padding:4px 6px;}
+.ri-big{font-size:22px;font-weight:800;font-family:var(–fh);text-align:center;padding:7px 0 2px;}
+
+/* PIPELINE */
+.run-btn{width:100%;padding:14px;border-radius:var(–r2);border:none;background:linear-gradient(135deg,var(–navy),var(–blue));color:#fff;font-family:var(–fb);font-size:14px;font-weight:700;cursor:pointer;box-shadow:var(–sh2);margin-bottom:11px;}
+.rc{background:var(–s1);border:1px solid var(–brd);border-radius:var(–r);padding:14px;margin-bottom:11px;display:none;}
+.rc-ttl{font-family:var(–fh);font-size:14px;color:var(–navy);margin-bottom:11px;}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px;}
+.dc{background:var(–bg);border-radius:var(–r3);padding:9px;}
+.dcl{font-size:10px;color:var(–gray);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+.dcv{font-size:14px;font-weight:700;color:var(–blue);margin-top:2px;}
+.res-txt{background:var(–bg);border-radius:var(–r3);padding:11px;font-size:13px;line-height:1.6;color:var(–white);}
+
+.footer{background:var(–navy);padding:12px;text-align:center;font-size:11px;color:rgba(255,255,255,.55);display:none;}
+.footer strong{color:#fff;}
+</style>
+
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+
+<div id="login-screen">
+  <div class="lbox">
+    <svg viewBox="0 0 50 50" fill="none">
+      <circle cx="25" cy="25" r="23" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+      <circle cx="25" cy="25" r="16" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+      <circle cx="25" cy="4" r="3" fill="white" opacity=".85"/>
+      <circle cx="25" cy="46" r="3" fill="white" opacity=".85"/>
+      <circle cx="4" cy="25" r="3" fill="white" opacity=".85"/>
+      <circle cx="46" cy="25" r="3" fill="white" opacity=".85"/>
+      <circle cx="10.1" cy="10.1" r="2.5" fill="white" opacity=".7"/>
+      <circle cx="39.9" cy="10.1" r="2.5" fill="white" opacity=".7"/>
+      <circle cx="10.1" cy="39.9" r="2.5" fill="white" opacity=".7"/>
+      <circle cx="39.9" cy="39.9" r="2.5" fill="white" opacity=".7"/>
+      <line x1="25" y1="4" x2="39.9" y2="10.1" stroke="rgba(255,255,255,.2)" stroke-width=".8"/>
+      <line x1="39.9" y1="10.1" x2="46" y2="25" stroke="rgba(255,255,255,.2)" stroke-width=".8"/>
+      <line x1="46" y1="25" x2="39.9" y2="39.9" stroke="rgba(255,255,255,.2)" stroke-width=".8"/>
+      <line x1="39.9" y1="39.9" x2="25" y2="46" stroke="rgba(255,255,255,.2)" stroke-width=".8"/>
+      <line x1="25" y1="46" x2="10.1" y2="39.9" stroke="rgba(255,255,255,.2)" stroke-width=".8"/>
+      <line x1="10.1" y1="39.9" x2="4" y2="25" stroke="rgba(255,255,255,.2)" stroke-width=".8"/>
+      <line x1="4" y1="25" x2="10.1" y2="10.1" stroke="rgba(255,255,255,.2)" stroke-width=".8"/>
+      <line x1="10.1" y1="10.1" x2="25" y2="4" stroke="rgba(255,255,255,.2)" stroke-width=".8"/>
+      <circle cx="25" cy="25" r="4.5" fill="white" opacity=".9"/>
+    </svg>
+    <div class="l-logo">VISADERM</div>
+    <div class="l-tag">Prontuário Digital · Acesso Restrito</div>
+    <div class="l-ver">v 15.0</div>
+    <div class="l-div"></div>
+    <div class="lf"><label>Usuário</label><input type="text" id="lu" placeholder="Usuário" autocomplete="off" autocapitalize="none" autocorrect="off"></div>
+    <div class="lf"><label>Senha</label><input type="password" id="lp" placeholder="••••••••" autocomplete="off"></div>
+    <button class="l-btn" id="login-btn">Entrar</button>
+    <div class="l-err" id="lerr"></div>
+    <div class="l-foot">Blumenau · SC &nbsp;|&nbsp; Dr. Rafael Reinert · CRM/SC 16789</div>
+  </div>
+</div>
+
+<!-- ══════════════ APP ══════════════ -->
+
+<div id="app">
+  <div class="app-hdr">
+    <div class="ver-badge">v 15.0</div>
+    <div class="brand">Dr. Rafael Reinert · CRM/SC 16789 · Blumenau – SC</div>
+    <h1>VISADERM</h1>
+    <div class="dg"></div>
+    <p class="sub">Prontuário Digital — Transplante Capilar</p>
+  </div>
+
+  <nav class="tabs-nav">
+    <button class="tab-btn act" id="tb-id"><span class="ti">👤</span>Paciente</button>
+    <button class="tab-btn" id="tb-preop"><span class="ti">🔬</span>Pré-op</button>
+    <button class="tab-btn" id="tb-exames"><span class="ti">📎</span>Exames</button>
+    <button class="tab-btn" id="tb-transop"><span class="ti">⚕️</span>Trans-op</button>
+    <button class="tab-btn" id="tb-posop"><span class="ti">📅</span>Pós-op</button>
+    <button class="tab-btn" id="tb-pipeline"><span class="ti">▶</span>Pipeline</button>
+  </nav>
+
+  <!-- ══ PACIENTE ══ -->
+
+  <div class="tab-panel active" id="tab-id">
+    <div class="sh"><div class="si ig">👤</div><div><div class="st">Identificação</div><div class="ss">Dados cadastrais e cirúrgicos</div></div></div>
+    <div class="fr full"><div class="f"><label>Nome Completo</label><input type="text" id="pac-nome" placeholder="Nome completo"></div></div>
+    <div class="fr">
+      <div class="f"><label>CPF</label><input type="text" id="pac-cpf" placeholder="000.000.000-00" maxlength="14"></div>
+      <div class="f"><label>Nascimento</label><input type="date" id="pac-nasc"></div>
+    </div>
+    <div class="fr">
+      <div class="f"><label>Sexo</label><select id="pac-sexo"><option value="">Sel.</option><option>Masculino</option><option>Feminino</option></select></div>
+      <div class="f"><label>Fitzpatrick</label><select id="pac-ftipo"><option value="">Sel.</option><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option></select></div>
+    </div>
+    <div class="fr">
+      <div class="f"><label>Telefone</label><input type="tel" id="pac-tel" placeholder="(47) 9 0000-0000"></div>
+      <div class="f"><label>E-mail</label><input type="email" id="pac-email" placeholder="email@..."></div>
+    </div>
+    <div class="fr full"><div class="f"><label>Endereço</label><input type="text" id="pac-end" placeholder="Rua, número, bairro, cidade"></div></div>
+    <div class="div"></div>
+    <div class="sh"><div class="si ig">💇</div><div><div class="st">Dados Cirúrgicos</div></div></div>
+    <div class="fr">
+      <div class="f"><label>Data Cirurgia</label><input type="date" id="cir-data"></div>
+      <div class="f"><label>Técnica</label><select id="cir-tec"><option value="">Sel.</option><option>FUE</option><option>FUT</option><option>FUE+FUT</option><option>DHI</option></select></div>
+    </div>
+    <div class="fr">
+      <div class="f"><label>Punch (mm)</label><input type="text" id="cir-punch" placeholder="0.80"></div>
+      <div class="f"><label>Motor</label><select id="cir-motor"><option value="">Sel.</option><option>Trivellini MAMBA</option><option>Trivellini FORTE</option><option>Manual</option><option>Outro</option></select></div>
+    </div>
+    <div class="fr full"><div class="f"><label>Observações</label><textarea id="cir-obs" rows="2" placeholder="Observações gerais do caso..."></textarea></div></div>
+    <button class="sav-btn" id="save-id">💾 Salvar Paciente</button>
+    <div class="sav-toast" id="toast-id">✓ Salvo!</div>
+  </div>
+
+  <!-- ══ PRÉ-OP ══ -->
+
+  <div class="tab-panel" id="tab-preop">
+    <div class="sh"><div class="si ig">📋</div><div><div class="st">Anamnese Especializada</div><div class="ss">Tricologia — Nível Especialista Sênior</div></div></div>
+    <div class="fr">
+      <div class="f"><label>Queixa Principal</label><select id="an-queixa"><option value="">Sel.</option><option>Rarefação difusa</option><option>Rarefação focal</option><option>Calvície frontal progressiva</option><option>Recuo linha implantação</option><option>Alopecia em placas</option><option>Queda excessiva</option><option>Outro</option></select></div>
+      <div class="f"><label>Evolução</label><input type="text" id="an-tempo" placeholder="ex: 10 anos"></div>
+    </div>
+    <div class="fr">
+      <div class="f"><label>Progressão</label><select id="an-prog"><option value="">Sel.</option><option>Lento e gradual</option><option>Rápido — meses</option><option>Episódico (surtos)</option><option>Estável &gt;2 anos</option><option>Flutuante</option></select></div>
+      <div class="f"><label>Atividade Atual</label><select id="an-vel"><option value="">Sel.</option><option>Ativa — progressiva</option><option>Estável</option><option>Em regressão</option></select></div>
+    </div>
+    <div class="fgt">Sintomas Associados</div>
+    <div class="cg c3">
+      <label class="ci"><input type="checkbox" id="an-prurido"><span>Prurido</span></label>
+      <label class="ci"><input type="checkbox" id="an-ardor"><span>Ardor</span></label>
+      <label class="ci"><input type="checkbox" id="an-dor"><span>Dor / Tensão</span></label>
+      <label class="ci"><input type="checkbox" id="an-escama"><span>Escamação</span></label>
+      <label class="ci"><input type="checkbox" id="an-oleo"><span>Oleosidade ↑</span></label>
+      <label class="ci"><input type="checkbox" id="an-erit"><span>Eritema</span></label>
+      <label class="ci"><input type="checkbox" id="an-pust"><span>Pústulas</span></label>
+      <label class="ci"><input type="checkbox" id="an-ressec"><span>Ressecamento</span></label>
+      <label class="ci"><input type="checkbox" id="an-assin"><span>Assintomático</span></label>
+    </div>
+    <div class="fgt">Histórico Familiar</div>
+    <div class="cg">
+      <label class="ci"><input type="checkbox" id="fam-pai"><span>Pai — calvície</span></label>
+      <label class="ci"><input type="checkbox" id="fam-mae"><span>Mãe — calvície</span></label>
+      <label class="ci"><input type="checkbox" id="fam-avop"><span>Avô paterno</span></label>
+      <label class="ci"><input type="checkbox" id="fam-avom"><span>Avô materno</span></label>
+      <label class="ci"><input type="checkbox" id="fam-aa"><span>Alopecia areata</span></label>
+      <label class="ci"><input type="checkbox" id="fam-neg"><span>Sem histórico</span></label>
+    </div>
+    <div class="fgt">Tratamentos Prévios</div>
+    <div class="cg">
+      <label class="ci"><input type="checkbox" id="tr-minox"><span>Minoxidil tópico</span></label>
+      <label class="ci"><input type="checkbox" id="tr-minoxo"><span>Minoxidil oral</span></label>
+      <label class="ci"><input type="checkbox" id="tr-fina"><span>Finasterida</span></label>
+      <label class="ci"><input type="checkbox" id="tr-duta"><span>Dutasterida</span></label>
+      <label class="ci"><input type="checkbox" id="tr-cortt"><span>Corticoide tópico</span></label>
+      <label class="ci"><input type="checkbox" id="tr-corti"><span>Corticoide intralesional</span></label>
+      <label class="ci"><input type="checkbox" id="tr-prp"><span>PRP</span></label>
+      <label class="ci"><input type="checkbox" id="tr-laser"><span>Laserterapia</span></label>
+      <label class="ci"><input type="checkbox" id="tr-tx"><span>Transplante anterior</span></label>
+      <label class="ci"><input type="checkbox" id="tr-imuno"><span>Imunossupressores</span></label>
+    </div>
+    <div class="fr full"><div class="f"><label>Detalhar tratamentos / doses / duração</label><textarea id="an-trat" rows="2" placeholder="ex: Minoxidil 5% 2×/dia há 2 anos, Finasterida 1mg/dia há 1 ano..."></textarea></div></div>
+    <div class="fgt">Hormonal (se aplicável)</div>
+    <div class="fr">
+      <div class="f"><label>Menopausa</label><select id="an-menop"><option value="">N/A</option><option>Pré</option><option>Peri</option><option>Pós</option></select></div>
+      <div class="f"><label>Anticoncepcional</label><select id="an-ac"><option value="">N/A</option><option>ACO combinado</option><option>Progestagênio</option><option>DIU hormonal</option><option>Injetável</option><option>Implante</option></select></div>
+    </div>
+    <div class="fr">
+      <div class="f"><label>Gestação / Puerpério</label><select id="an-gest"><option value="">Não</option><option>Gestante</option><option>Puerpério &lt;6m</option><option>Puerpério 6–12m</option></select></div>
+      <div class="f"><label>TRH</label><select id="an-trh"><option value="">Não</option><option>Estrogênio</option><option>Combinada</option><option>Suspensa</option></select></div>
+    </div>
+    <div class="fgt">Fatores Precipitantes</div>
+    <div class="cg c3">
+      <label class="ci"><input type="checkbox" id="fat-est"><span>Estresse intenso</span></label>
+      <label class="ci"><input type="checkbox" id="fat-cir"><span>Cirurgia recente</span></label>
+      <label class="ci"><input type="checkbox" id="fat-inf"><span>Infecção grave</span></label>
+      <label class="ci"><input type="checkbox" id="fat-die"><span>Dieta restritiva</span></label>
+      <label class="ci"><input type="checkbox" id="fat-fer"><span>Ferritina baixa</span></label>
+      <label class="ci"><input type="checkbox" id="fat-tir"><span>Tireoideopatia</span></label>
+    </div>
+    <div class="fr full"><div class="f"><label>Exames Laboratoriais Recentes</label><textarea id="an-labs" rows="2" placeholder="TSH, T4L, Ferritina, Vit D, Zinco, Testosterona, SHBG, DHEA-S, Prolactina..."></textarea></div></div>
+    <div class="fgt">Comorbidades</div>
+    <div class="cg c3">
+      <label class="ci"><input type="checkbox" id="co-has"><span>HAS</span></label>
+      <label class="ci"><input type="checkbox" id="co-dm"><span>Diabetes</span></label>
+      <label class="ci"><input type="checkbox" id="co-hipo"><span>Hipotireoidismo</span></label>
+      <label class="ci"><input type="checkbox" id="co-hiper"><span>Hipertireoidismo</span></label>
+      <label class="ci"><input type="checkbox" id="co-les"><span>LES / Lúpus</span></label>
+      <label class="ci"><input type="checkbox" id="co-ar"><span>Artrite reumatoide</span></label>
+      <label class="ci"><input type="checkbox" id="co-pso"><span>Psoríase</span></label>
+      <label class="ci"><input type="checkbox" id="co-ane"><span>Anemia</span></label>
+      <label class="ci"><input type="checkbox" id="co-coa"><span>Coagulopatia</span></label>
+    </div>
+    <div class="fr">
+      <div class="f"><label>Medicações em uso</label><textarea id="an-medic" rows="2" placeholder="Anti-hipertensivos, anticoagulantes..."></textarea></div>
+    </div>
+    <div class="fr">
+      <div class="f"><label>Tabagismo</label><select id="an-tab"><option value="">Não</option><option>Sim — ativo</option><option>Ex &lt;5a</option><option>Ex &gt;5a</option></select></div>
+      <div class="f"><label>Alergias</label><input type="text" id="an-alerg" placeholder="Medicamentos, látex..."></div>
+    </div>
+
+```
+<div class="div"></div>
+<div class="sh"><div class="si ipu">🩺</div><div><div class="st">Exame Físico do Couro Cabeludo</div><div class="ss">Macroscópico, dermatoscópico e tricoscopia</div></div></div>
+<div class="fgt">Aspecto Geral</div>
+<div class="fr">
+  <div class="f"><label>Oleosidade</label><select id="ef-oleo"><option value="">Sel.</option><option>Normal</option><option>Aumentada — seborreia</option><option>Diminuída</option></select></div>
+  <div class="f"><label>Eritema</label><select id="ef-erit"><option value="">Ausente</option><option>Leve difuso</option><option>Moderado focal</option><option>Intenso</option><option>Perifolicular</option></select></div>
+</div>
+<div class="fgt">Escamas / Dermatite Seborreica</div>
+<div class="fr">
+  <div class="f"><label>Tipo de Escama</label><select id="ef-esc"><option value="">Ausente</option><option>Finas — pitiriasiforme</option><option>Grossas — aderentes</option><option>Laminares</option><option>Perifoliculares</option><option>Tubulares (peripilar casts)</option></select></div>
+  <div class="f"><label>Dermatite Seborreica</label><select id="ef-ds"><option value="">Ausente</option><option>Leve</option><option>Moderada — placas amareladas</option><option>Grave — extensa</option></select></div>
+</div>
+<div class="fr">
+  <div class="f"><label>Distribuição</label><select id="ef-dist"><option value="">Sel.</option><option>Generalizada</option><option>Vertex</option><option>Frontoparietal</option><option>Occipital</option><option>Marginal</option><option>Focal</option></select></div>
+  <div class="f"><label>Crostas</label><select id="ef-crost"><option value="">Ausente</option><option>Hemáticas</option><option>Melicéricas</option><option>Sero-hemáticas</option></select></div>
+</div>
+<div class="fgt">Lesões Elementares</div>
+<div class="cg c3">
+  <label class="ci"><input type="checkbox" id="le-atr"><span>Atrofia cutânea</span></label>
+  <label class="ci"><input type="checkbox" id="le-cic"><span>Cicatriz fibrosa</span></label>
+  <label class="ci"><input type="checkbox" id="le-fol"><span>Foliculite ativa</span></label>
+  <label class="ci"><input type="checkbox" id="le-pus"><span>Pústulas</span></label>
+  <label class="ci"><input type="checkbox" id="le-pap"><span>Pápulas</span></label>
+  <label class="ci"><input type="checkbox" id="le-pla"><span>Placas infiltradas</span></label>
+  <label class="ci"><input type="checkbox" id="le-tel"><span>Telangiectasias</span></label>
+  <label class="ci"><input type="checkbox" id="le-ker"><span>Queratose folicular</span></label>
+  <label class="ci"><input type="checkbox" id="le-liq"><span>Liquenificação</span></label>
+</div>
+<div class="fgt">Tricoscopia — Achados (toque para selecionar)</div>
+<div id="trico-wrap" style="margin-bottom:10px;">
+  <span class="tt" data-val="Pontos amarelos">Pontos amarelos</span>
+  <span class="tt" data-val="Pontos negros">Pontos negros</span>
+  <span class="tt" data-val="Pontos brancos">Pontos brancos</span>
+  <span class="tt" data-val="Pelos ! exclamação">Pelos ! exclamação</span>
+  <span class="tt" data-val="Pelos cadaverizados">Pelos cadaverizados</span>
+  <span class="tt" data-val="Gravata borboleta">Gravata borboleta</span>
+  <span class="tt" data-val="Miniaturização">Miniaturização</span>
+  <span class="tt" data-val="Diversidade calibres">Diversidade calibres</span>
+  <span class="tt" data-val="Fibrose perifolicular">Fibrose perifolicular</span>
+  <span class="tt" data-val="Escamas perifolicular">Escamas perifolicular</span>
+  <span class="tt" data-val="Eritema perifolicular">Eritema perifolicular</span>
+  <span class="tt" data-val="Fios em pente">Fios em pente</span>
+  <span class="tt" data-val="Traços brancos radiais">Traços brancos radiais</span>
+  <span class="tt" data-val="Vasos ramificados">Vasos ramificados</span>
+  <span class="tt" data-val="Favo de mel">Favo de mel</span>
+  <span class="tt" data-val="Pelos velus">Pelos velus</span>
+  <span class="tt" data-val="Ausência de óstios">Ausência de óstios</span>
+  <span class="tt" data-val="Plug folicular">Plug folicular</span>
+</div>
+<div class="f"><label>Achados adicionais à tricoscopia</label><textarea id="trico-obs" rows="2" placeholder="Padrão vascular, hallmark signs..."></textarea></div>
+
+<div class="div"></div>
+<div class="sh"><div class="si ior">💇</div><div><div class="st">Alopecias Não Cicatriciais</div></div></div>
+<div class="fgt">AGA — Androgenética</div>
+<div class="fr">
+  <div class="f"><label>Norwood-Hamilton</label><select id="aga-nw"><option value="">N/A</option><option>I</option><option>II</option><option>IIa</option><option>III</option><option>IIIa</option><option>III vertex</option><option>IV</option><option>IVa</option><option>V</option><option>Va</option><option>VI</option><option>VII</option></select></div>
+  <div class="f"><label>Ludwig / Sinclair</label><select id="aga-lud"><option value="">N/A</option><option>Ludwig I</option><option>Ludwig II</option><option>Ludwig III</option><option>Sinclair 1</option><option>Sinclair 2</option><option>Sinclair 3</option><option>Sinclair 4</option><option>Sinclair 5</option></select></div>
+</div>
+<div class="fr">
+  <div class="f"><label>Miniaturização</label><select id="aga-min"><option value="">Sel.</option><option>&lt;20% — leve</option><option>20–50% — moderada</option><option>&gt;50% — grave</option></select></div>
+  <div class="f"><label>Zona de risco</label><select id="aga-zr"><option value="">Sel.</option><option>Ausente</option><option>Presente — leve</option><option>Presente — extensa</option></select></div>
+</div>
+<div class="fgt">Alopecia Areata</div>
+<div class="fr">
+  <div class="f"><label>Padrão</label><select id="aa-pad"><option value="">N/A</option><option>Placa única</option><option>Multifocal</option><option>Ofiásica</option><option>Sisaifo</option><option>Totalis</option><option>Universalis</option></select></div>
+  <div class="f"><label>SALT Score (%)</label><input type="number" id="aa-salt" placeholder="0–100" min="0" max="100"></div>
+</div>
+<div class="fgt">Eflúvio</div>
+<div class="fr">
+  <div class="f"><label>Tipo</label><select id="efl-tipo"><option value="">Ausente</option><option>Telógeno agudo</option><option>Telógeno crônico</option><option>Anágeno</option></select></div>
+  <div class="f"><label>Pull Test</label><select id="efl-pull"><option value="">Negativo</option><option>Positivo &lt;6</option><option>Positivo 6–10</option><option>Forte &gt;10</option></select></div>
+</div>
+<div class="fgt">Outras Não Cicatriciais</div>
+<div class="cg">
+  <label class="ci"><input type="checkbox" id="anc-tri"><span>Tricotilomania</span></label>
+  <label class="ci"><input type="checkbox" id="anc-tra"><span>Alopecia de tração</span></label>
+  <label class="ci"><input type="checkbox" id="anc-tin"><span>Tinea capitis</span></label>
+  <label class="ci"><input type="checkbox" id="anc-sif"><span>Sifílide alopecizante</span></label>
+</div>
+
+<div class="div"></div>
+<div class="sh"><div class="si ird">🔴</div><div><div class="st">Alopecias Cicatriciais</div><div class="ss">Atividade · Contraindicação cirúrgica</div></div></div>
+<div class="fgt">Linfocíticas</div>
+<div class="cg">
+  <label class="ci"><input type="checkbox" id="ac-lpp"><span>Líquen Plano Pilar</span></label>
+  <label class="ci"><input type="checkbox" id="ac-aff"><span>Alopecia Fibrosante Frontal</span></label>
+  <label class="ci"><input type="checkbox" id="ac-acc"><span>ACCC</span></label>
+  <label class="ci"><input type="checkbox" id="ac-led"><span>Lúpus Discoide</span></label>
+  <label class="ci"><input type="checkbox" id="ac-bro"><span>Pseudopelada de Brocq</span></label>
+  <label class="ci"><input type="checkbox" id="ac-der"><span>Dermatomiosite</span></label>
+</div>
+<div class="fgt">Neutrofílicas / Mistas</div>
+<div class="cg">
+  <label class="ci"><input type="checkbox" id="ac-fde"><span>Foliculite Decalvante</span></label>
+  <label class="ci"><input type="checkbox" id="ac-dis"><span>Celulite Dissecante</span></label>
+  <label class="ci"><input type="checkbox" id="ac-tuf"><span>Foliculite em Tufo</span></label>
+  <label class="ci"><input type="checkbox" id="ac-ero"><span>Foliculite Erosiva Pustulosa</span></label>
+</div>
+<div class="fr">
+  <div class="f"><label>Atividade Inflamatória</label><select id="ac-atv"><option value="">Sel.</option><option>Ausente — cicatricial estável</option><option>Leve periférica</option><option>Moderada ativa</option><option>Grave disseminada</option></select></div>
+  <div class="f"><label>Contraindicação ao Tx</label><select id="ac-ci"><option value="">Sel.</option><option>Sem contraindicação</option><option>Aguardar &gt;2 anos</option><option>Relativa</option><option>Absoluta</option></select></div>
+</div>
+<div class="fr full"><div class="f"><label>Obs. Alopecias Cicatriciais</label><textarea id="ac-obs" rows="2" placeholder="Extensão, bordas, biópsia prévia, tratamento em curso..."></textarea></div></div>
+
+<div class="div"></div>
+<div class="sh"><div class="si igr">🎯</div><div><div class="st">Áreas Doadora e Receptora</div></div></div>
+<div class="fr">
+  <div class="f"><label>Densidade doadora (FU/cm²)</label><input type="number" id="sc-dens" placeholder="80"></div>
+  <div class="f"><label>Área doadora segura (cm²)</label><input type="number" id="sc-area" placeholder="120"></div>
+</div>
+<div class="fr">
+  <div class="f"><label>FU disponíveis</label><input type="number" id="sc-fudisp" placeholder="8000"></div>
+  <div class="f"><label>FU planejados</label><input type="number" id="sc-fuplan" placeholder="4000"></div>
+</div>
+<div class="fr">
+  <div class="f"><label>Laxidez</label><select id="sc-lax"><option value="">Sel.</option><option>Boa</option><option>Moderada</option><option>Reduzida</option></select></div>
+  <div class="f"><label>Diâmetro médio (µm)</label><input type="number" id="sc-diam" placeholder="70"></div>
+</div>
+<div class="fr">
+  <div class="f"><label>Área receptora (cm²)</label><input type="number" id="ss-area" placeholder="100"></div>
+  <div class="f"><label>Densidade alvo (FU/cm²)</label><input type="number" id="ss-dalvo" placeholder="40"></div>
+</div>
+<div class="fr">
+  <div class="f"><label>Densidade residual (FU/cm²)</label><input type="number" id="ss-dres" placeholder="20"></div>
+  <div class="f"><label>FU necessários</label><input type="number" id="ss-funec" placeholder="4000"></div>
+</div>
+<div class="fr">
+  <div class="f"><label>Testes Clínicos — Pull Test</label><select id="tc-pull"><option value="">Negativo</option><option>Pos. frontal</option><option>Pos. occipital</option><option>Pos. difuso</option><option>Forte</option></select></div>
+  <div class="f"><label>Tug Test</label><select id="tc-tug"><option value="">Negativo</option><option>Positivo</option></select></div>
+</div>
+
+<div class="div"></div>
+<!-- ══ DOPPLER COMPLETO ══ -->
+<div class="sh"><div class="si ird">🩸</div><div><div class="st">Doppler · Artéria Temporal Superficial</div><div class="ss">Protocolo Visaderm · Avaliação Pré-operatória</div></div></div>
+<div style="background:var(--navy);border-radius:var(--r2);padding:12px;margin-bottom:12px;overflow-x:auto;">
+  <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Parâmetros de Referência · Decisão Cirúrgica</div>
+  <table class="dop-table">
+    <thead><tr><th>Parâmetro</th><th style="color:#a5d6a7;">Normal</th><th style="color:#ffcc80;">Atenção</th><th style="color:#ef9a9a;">Alto Risco</th></tr></thead>
+    <tbody>
+      <tr><td>RI (Índice Resistência)</td><td style="text-align:center;color:#a5d6a7;">0.55–0.75</td><td style="text-align:center;color:#ffcc80;">0.76–0.85</td><td style="text-align:center;color:#ef9a9a;">&gt;0.85</td></tr>
+      <tr><td>PI (Índice Pulsatilidade)</td><td style="text-align:center;color:#a5d6a7;">0.80–1.50</td><td style="text-align:center;color:#ffcc80;">1.51–2.00</td><td style="text-align:center;color:#ef9a9a;">&gt;2.00</td></tr>
+      <tr><td>PS — Pico Sistólico cm/s</td><td style="text-align:center;color:#a5d6a7;">15–40</td><td style="text-align:center;color:#ffcc80;">10–14</td><td style="text-align:center;color:#ef9a9a;">&lt;10</td></tr>
+      <tr><td>ED — Diastólica Final cm/s</td><td style="text-align:center;color:#a5d6a7;">8–18</td><td style="text-align:center;color:#ffcc80;">5–7</td><td style="text-align:center;color:#ef9a9a;">&lt;5</td></tr>
+      <tr><td>S/D (Sist/Diast)</td><td style="text-align:center;color:#a5d6a7;">1.2–2.5</td><td style="text-align:center;color:#ffcc80;">2.6–3.5</td><td style="text-align:center;color:#ef9a9a;">&gt;3.5</td></tr>
+      <tr><td>Vel. Doppler cor cm/s</td><td style="text-align:center;color:#a5d6a7;">2–6</td><td style="text-align:center;color:#ffcc80;">1–1.9</td><td style="text-align:center;color:#ef9a9a;">&lt;1</td></tr>
+      <tr><td>Diâmetro vascular mm</td><td style="text-align:center;color:#a5d6a7;">1.0–2.5</td><td style="text-align:center;color:#ffcc80;">0.6–0.9</td><td style="text-align:center;color:#ef9a9a;">&lt;0.5</td></tr>
+      <tr><td>Assimetria D vs E (RI Δ)</td><td style="text-align:center;color:#a5d6a7;">&lt;0.10</td><td style="text-align:center;color:#ffcc80;">0.10–0.15</td><td style="text-align:center;color:#ef9a9a;">&gt;0.15</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="fgt">Configuração do Equipamento</div>
+<div class="fr">
+  <div class="f"><label>Equipamento / MHz</label><input type="text" id="dop-equip" placeholder="ex: SH-2C · 20 MHz"></div>
+  <div class="f"><label>Ângulo Insonação</label><select id="dop-ang"><option value="">Sel.</option><option>60°</option><option>45°</option><option>30°</option></select></div>
+</div>
+<div class="fgt">Medições Bilaterais — P1 Tronco Principal</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+  <div style="background:var(--s1);border:1px solid var(--brd);border-radius:var(--r2);padding:11px;">
+    <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">📍 Lado Direito</div>
+    <div class="f" style="margin-bottom:5px;"><label>PS (cm/s)</label><input type="number" id="dop-d-ps" placeholder="0.0" step="0.1"></div>
+    <div class="f" style="margin-bottom:5px;"><label>ED (cm/s)</label><input type="number" id="dop-d-ed" placeholder="0.0" step="0.1"></div>
+    <div class="f" style="margin-bottom:5px;"><label>RI</label><input type="number" id="dop-dir" placeholder="0.00" step="0.01"></div>
+    <div class="f" style="margin-bottom:5px;"><label>PI</label><input type="number" id="dop-d-pi" placeholder="0.00" step="0.01"></div>
+    <div class="f" style="margin-bottom:5px;"><label>S/D</label><input type="number" id="dop-d-sd" placeholder="0.0" step="0.1"></div>
+    <div class="f" style="margin-bottom:5px;"><label>Vel. cor (cm/s)</label><input type="number" id="dop-d-vel" placeholder="0.0" step="0.1"></div>
+    <div class="f"><label>Diâmetro (mm)</label><input type="number" id="dop-d-diam" placeholder="0.0" step="0.1"></div>
+    <div class="ri-big" id="rv-dir" style="color:var(--gray);">RI —</div>
+  </div>
+  <div style="background:var(--s1);border:1px solid var(--brd);border-radius:var(--r2);padding:11px;">
+    <div style="font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">📍 Lado Esquerdo</div>
+    <div class="f" style="margin-bottom:5px;"><label>PS (cm/s)</label><input type="number" id="dop-e-ps" placeholder="0.0" step="0.1"></div>
+    <div class="f" style="margin-bottom:5px;"><label>ED (cm/s)</label><input type="number" id="dop-e-ed" placeholder="0.0" step="0.1"></div>
+    <div class="f" style="margin-bottom:5px;"><label>RI</label><input type="number" id="dop-esq" placeholder="0.00" step="0.01"></div>
+    <div class="f" style="margin-bottom:5px;"><label>PI</label><input type="number" id="dop-e-pi" placeholder="0.00" step="0.01"></div>
+    <div class="f" style="margin-bottom:5px;"><label>S/D</label><input type="number" id="dop-e-sd" placeholder="0.0" step="0.1"></div>
+    <div class="f" style="margin-bottom:5px;"><label>Vel. cor (cm/s)</label><input type="number" id="dop-e-vel" placeholder="0.0" step="0.1"></div>
+    <div class="f"><label>Diâmetro (mm)</label><input type="number" id="dop-e-diam" placeholder="0.0" step="0.1"></div>
+    <div class="ri-big" id="rv-esq" style="color:var(--gray);">RI —</div>
+  </div>
+</div>
+<div class="fr">
+  <div class="f"><label>P2 Bifurcação (D/E RI)</label><input type="text" id="dop-p2" placeholder="D:0.00 / E:0.00"></div>
+  <div class="f"><label>P3 Frontal (D/E RI)</label><input type="text" id="dop-p3" placeholder="D:0.00 / E:0.00"></div>
+</div>
+<div class="fr">
+  <div class="f"><label>P4 Parietal (D/E RI)</label><input type="text" id="dop-p4" placeholder="D:0.00 / E:0.00"></div>
+  <div class="f"><label>Assimetria RI Δ (D–E)</label><input type="number" id="dop-delta" placeholder="0.00" step="0.01" readonly style="background:var(--bg);font-weight:700;"></div>
+</div>
+<div id="dop-alert"></div>
+<div id="dop-conclusao" style="margin-top:6px;"></div>
+<button class="ai-btn" id="dop-ai-btn" style="margin-top:8px;">🤖 Gerar Laudo Doppler com IA</button>
+<div class="ai-result" id="dop-ai-result" style="display:none;margin-top:10px;background:var(--bg);border:1px solid var(--brd);border-radius:var(--r2);padding:12px;font-size:13px;white-space:pre-wrap;line-height:1.6;"></div>
+<div class="fr full" style="margin-top:10px;"><div class="f"><label>Laudo Manual Doppler</label><textarea id="dop-obs" rows="3" placeholder="Fluxo contínuo bilateral, padrão bifásico..."></textarea></div></div>
+
+<div class="div"></div>
+<div class="sh"><div class="si ig">🧬</div><div><div class="st">Hairmetrix AI</div></div></div>
+<div class="fr">
+  <div class="f"><label>Densidade (fios/cm²)</label><input type="number" id="hx-dens" placeholder="80"></div>
+  <div class="f"><label>Coef. folicular (f/UF)</label><input type="number" id="hx-coef" placeholder="2.4" step="0.1"></div>
+</div>
+<div class="fr">
+  <div class="f"><label>Diâmetro médio (µm)</label><input type="number" id="hx-diam" placeholder="70"></div>
+  <div class="f"><label>FU total estimado</label><input type="number" id="hx-fumax" placeholder="5000"></div>
+</div>
+<div class="fr full"><div class="f"><label>Laudos Hairmetrix</label><textarea id="hx-obs" rows="2" placeholder="Índice de miniaturização, calibre médio..."></textarea></div></div>
+
+<div class="div"></div>
+<div class="sh"><div class="si ig">📷</div><div><div class="st">Fotos Pré-op</div></div></div>
+<div class="pg" id="fotos-preop"></div>
+<button class="sav-btn" id="save-preop">💾 Salvar Pré-op</button>
+<div class="sav-toast" id="toast-preop">✓ Salvo!</div>
+```
+
+  </div>
+
+  <!-- ══ EXAMES ══ -->
+
+  <div class="tab-panel" id="tab-exames">
+    <div class="sh"><div class="si ig">🩸</div><div><div class="st">Solicitação de Exames</div><div class="ss">Rotina, pré-op e imagem</div></div></div>
+    <div class="fgt">Hemograma e Micronutrientes</div>
+    <div class="cg c3">
+      <label class="ci"><input type="checkbox" id="ex-hemo"><span>Hemograma</span></label>
+      <label class="ci"><input type="checkbox" id="ex-ferr"><span>Ferritina</span></label>
+      <label class="ci"><input type="checkbox" id="ex-fetibc"><span>Ferro / TIBC</span></label>
+      <label class="ci"><input type="checkbox" id="ex-vitd"><span>Vit. D (25-OH)</span></label>
+      <label class="ci"><input type="checkbox" id="ex-zinc"><span>Zinco sérico</span></label>
+      <label class="ci"><input type="checkbox" id="ex-b12"><span>Vit. B12 / Folato</span></label>
+    </div>
+    <div class="fgt">Hormonal</div>
+    <div class="cg c3">
+      <label class="ci"><input type="checkbox" id="ex-tsh"><span>TSH / T4L</span></label>
+      <label class="ci"><input type="checkbox" id="ex-test"><span>Testosterona total</span></label>
+      <label class="ci"><input type="checkbox" id="ex-testl"><span>Testosterona livre</span></label>
+      <label class="ci"><input type="checkbox" id="ex-shbg"><span>SHBG</span></label>
+      <label class="ci"><input type="checkbox" id="ex-dhea"><span>DHEA-S</span></label>
+      <label class="ci"><input type="checkbox" id="ex-prol"><span>Prolactina</span></label>
+      <label class="ci"><input type="checkbox" id="ex-fsh"><span>FSH / LH</span></label>
+      <label class="ci"><input type="checkbox" id="ex-estr"><span>Estradiol</span></label>
+      <label class="ci"><input type="checkbox" id="ex-ins"><span>Insulina / HOMA-IR</span></label>
+    </div>
+    <div class="fgt">Imunológico</div>
+    <div class="cg c3">
+      <label class="ci"><input type="checkbox" id="ex-fan"><span>FAN (ANA)</span></label>
+      <label class="ci"><input type="checkbox" id="ex-tpo"><span>Anti-TPO / Anti-TG</span></label>
+      <label class="ci"><input type="checkbox" id="ex-pcr"><span>PCR / VHS</span></label>
+      <label class="ci"><input type="checkbox" id="ex-sif"><span>VDRL / FTA-Abs</span></label>
+      <label class="ci"><input type="checkbox" id="ex-fr"><span>Fator Reumatoide</span></label>
+      <label class="ci"><input type="checkbox" id="ex-c3c4"><span>Complemento C3/C4</span></label>
+    </div>
+    <div class="fgt">Pré-Operatórios Obrigatórios</div>
+    <div class="cg c3">
+      <label class="ci"><input type="checkbox" id="pre-hemo"><span>Hemograma</span></label>
+      <label class="ci"><input type="checkbox" id="pre-coag"><span>Coagulograma</span></label>
+      <label class="ci"><input type="checkbox" id="pre-gli"><span>Glicemia</span></label>
+      <label class="ci"><input type="checkbox" id="pre-ur"><span>Ureia / Creatinina</span></label>
+      <label class="ci"><input type="checkbox" id="pre-ele"><span>Eletrólitos Na/K</span></label>
+      <label class="ci"><input type="checkbox" id="pre-ecg"><span>ECG</span></label>
+      <label class="ci"><input type="checkbox" id="pre-rx"><span>Rx Tórax</span></label>
+      <label class="ci"><input type="checkbox" id="pre-hbs"><span>HBsAg / Anti-HCV</span></label>
+      <label class="ci"><input type="checkbox" id="pre-hiv"><span>HIV</span></label>
+      <label class="ci"><input type="checkbox" id="pre-tip"><span>Tipagem sanguínea</span></label>
+      <label class="ci"><input type="checkbox" id="pre-eas"><span>EAS (Urina)</span></label>
+      <label class="ci"><input type="checkbox" id="pre-plaq"><span>Plaquetas</span></label>
+    </div>
+    <div class="fgt">Exames de Imagem Solicitados</div>
+    <div class="cg c3">
+      <label class="ci"><input type="checkbox" id="img-trc"><span>Tricoscopia digital</span></label>
+      <label class="ci"><input type="checkbox" id="img-map"><span>Mapeamento tricoscópico</span></label>
+      <label class="ci"><input type="checkbox" id="img-dop"><span>Doppler temporal</span></label>
+      <label class="ci"><input type="checkbox" id="img-bio"><span>Biópsia CC</span></label>
+      <label class="ci"><input type="checkbox" id="img-hmt"><span>Hairmetrix AI</span></label>
+      <label class="ci"><input type="checkbox" id="img-ssc"><span>Scalpscan AI</span></label>
+      <label class="ci"><input type="checkbox" id="img-usg"><span>USG partes moles</span></label>
+      <label class="ci"><input type="checkbox" id="img-rmn"><span>RMN crânio</span></label>
+    </div>
+    <div class="div"></div>
+    <div class="sh"><div class="si ig">📁</div><div><div class="st">Anexar Exames</div><div class="ss">Roteamento automático ao prontuário e pipeline</div></div></div>
+    <div class="fgt">Hairmetrix AI</div>
+    <label class="up-slot"><span style="font-size:20px;">🧬</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--white);">Anexar laudo Hairmetrix</div><div style="font-size:11px;color:var(--gray);">PDF ou imagem — extração automática</div></div><input type="file" id="hm-file" accept=".pdf,image/*" style="display:none;"></label>
+    <div id="hm-list"></div>
+    <div class="fgt">Scalpscan AI</div>
+    <label class="up-slot"><span style="font-size:20px;">🎯</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--white);">Anexar laudo Scalpscan</div><div style="font-size:11px;color:var(--gray);">PDF ou imagem — extração automática</div></div><input type="file" id="ss-file" accept=".pdf,image/*" style="display:none;"></label>
+    <div id="ss-list"></div>
+    <div class="fgt">Exames Laboratoriais</div>
+    <label class="up-slot"><span style="font-size:20px;">🩸</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--white);">Laudos laboratoriais</div><div style="font-size:11px;color:var(--gray);">PDF ou imagem — múltiplos</div></div><input type="file" id="lab-file" accept=".pdf,image/*" multiple style="display:none;"></label>
+    <div id="lab-list"></div>
+    <div class="fgt">Outros Arquivos / Imagens</div>
+    <label class="up-slot"><span style="font-size:20px;">🖼️</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--white);">Outros documentos</div><div style="font-size:11px;color:var(--gray);">PDF, JPG, PNG...</div></div><input type="file" id="img-file" accept=".pdf,image/*" multiple style="display:none;"></label>
+    <div id="img-list"></div>
+    <div id="all-anexos" style="display:none;"><div class="fgt">📎 Todos os Arquivos Anexados</div><div id="all-items"></div></div>
+    <div class="div"></div>
+    <div class="sh"><div class="si igr">📊</div><div><div class="st">Gráfico Comparativo de Exames</div><div class="ss">Evolução longitudinal dos parâmetros</div></div></div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;">
+      <button class="ptb act" data-ckey="ferrit">Ferritina</button>
+      <button class="ptb" data-ckey="vitd">Vit. D</button>
+      <button class="ptb" data-ckey="hb">Hemoglobina</button>
+      <button class="ptb" data-ckey="tsh">TSH</button>
+      <button class="ptb" data-ckey="custom">Personalizado</button>
+    </div>
+    <div id="chart-custom-row" style="display:none;margin-bottom:8px;"><div class="f"><label>Parâmetro</label><input type="text" id="chart-lbl" placeholder="ex: Zinco sérico"></div></div>
+    <div id="chart-entries"></div>
+    <button class="ai-btn" id="chart-add" style="margin-bottom:10px;">+ Adicionar Medição</button>
+    <canvas id="exam-chart" style="width:100%;max-height:250px;border-radius:var(--r2);border:1px solid var(--brd);background:var(--s1);display:none;"></canvas>
+    <div id="chart-ref-lbl" style="font-size:11px;color:var(--gray);text-align:center;margin-top:5px;"></div>
+    <button class="sav-btn" id="save-exames">💾 Salvar Exames</button>
+    <div class="sav-toast" id="toast-exames">✓ Salvo!</div>
+  </div>
+
+  <!-- ══ TRANS-OP ══ -->
+
+  <div class="tab-panel" id="tab-transop">
+    <!-- GRAFTSCAN V2.1 -->
+    <div style="background:var(--navy);border-radius:var(--r2);padding:11px 13px;margin-bottom:12px;">
+      <div style="font-family:var(--fh);font-size:15px;font-weight:800;color:#fff;letter-spacing:.06em;">🔬 VISADERM GRAFTSCAN V2.1™</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.6);margin-top:3px;">Análise Folicular Intraoperatória · 8 Módulos · 14 Referências · Dr. Rafael Reinert · CRM/SC 16789</div>
+    </div>
+    <div class="fgt">Modo de Análise</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+      <button class="gmodo act" data-modo="auto">🤖 Auto-detecção</button>
+      <button class="gmodo" data-modo="a">🪵 Modo A — Palitos</button>
+      <button class="gmodo" data-modo="b">🔵 Modo B — Graft Individual</button>
+    </div>
+    <label id="gs-label" style="display:flex;align-items:center;gap:10px;background:var(--bg);border:1.5px dashed var(--brd2);border-radius:var(--r2);padding:11px 13px;cursor:pointer;margin-bottom:10px;transition:border .2s;">
+      <span style="font-size:20px;">📸</span>
+      <div><div style="font-size:13px;font-weight:600;color:var(--white);">Fotografar ou selecionar enxerto</div><div style="font-size:11px;color:var(--gray);">Palitos (Modo A) ou graft individual (Modo B)</div></div>
+      <input type="file" id="gs-img-input" accept="image/*" capture="environment" style="display:none;">
+    </label>
+    <div id="gs-viewer" style="display:none;">
+      <div class="fgt" style="margin-top:0;">Filtros de Luz</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px;" id="gs-filter-bar">
+        <button class="gflt act" data-f="none">Normal</button>
+        <button class="gflt" data-f="contrast(2) saturate(1.4)">Alto Contraste</button>
+        <button class="gflt" data-f="grayscale(1) contrast(1.8)">Cinza</button>
+        <button class="gflt" data-f="hue-rotate(120deg) saturate(2) contrast(1.5)">Canal Verde</button>
+        <button class="gflt" data-f="hue-rotate(240deg) saturate(2.5) contrast(1.6)">Canal Azul UV</button>
+        <button class="gflt" data-f="sepia(1) saturate(3) contrast(1.8) hue-rotate(300deg)">Polarizado</button>
+        <button class="gflt" data-f="invert(1) hue-rotate(180deg) contrast(1.5)">Fluorescência</button>
+        <button class="gflt" data-f="contrast(3) brightness(1.2) grayscale(.5)">Det. Borda</button>
+      </div>
+      <div id="gs-wrap" style="position:relative;width:100%;border-radius:var(--r2);overflow:hidden;border:1px solid var(--brd);background:#000;touch-action:none;margin-bottom:8px;">
+        <canvas id="gs-cnv-img" style="display:block;width:100%;"></canvas>
+        <canvas id="gs-cnv-ann" style="position:absolute;inset:0;width:100%;touch-action:none;cursor:crosshair;"></canvas>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:8px;">
+        <button class="gctrl" id="gs-zo">🔍−</button>
+        <span id="gs-zlbl" style="font-size:12px;font-weight:700;color:var(--blue);min-width:32px;text-align:center;">1×</span>
+        <button class="gctrl" id="gs-zi">🔍+</button>
+        <button class="gctrl" id="gs-zfit">⤢</button>
+        <div style="width:1px;height:20px;background:var(--brd);margin:0 2px;"></div>
+        <button class="gtool act" data-t="fu">🟢 FU</button>
+        <button class="gtool" data-t="trans">🔴 TX</button>
+        <button class="gtool" data-t="danif">🟡 Dan.</button>
+        <button class="gtool" data-t="anel">🔵 AF</button>
+        <button class="gtool" data-t="erase">⬜ Apagar</button>
+        <button class="gctrl" id="gs-clear-ann" style="margin-left:auto;">🗑️</button>
+      </div>
+      <div class="sbr">
+        <div class="sb"><div class="sbl">🟢 Viáveis</div><div id="cnt-fu" style="font-size:20px;font-weight:800;color:var(--green);">0</div></div>
+        <div class="sb"><div class="sbl">🔴 Transec.</div><div id="cnt-tr" style="font-size:20px;font-weight:800;color:var(--red);">0</div></div>
+        <div class="sb"><div class="sbl">🟡 Danif.</div><div id="cnt-da" style="font-size:20px;font-weight:800;color:var(--orange);">0</div></div>
+        <div class="sb"><div class="sbl">Transec. %</div><div id="cnt-pct" style="font-size:20px;font-weight:800;color:var(--blue);">0%</div></div>
+      </div>
+      <button id="gs-img-clear" style="background:rgba(198,40,40,.1);color:var(--red);border:1px solid rgba(198,40,40,.25);border-radius:var(--r3);padding:6px 13px;font-size:12px;font-weight:600;cursor:pointer;margin-bottom:11px;">✕ Remover imagem</button>
+    </div>
+
+```
+<div class="fgt">Parâmetros Clínicos — Módulos 3–7</div>
+<div class="fr">
+  <div class="f"><label>Solução de Preservação</label><select id="gs-solucao"><option value="">Sel.</option><option>Salina gelada (&lt;4h)</option><option>HypoThermosol/ATP (&gt;4h)</option><option>ATP+Mg</option><option>Outra</option></select></div>
+  <div class="f"><label>Tempo fora corpo (min)</label><input type="number" id="gs-tempo" placeholder="0"></div>
+</div>
+<div class="fr">
+  <div class="f"><label>Nº de Palitos / Grafts</label><input type="number" id="gs-npalitos" placeholder="4"></div>
+  <div class="f"><label>Punch utilizado (mm)</label><input type="text" id="gs-punch-v" placeholder="0.80"></div>
+</div>
+<div class="f" style="margin-bottom:10px;"><label>Descrição clínica complementar</label><textarea id="gs-prompt" rows="2" placeholder="Substrato, temperatura, Norwood, achados macroscópicos..."></textarea></div>
+<button class="ai-btn" id="gs-ai-btn">🔬 Executar GraftScan V2.1™ — Análise Completa (8 Módulos)</button>
+<div id="gs-result-wrap" style="display:none;margin-top:12px;">
+  <div class="sbr" id="gs-scores-row" style="margin-bottom:10px;">
+    <div class="sb"><div class="sbl">VQS*</div><div id="gs-score-vqs" style="font-size:22px;font-weight:800;color:var(--blue);">—</div><div style="font-size:9px;color:var(--gray);">0–100</div></div>
+    <div class="sb"><div class="sbl">Grau</div><div id="gs-score-grau" style="font-size:22px;font-weight:800;color:var(--blue);">—</div></div>
+    <div class="sb"><div class="sbl">GII*</div><div id="gs-score-gii2" style="font-size:22px;font-weight:800;color:var(--blue);">—</div><div style="font-size:9px;color:var(--gray);">≥90%</div></div>
+    <div class="sb"><div class="sbl">Risk*</div><div id="gs-score-risk" style="font-size:22px;font-weight:800;color:var(--blue);">—</div><div style="font-size:9px;color:var(--gray);">0–5</div></div>
+    <div class="sb"><div class="sbl">Decisão</div><div id="gs-score-dec" style="font-size:16px;font-weight:800;color:var(--blue);">—</div></div>
+  </div>
+  <div style="background:var(--bg);border:1px solid var(--brd);border-radius:var(--r2);padding:12px;font-size:12px;color:var(--white);white-space:pre-wrap;line-height:1.65;max-height:500px;overflow-y:auto;font-family:monospace;" id="gs-result"></div>
+</div>
+
+<div class="div"></div>
+<div class="sh"><div class="si ig">📊</div><div><div class="st">Dados Quantitativos do Procedimento</div></div></div>
+<div class="mrow">
+  <div class="mc"><div class="ml">FU Total</div><input type="number" id="gs-fu" placeholder="0"><div class="mu">unidades foliculares</div></div>
+  <div class="mc"><div class="ml">Fios Totais</div><input type="number" id="gs-fios" placeholder="0"><div class="mu">cabelos</div></div>
+</div>
+<div class="mrow">
+  <div class="mc"><div class="ml">Coeficiente</div><input type="number" id="gs-coef" placeholder="0.00" step="0.01"><div class="mu">fios/FU</div></div>
+  <div class="mc"><div class="ml">Punch</div><input type="text" id="gs-punch" placeholder="0.80mm"><div class="mu">Trivellini</div></div>
+</div>
+<div class="fr">
+  <div class="f"><label>FU 1 fio</label><input type="number" id="gs-fu1" placeholder="0"></div>
+  <div class="f"><label>FU 2 fios</label><input type="number" id="gs-fu2" placeholder="0"></div>
+  <div class="f"><label>FU 3+ fios</label><input type="number" id="gs-fu3" placeholder="0"></div>
+</div>
+<div class="fr">
+  <div class="f"><label>VQS Score*</label><input type="number" id="gs-vqs" placeholder="0–100"></div>
+  <div class="f"><label>GII Score*</label><input type="number" id="gs-gii" placeholder="0–100" step="0.1"></div>
+</div>
+<div class="div"></div>
+<div class="sh"><div class="si igr">💉</div><div><div class="st">Dados Anestésicos</div></div></div>
+<div class="fr">
+  <div class="f"><label>Anestésico</label><input type="text" id="an-prin" placeholder="Lidocaína 2%"></div>
+  <div class="f"><label>Volume (mL)</label><input type="number" id="an-vol" placeholder="0"></div>
+</div>
+<div class="fr">
+  <div class="f"><label>Epinefrina</label><input type="text" id="an-epi" placeholder="1:100.000"></div>
+  <div class="f"><label>Intercorrências</label><select id="an-inter"><option>Nenhuma</option><option>Leve</option><option>Moderada</option><option>Grave</option></select></div>
+</div>
+<div class="fr full"><div class="f"><label>Obs. Anestésicas</label><textarea id="an-obs" rows="2" placeholder="Observações..."></textarea></div></div>
+<div class="div"></div>
+<div class="sh"><div class="si ig">📷</div><div><div class="st">Fotos Intraoperatórias</div></div></div>
+<div class="pg" id="fotos-transop"></div>
+<button class="sav-btn" id="save-transop">💾 Salvar Trans-op</button>
+<div class="sav-toast" id="toast-transop">✓ Salvo!</div>
+```
+
+  </div>
+
+  <!-- ══ PÓS-OP ══ -->
+
+  <div class="tab-panel" id="tab-posop">
+    <div class="sh"><div class="si ig">📅</div><div><div class="st">Acompanhamento Pós-operatório</div></div></div>
+    <div class="pot">
+      <button class="ptb act" id="pot-10d">10 dias</button>
+      <button class="ptb" id="pot-30d">30 dias</button>
+      <button class="ptb" id="pot-3m">3 meses</button>
+      <button class="ptb" id="pot-6m">6 meses</button>
+      <button class="ptb" id="pot-12m">12 meses</button>
+    </div>
+    <div class="pp active" id="po-10d">
+      <div class="fr"><div class="f"><label>Data</label><input type="date" id="po10-dt"></div><div class="f"><label>Status</label><select id="po10-st"><option>Ótimo</option><option>Bom</option><option>Regular</option><option>Intercorrência</option></select></div></div>
+      <div class="fr full"><div class="f"><label>Evolução</label><textarea id="po10-obs" rows="3" placeholder="Crostas, edema, eritema, queda de fios..."></textarea></div></div>
+      <div class="pg" id="fotos-po10"></div>
+    </div>
+    <div class="pp" id="po-30d">
+      <div class="fr"><div class="f"><label>Data</label><input type="date" id="po30-dt"></div><div class="f"><label>Status</label><select id="po30-st"><option>Ótimo</option><option>Bom</option><option>Regular</option><option>Intercorrência</option></select></div></div>
+      <div class="fr full"><div class="f"><label>Evolução</label><textarea id="po30-obs" rows="3" placeholder="Effluvium pós-op..."></textarea></div></div>
+      <div class="pg" id="fotos-po30"></div>
+    </div>
+    <div class="pp" id="po-3m">
+      <div class="fr"><div class="f"><label>Data</label><input type="date" id="po3m-dt"></div><div class="f"><label>Status</label><select id="po3m-st"><option>Ótimo</option><option>Bom</option><option>Regular</option><option>Intercorrência</option></select></div></div>
+      <div class="fr full"><div class="f"><label>Evolução</label><textarea id="po3m-obs" rows="3" placeholder="Início crescimento..."></textarea></div></div>
+      <div class="pg" id="fotos-po3m"></div>
+    </div>
+    <div class="pp" id="po-6m">
+      <div class="fr"><div class="f"><label>Data</label><input type="date" id="po6m-dt"></div><div class="f"><label>Status</label><select id="po6m-st"><option>Ótimo</option><option>Bom</option><option>Regular</option><option>Intercorrência</option></select></div></div>
+      <div class="fr full"><div class="f"><label>Evolução</label><textarea id="po6m-obs" rows="3" placeholder="Densidade, naturalidade..."></textarea></div></div>
+      <div class="pg" id="fotos-po6m"></div>
+    </div>
+    <div class="pp" id="po-12m">
+      <div class="fr"><div class="f"><label>Data</label><input type="date" id="po12m-dt"></div><div class="f"><label>Resultado Final</label><select id="po12m-st"><option>Excelente</option><option>Ótimo</option><option>Bom</option><option>Parcial</option><option>Insatisfatório</option></select></div></div>
+      <div class="fr full"><div class="f"><label>Avaliação Final</label><textarea id="po12m-obs" rows="3" placeholder="Resultado, satisfação..."></textarea></div></div>
+      <div class="pg" id="fotos-po12m"></div>
+    </div>
+    <button class="sav-btn" id="save-posop">💾 Salvar Pós-op</button>
+    <div class="sav-toast" id="toast-posop">✓ Salvo!</div>
+  </div>
+
+  <!-- ══ PIPELINE ══ -->
+
+  <div class="tab-panel" id="tab-pipeline">
+    <div class="sh"><div class="si ig">▶</div><div><div class="st">Pipeline v15 — Extração IA Completa</div><div class="ss">JSON clínico + script Python + GraftScan V2.1™</div></div></div>
+    <button class="run-btn" id="runBtn">🤖 Extrair Dados com IA</button>
+    <div class="rc" id="resCard">
+      <div class="rc-ttl">✦ Dados Extraídos</div>
+      <div class="dgrid" id="dgrid"></div>
+      <div style="font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Resumo Clínico</div>
+      <div class="res-txt" id="rtxt"></div>
+    </div>
+    <div class="rc" id="scCard">
+      <div class="rc-ttl">🐍 render_visaderm_v15.py</div>
+      <div style="font-size:12px;color:var(--green);margin-bottom:9px;">● Script gerado com sucesso</div>
+      <button class="sav-btn" id="dl-btn" style="margin-top:0;">⬇ Baixar render_visaderm_v15.py</button>
+    </div>
+  </div>
+
+</div><!-- /app -->
+<div class="footer" id="main-footer">
+  <p>Visaderm Prontuário Digital v15 · <strong>Dr. Rafael Reinert · CRM/SC 16789</strong> · Blumenau – SC</p>
+</div>
+
+<script>
+// ══ AUTH ══
+const LOGIN_USER='visaderm', LOGIN_PASS='1234';
+const API_KEY='SUA_CHAVE_AQUI';
+
+function doLogin(){
+  const u=(document.getElementById('lu').value||'').trim().toLowerCase();
+  const p=(document.getElementById('lp').value||'').trim();
+  if(u===LOGIN_USER&&p===LOGIN_PASS){
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('app').style.display='block';
+    document.getElementById('main-footer').style.display='block';
+    localStorage.setItem('vsd_auth','1');
+    localStorage.setItem('vsd_key',API_KEY);
+  } else {
+    const e=document.getElementById('lerr');
+    e.textContent='✗ Usuário ou senha incorretos';
+    document.getElementById('lp').value='';
+    setTimeout(()=>{e.textContent='';},3000);
+  }
+}
+document.getElementById('login-btn').addEventListener('click',doLogin);
+document.getElementById('lu').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lp').focus();});
+document.getElementById('lp').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+// ══ TABS ══
+const TABS=['id','preop','exames','transop','posop','pipeline'];
+TABS.forEach(id=>{
+  document.getElementById('tb-'+id).addEventListener('click',()=>{
+    TABS.forEach(t=>{
+      document.getElementById('tab-'+t).classList.toggle('active',t===id);
+      document.getElementById('tb-'+t).classList.toggle('act',t===id);
+    });
+  });
+});
+['10d','30d','3m','6m','12m'].forEach(id=>{
+  document.getElementById('pot-'+id).addEventListener('click',()=>{
+    ['10d','30d','3m','6m','12m'].forEach(t=>{
+      document.getElementById('po-'+t).classList.toggle('active',t===id);
+      document.getElementById('pot-'+t).classList.toggle('act',t===id);
+    });
+  });
+});
+let activeChartKey='ferrit';
+document.querySelectorAll('[data-ckey]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-ckey]').forEach(b=>b.classList.remove('act'));
+    btn.classList.add('act');activeChartKey=btn.dataset.ckey;
+    document.getElementById('chart-custom-row').style.display=activeChartKey==='custom'?'block':'none';
+    drawChart();
+  });
+});
+
+// ══ TRICOSCOPIA ══
+document.querySelectorAll('.tt').forEach(t=>t.addEventListener('click',()=>t.classList.toggle('sel')));
+
+// ══ DOPPLER ══
+function updateDoppler(){
+  const riD=parseFloat(document.getElementById('dop-dir').value)||0;
+  const riE=parseFloat(document.getElementById('dop-esq').value)||0;
+  const psD=parseFloat(document.getElementById('dop-d-ps').value)||0;
+  const psE=parseFloat(document.getElementById('dop-e-ps').value)||0;
+  const piD=parseFloat(document.getElementById('dop-d-pi').value)||0;
+  const piE=parseFloat(document.getElementById('dop-e-pi').value)||0;
+  if(riD>0){const rv=document.getElementById('rv-dir');rv.textContent='RI '+riD.toFixed(2);rv.style.color=riD>0.85?'var(--red)':riD>0.75?'var(--orange)':'var(--green)';}
+  if(riE>0){const rv=document.getElementById('rv-esq');rv.textContent='RI '+riE.toFixed(2);rv.style.color=riE>0.85?'var(--red)':riE>0.75?'var(--orange)':'var(--green)';}
+  if(riD>0&&riE>0)document.getElementById('dop-delta').value=Math.abs(riD-riE).toFixed(2);
+  if(!riD&&!riE&&!psD&&!psE)return;
+  const riMax=Math.max(riD,riE), psMin=psD&&psE?Math.min(psD,psE):psD||psE;
+  const piMax=Math.max(piD,piE), delta=riD>0&&riE>0?Math.abs(riD-riE):0;
+  const al=document.getElementById('dop-alert'), co=document.getElementById('dop-conclusao');
+  if(riMax>0.85||(psMin>0&&psMin<10)){
+    al.innerHTML='<div class="ab ar">✗ CONTRAINDICAR — RI > 0.85 ou PS < 10 cm/s. Risco alto de necrose do scalp. Adiar cirurgia.</div>';
+    co.innerHTML='<div style="background:rgba(198,40,40,.1);border:1.5px solid var(--red);border-radius:var(--r2);padding:12px;"><div style="font-size:12px;font-weight:800;color:var(--red);">✗ CONCLUSÃO: CONTRAINDICADO</div><div style="font-size:12px;color:var(--red);margin-top:4px;">Otimizar HAS/DM2 e remensurar em 30 dias.</div></div>';
+  } else if(delta>0.15){
+    al.innerHTML='<div class="ab ao">■ REPETIR EXAME — Assimetria D/E > 0.15. Possível estenose unilateral.</div>';
+    co.innerHTML='<div style="background:rgba(21,101,192,.08);border:1.5px solid var(--blue);border-radius:var(--r2);padding:12px;"><div style="font-size:12px;font-weight:800;color:var(--blue);">■ CONCLUSÃO: REPETIR EXAME</div></div>';
+  } else if(riMax>=0.71&&riMax<=0.85){
+    al.innerHTML='<div class="ab ao">⚠ ATENÇÃO — RI 0.71–0.85 ou assimetria 0.10–0.15. Monitoramento intraoperatório.</div>';
+    co.innerHTML='<div style="background:rgba(230,81,0,.08);border:1.5px solid var(--orange);border-radius:var(--r2);padding:12px;"><div style="font-size:12px;font-weight:800;color:var(--orange);">⚠ CONCLUSÃO: LIBERADO COM ATENÇÃO</div></div>';
+  } else if(riMax>0&&riMax<=0.75){
+    al.innerHTML='<div class="ab ag">✓ LIBERAR — RI 0.55–0.75, parâmetros normais bilateral. Resultado excelente esperado.</div>';
+    co.innerHTML='<div style="background:rgba(46,125,50,.08);border:1.5px solid var(--green);border-radius:var(--r2);padding:12px;"><div style="font-size:12px;font-weight:800;color:var(--green);">✓ CONCLUSÃO: LIBERADO PARA CIRURGIA</div><div style="font-size:12px;color:var(--green);margin-top:4px;">Fluxo preservado bilateral. Parâmetros dentro da normalidade.</div></div>';
+  }
+}
+['dop-dir','dop-esq','dop-d-ps','dop-e-ps','dop-d-ed','dop-e-ed','dop-d-pi','dop-e-pi','dop-d-sd','dop-e-sd','dop-d-vel','dop-e-vel','dop-d-diam','dop-e-diam'].forEach(id=>{
+  const el=document.getElementById(id);if(el)el.addEventListener('input',updateDoppler);
+});
+
+// Doppler IA
+document.getElementById('dop-ai-btn').addEventListener('click',async()=>{
+  const key=localStorage.getItem('vsd_key');
+  if(!key||key==='SUA_CHAVE_AQUI'){alert('API Key não configurada.');return;}
+  const res=document.getElementById('dop-ai-result');
+  res.style.display='block';res.textContent='Gerando laudo Doppler...';
+  const ctx=`Doppler Artéria Temporal Superficial — Visaderm v15
+Direito: PS=${document.getElementById('dop-d-ps').value} ED=${document.getElementById('dop-d-ed').value} RI=${document.getElementById('dop-dir').value} PI=${document.getElementById('dop-d-pi').value} S/D=${document.getElementById('dop-d-sd').value} Vel=${document.getElementById('dop-d-vel').value} Diâm=${document.getElementById('dop-d-diam').value}mm
+Esquerdo: PS=${document.getElementById('dop-e-ps').value} ED=${document.getElementById('dop-e-ed').value} RI=${document.getElementById('dop-esq').value} PI=${document.getElementById('dop-e-pi').value} S/D=${document.getElementById('dop-e-sd').value} Vel=${document.getElementById('dop-e-vel').value} Diâm=${document.getElementById('dop-e-diam').value}mm
+Assimetria Δ=${document.getElementById('dop-delta').value} P2=${document.getElementById('dop-p2').value} P3=${document.getElementById('dop-p3').value} P4=${document.getElementById('dop-p4').value}`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,
+        system:'Você é especialista em Doppler vascular e transplante capilar FUE da Visaderm, Dr. Rafael Reinert CRM/SC 16789. Gere laudo médico formal e conciso do Doppler da artéria temporal superficial bilateral. Inclua: achados bilaterais, interpretação dos parâmetros RI/PI/PS/ED/S/D/diâmetro, assimetria, conclusão de liberação/contraindicação cirúrgica e recomendações específicas.',
+        messages:[{role:'user',content:ctx}]})
+    });
+    const data=await r.json();
+    res.textContent=data.content?.[0]?.text||'Sem resposta.';
+    if(!document.getElementById('dop-obs').value)document.getElementById('dop-obs').value=data.content?.[0]?.text||'';
+  }catch(e){res.textContent='Erro: '+e.message;}
+});
+
+// ══ FOTOS ══
+const PHOTO_SETS={
+  'fotos-preop':['Frontal','Lat. Dir.','Lat. Esq.','Superior','Occipital','Doadora'],
+  'fotos-transop':['Doadora pré','Incisões','Enxertos','Implantação','Pós-imediato','Detalhe'],
+  'fotos-po10':['Frontal 10d','Doadora 10d','Detalhe 10d'],
+  'fotos-po30':['Frontal 30d','Doadora 30d','Detalhe 30d'],
+  'fotos-po3m':['Frontal 3m','Lat.D 3m','Lat.E 3m'],
+  'fotos-po6m':['Frontal 6m','Lat.D 6m','Lat.E 6m'],
+  'fotos-po12m':['Frontal 12m','Lat.D 12m','Superior 12m','Detalhe 12m']
+};
+function buildPhotoGrids(){
+  Object.entries(PHOTO_SETS).forEach(([gid,lbls])=>{
+    const g=document.getElementById(gid);if(!g)return;
+    g.innerHTML='';
+    lbls.forEach((lbl)=>{
+      const slot=document.createElement('div');slot.className='ph';
+      slot.innerHTML='<span class="pi">📷</span><span class="pl">'+lbl+'</span>';
+      const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.style.display='none';
+      slot.appendChild(inp);
+      slot.addEventListener('click',()=>inp.click());
+      inp.addEventListener('change',e=>{
+        const f=e.target.files[0];if(!f)return;
+        const r=new FileReader();
+        r.onload=ev=>{slot.innerHTML='<img src="'+ev.target.result+'"><span class="pl" style="position:absolute;bottom:3px;left:0;right:0;background:rgba(0,0,0,.55);color:#fff;font-size:8px;text-align:center;padding:2px;">'+lbl+'</span>';slot.appendChild(inp);};
+        r.readAsDataURL(f);
+      });
+      g.appendChild(slot);
+    });
+  });
+}
+
+// ══ SAVE / LOAD ══
+const FIELDS=[
+  'pac-nome','pac-cpf','pac-nasc','pac-sexo','pac-ftipo','pac-tel','pac-email','pac-end',
+  'cir-data','cir-tec','cir-punch','cir-motor','cir-obs',
+  'an-queixa','an-tempo','an-prog','an-vel','an-trat','an-menop','an-ac','an-gest','an-trh',
+  'an-labs','an-medic','an-tab','an-alerg',
+  'ef-oleo','ef-erit','ef-esc','ef-ds','ef-dist','ef-crost','trico-obs',
+  'aga-nw','aga-lud','aga-min','aga-zr','aa-pad','aa-salt','efl-tipo','efl-pull','ac-atv','ac-ci','ac-obs',
+  'sc-dens','sc-area','sc-fudisp','sc-fuplan','sc-lax','sc-diam','ss-area','ss-dalvo','ss-dres','ss-funec',
+  'tc-pull','tc-tug',
+  'dop-dir','dop-esq','dop-d-ps','dop-e-ps','dop-d-ed','dop-e-ed','dop-d-pi','dop-e-pi',
+  'dop-d-sd','dop-e-sd','dop-d-vel','dop-e-vel','dop-d-diam','dop-e-diam','dop-delta',
+  'dop-p2','dop-p3','dop-p4','dop-equip','dop-ang','dop-obs',
+  'hx-dens','hx-coef','hx-diam','hx-fumax','hx-obs',
+  'gs-fu','gs-fios','gs-coef','gs-punch','gs-fu1','gs-fu2','gs-fu3','gs-vqs','gs-gii',
+  'gs-solucao','gs-tempo','gs-npalitos','gs-punch-v','gs-prompt',
+  'an-prin','an-vol','an-epi','an-inter','an-obs',
+  'po10-dt','po10-st','po10-obs','po30-dt','po30-st','po30-obs',
+  'po3m-dt','po3m-st','po3m-obs','po6m-dt','po6m-st','po6m-obs','po12m-dt','po12m-st','po12m-obs'
+];
+const CHECKS=[
+  'an-prurido','an-ardor','an-dor','an-escama','an-oleo','an-ressec','an-erit','an-pust','an-assin',
+  'fam-pai','fam-mae','fam-avop','fam-avom','fam-aa','fam-neg',
+  'tr-minox','tr-minoxo','tr-fina','tr-duta','tr-cortt','tr-corti','tr-prp','tr-laser','tr-tx','tr-imuno',
+  'fat-est','fat-cir','fat-inf','fat-die','fat-fer','fat-tir',
+  'co-has','co-dm','co-hipo','co-hiper','co-les','co-ar','co-pso','co-ane','co-coa',
+  'le-atr','le-cic','le-fol','le-pus','le-pap','le-pla','le-tel','le-ker','le-liq',
+  'anc-tri','anc-tra','anc-tin','anc-sif',
+  'ac-lpp','ac-aff','ac-acc','ac-led','ac-bro','ac-der','ac-fde','ac-dis','ac-tuf','ac-ero',
+  'ex-hemo','ex-ferr','ex-fetibc','ex-vitd','ex-zinc','ex-b12',
+  'ex-tsh','ex-test','ex-testl','ex-shbg','ex-dhea','ex-prol','ex-fsh','ex-estr','ex-ins',
+  'ex-fan','ex-tpo','ex-pcr','ex-sif','ex-fr','ex-c3c4',
+  'pre-hemo','pre-coag','pre-gli','pre-ur','pre-ele','pre-ecg','pre-rx','pre-hbs','pre-hiv','pre-tip','pre-eas','pre-plaq',
+  'img-trc','img-map','img-dop','img-bio','img-hmt','img-ssc','img-usg','img-rmn'
+];
+function saveData(tid){
+  const d={};
+  FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value;});
+  CHECKS.forEach(id=>{const el=document.getElementById(id);if(el)d['c_'+id]=el.checked;});
+  d['_trico']=[...document.querySelectorAll('.tt.sel')].map(t=>t.dataset.val);
+  localStorage.setItem('vsd_v15',JSON.stringify(d));
+  const t=document.getElementById('toast-'+tid);
+  if(t){t.style.display='block';setTimeout(()=>{t.style.display='none';},2500);}
+}
+function loadData(){
+  const raw=localStorage.getItem('vsd_v15');if(!raw)return;
+  const d=JSON.parse(raw);
+  FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&d[id]!=null)el.value=d[id];});
+  CHECKS.forEach(id=>{const el=document.getElementById(id);if(el&&d['c_'+id]!=null)el.checked=d['c_'+id];});
+  if(d['_trico'])document.querySelectorAll('.tt').forEach(t=>{if(d['_trico'].includes(t.dataset.val))t.classList.add('sel');});
+  updateDoppler();
+}
+['id','preop','exames','transop','posop'].forEach(t=>{
+  document.getElementById('save-'+t).addEventListener('click',()=>saveData(t));
+});
+
+// ══ UPLOAD / ANEXOS ══
+const ANEXOS={hm:[],ss:[],lab:[],img:[]};
+function upItem(nome,cat,url,mime){
+  const ext=nome.split('.').pop().toLowerCase();
+  const isImg=['jpg','jpeg','png','gif','webp'].includes(ext);
+  const ico=isImg?'🖼️':mime==='application/pdf'?'📄':'📎';
+  const d=document.createElement('div');d.className='up-item';
+  d.innerHTML='<span style="font-size:18px;">'+ico+'</span>'
+    +'<div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:600;color:var(--white);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+nome+'</div><div style="font-size:10px;color:var(--gray);">'+cat+'</div></div>'
+    +(isImg?'<img src="'+url+'" style="width:38px;height:38px;object-fit:cover;border-radius:5px;border:1px solid var(--brd);">':'')
+    +'<a class="up-dl" href="'+url+'" download="'+nome+'">⬇</a>';
+  return d;
+}
+function refreshAll(){
+  const all=[...ANEXOS.hm.map(a=>({...a,cat:'Hairmetrix'})),...ANEXOS.ss.map(a=>({...a,cat:'Scalpscan'})),...ANEXOS.lab.map(a=>({...a,cat:'Lab'})),...ANEXOS.img.map(a=>({...a,cat:'Imagem'}))];
+  const w=document.getElementById('all-anexos'),c=document.getElementById('all-items');
+  w.style.display=all.length?'block':'none';c.innerHTML='';all.forEach(a=>c.appendChild(upItem(a.nome,a.cat,a.url,a.mime)));
+}
+function wireUpload(inputId,key,listId,onLoad){
+  document.getElementById(inputId).addEventListener('change',async function(){
+    for(const f of this.files){
+      await new Promise(res=>{
+        const r=new FileReader();
+        r.onload=ev=>{
+          const e={nome:f.name,url:ev.target.result,mime:f.type,b64:ev.target.result.split(',')[1]};
+          ANEXOS[key].push(e);document.getElementById(listId).appendChild(upItem(f.name,key,e.url,f.type));
+          refreshAll();if(onLoad)onLoad(e);res();
+        };r.readAsDataURL(f);
+      });
+    }
+  });
+}
+wireUpload('hm-file','hm','hm-list',async(e)=>{
+  const key=localStorage.getItem('vsd_key');if(!key||key==='SUA_CHAVE_AQUI'||!e.mime.startsWith('image/'))return;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,system:'Extraia dados do laudo Hairmetrix. Retorne SOMENTE JSON: {densidade_fios_cm2,coef_folicular,diametro_medio_um,fu_total_estimado}.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:e.mime,data:e.b64}},{type:'text',text:'Extraia os dados numéricos.'}]}]})});
+    const data=await r.json();const j=JSON.parse((data.content?.[0]?.text||'{}').replace(/```json|```/g,'').trim());
+    if(j.densidade_fios_cm2)document.getElementById('hx-dens').value=j.densidade_fios_cm2;
+    if(j.coef_folicular)document.getElementById('hx-coef').value=j.coef_folicular;
+    if(j.diametro_medio_um)document.getElementById('hx-diam').value=j.diametro_medio_um;
+    if(j.fu_total_estimado)document.getElementById('hx-fumax').value=j.fu_total_estimado;
+    document.getElementById('hx-obs').value+='[Hairmetrix importado automaticamente v15] ';
+  }catch(err){console.warn(err);}
+});
+wireUpload('ss-file','ss','ss-list',async(e)=>{
+  const key=localStorage.getItem('vsd_key');if(!key||key==='SUA_CHAVE_AQUI'||!e.mime.startsWith('image/'))return;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,system:'Extraia dados do laudo Scalpscan. Retorne SOMENTE JSON: {area_receptora_cm2,densidade_alvo_fu_cm2,fu_necessarios,score}.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:e.mime,data:e.b64}},{type:'text',text:'Extraia os dados.'}]}]})});
+    const data=await r.json();const j=JSON.parse((data.content?.[0]?.text||'{}').replace(/```json|```/g,'').trim());
+    if(j.area_receptora_cm2)document.getElementById('ss-area').value=j.area_receptora_cm2;
+    if(j.densidade_alvo_fu_cm2)document.getElementById('ss-dalvo').value=j.densidade_alvo_fu_cm2;
+    if(j.fu_necessarios)document.getElementById('ss-funec').value=j.fu_necessarios;
+  }catch(err){console.warn(err);}
+});
+wireUpload('lab-file','lab','lab-list',null);
+wireUpload('img-file','img','img-list',null);
+
+// ══ GRÁFICO ══
+const CREFS={ferrit:{label:'Ferritina (ng/mL)',ref:'VR: 30–300',warn:30},vitd:{label:'Vitamina D (ng/mL)',ref:'VR: 30–100',warn:30},hb:{label:'Hemoglobina (g/dL)',ref:'VR: 12–17',warn:12},tsh:{label:'TSH (mUI/L)',ref:'VR: 0.5–4.5',warn:4.5},custom:{label:'',ref:'',warn:null}};
+const chartPts=[];let chartIdx=0;
+document.getElementById('chart-add').addEventListener('click',()=>{
+  const idx=chartIdx++;chartPts.push({});
+  const row=document.createElement('div');row.style.cssText='display:flex;gap:7px;margin-bottom:7px;align-items:center;';
+  row.innerHTML='<input type="date" id="cpd-'+idx+'" style="flex:1;border:1px solid var(--brd2);border-radius:6px;padding:8px;font-size:13px;background:var(--bg);color:var(--white);font-family:var(--fb);outline:none;">'
+    +'<input type="number" id="cpv-'+idx+'" placeholder="Valor" step="0.1" style="flex:1;border:1px solid var(--brd2);border-radius:6px;padding:8px;font-size:15px;font-weight:700;color:var(--blue);background:var(--bg);font-family:var(--fb);outline:none;text-align:center;">'
+    +'<button onclick="this.closest(\'div\').remove();drawChart();" style="width:28px;height:28px;border:none;background:rgba(198,40,40,.1);color:var(--red);border-radius:5px;cursor:pointer;font-size:14px;">✕</button>';
+  document.getElementById('chart-entries').appendChild(row);
+  setTimeout(()=>{['cpd-'+idx,'cpv-'+idx].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',drawChart);});},50);
+});
+function drawChart(){
+  const cnv=document.getElementById('exam-chart');
+  const cref=CREFS[activeChartKey]||CREFS.custom;
+  const lbl=activeChartKey==='custom'?(document.getElementById('chart-lbl').value||'Personalizado'):cref.label;
+  const pts=[];let k=0;
+  while(document.getElementById('cpd-'+k)){
+    const v=parseFloat(document.getElementById('cpv-'+k)?.value);
+    const dt=document.getElementById('cpd-'+k)?.value;
+    if(!isNaN(v)&&dt)pts.push({d:dt,v});k++;
+  }
+  pts.sort((a,b)=>a.d.localeCompare(b.d));
+  if(!pts.length){cnv.style.display='none';document.getElementById('chart-ref-lbl').textContent='';return;}
+  cnv.style.display='block';document.getElementById('chart-ref-lbl').textContent=lbl+' — '+cref.ref;
+  const dpr=window.devicePixelRatio||1,W=cnv.offsetWidth||320,H=220;
+  cnv.width=W*dpr;cnv.height=H*dpr;cnv.style.width=W+'px';cnv.style.height=H+'px';
+  const ctx=cnv.getContext('2d');ctx.scale(dpr,dpr);ctx.clearRect(0,0,W,H);
+  const pad={t:20,r:18,b:44,l:50},cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+  const vals=pts.map(p=>p.v),mn=Math.min(...vals)*0.85,mx=Math.max(...vals)*1.15||10;
+  ctx.strokeStyle='rgba(26,53,96,.08)';ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=pad.t+cH-(i/4)*cH;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+cW,y);ctx.stroke();}
+  if(cref.warn!=null){const wy=pad.t+cH-((cref.warn-mn)/(mx-mn))*cH;ctx.strokeStyle='rgba(198,40,40,.4)';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(pad.l,wy);ctx.lineTo(pad.l+cW,wy);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='rgba(198,40,40,.7)';ctx.font='9px sans-serif';ctx.fillText('ref',pad.l+cW+2,wy+3);}
+  const xs=pts.map((_,i)=>pad.l+(i/(pts.length-1||1))*cW);
+  const ys=pts.map(p=>pad.t+cH-((p.v-mn)/(mx-mn))*cH);
+  ctx.beginPath();ctx.moveTo(xs[0],H-pad.b);xs.forEach((x,i)=>ctx.lineTo(x,ys[i]));ctx.lineTo(xs[xs.length-1],H-pad.b);ctx.closePath();ctx.fillStyle='rgba(21,101,192,.08)';ctx.fill();
+  ctx.beginPath();ctx.moveTo(xs[0],ys[0]);xs.forEach((x,i)=>ctx.lineTo(x,ys[i]));ctx.strokeStyle='#1565c0';ctx.lineWidth=2.5;ctx.stroke();
+  xs.forEach((x,i)=>{ctx.beginPath();ctx.arc(x,ys[i],5,0,Math.PI*2);ctx.fillStyle=cref.warn&&pts[i].v<cref.warn?'var(--red)':'#1565c0';ctx.fill();ctx.fillStyle='var(--white)';ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.fillText(pts[i].v,x,ys[i]-9);ctx.fillStyle='var(--gray)';ctx.font='9px sans-serif';ctx.fillText(pts[i].d.slice(5),x,H-pad.b+13);});
+  ctx.fillStyle='var(--gray)';ctx.font='9px sans-serif';ctx.textAlign='right';
+  for(let i=0;i<=4;i++){const v=(mn+(i/4)*(mx-mn)).toFixed(1);ctx.fillText(v,pad.l-3,pad.t+cH-(i/4)*cH+3);}
+}
+document.getElementById('chart-lbl').addEventListener('input',drawChart);
+
+// ══ GRAFTSCAN V2.1 ══
+let gsImg=null,gsMime=null,gsZoom=1,gsOffX=0,gsOffY=0,gsTool='fu',gsFilter='none',gsLastDist=null,gsModo='auto';
+const gsMarks=[];
+const TC={fu:'#2e7d32',trans:'#c62828',danif:'#e65100',anel:'#1565c0'};
+
+document.querySelectorAll('[data-modo]').forEach(btn=>{
+  btn.addEventListener('click',()=>{document.querySelectorAll('[data-modo]').forEach(b=>b.classList.remove('act'));btn.classList.add('act');gsModo=btn.dataset.modo;});
+});
+function gsCounts(){
+  const c={fu:0,trans:0,danif:0};gsMarks.forEach(m=>{if(m.t in c)c[m.t]++;});
+  document.getElementById('cnt-fu').textContent=c.fu;document.getElementById('cnt-tr').textContent=c.trans;document.getElementById('cnt-da').textContent=c.danif;
+  const tot=c.fu+c.trans+c.danif;document.getElementById('cnt-pct').textContent=tot?Math.round(c.trans/tot*100)+'%':'0%';
+}
+function gsDrawImg(){
+  const ci=document.getElementById('gs-cnv-img'),ca=document.getElementById('gs-cnv-ann');
+  if(!gsImg||!ci)return;
+  const W=ci.parentElement.offsetWidth||320,H=Math.min(W/gsImg.naturalWidth*gsImg.naturalHeight,300);
+  const dpr=window.devicePixelRatio||1;
+  [ci,ca].forEach(c=>{c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';});
+  const ctx=ci.getContext('2d');ctx.clearRect(0,0,W*dpr,H*dpr);ctx.save();ctx.scale(dpr,dpr);
+  ctx.filter=gsFilter==='none'?'none':gsFilter;
+  ctx.drawImage(gsImg,gsOffX,gsOffY,gsImg.naturalWidth/gsZoom,gsImg.naturalHeight/gsZoom,0,0,W,H);ctx.restore();
+  const ac=ca.getContext('2d');ac.clearRect(0,0,ca.width,ca.height);
+  gsMarks.forEach(m=>{
+    const px=(m.x/gsImg.naturalWidth)*W*dpr,py=(m.y/gsImg.naturalHeight)*H*dpr,r=12*dpr;
+    ac.beginPath();ac.arc(px,py,r,0,Math.PI*2);ac.strokeStyle=TC[m.t]||'#fff';ac.lineWidth=2.5;ac.stroke();
+    ac.globalAlpha=.2;ac.fillStyle=TC[m.t]||'#fff';ac.fill();ac.globalAlpha=1;
+    ac.fillStyle=TC[m.t]||'#fff';ac.font='bold 9px sans-serif';ac.textAlign='center';
+    ac.fillText({fu:'FU',trans:'TX',danif:'D',anel:'AF'}[m.t]||'',px,py+3);
+  });
+  document.getElementById('gs-zlbl').textContent=gsZoom.toFixed(1)+'×';
+}
+document.getElementById('gs-img-input').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;gsMime=f.type;
+  const r=new FileReader();
+  r.onload=ev=>{
+    gsImg=new Image();gsImg._b64=ev.target.result.split(',')[1];
+    gsImg.onload=()=>{gsZoom=1;gsOffX=0;gsOffY=0;gsMarks.length=0;document.getElementById('gs-viewer').style.display='block';document.getElementById('gs-label').style.borderColor='var(--blue)';setTimeout(()=>{gsDrawImg();gsCounts();},60);};
+    gsImg.src=ev.target.result;
+  };r.readAsDataURL(f);
+});
+document.querySelectorAll('.gflt').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.gflt').forEach(b=>b.classList.remove('act'));btn.classList.add('act');gsFilter=btn.dataset.f;gsDrawImg();});});
+document.querySelectorAll('.gtool').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.gtool').forEach(b=>b.classList.remove('act'));btn.classList.add('act');gsTool=btn.dataset.t;});});
+document.getElementById('gs-zi').addEventListener('click',()=>{gsZoom=Math.min(gsZoom*1.5,8);gsDrawImg();});
+document.getElementById('gs-zo').addEventListener('click',()=>{gsZoom=Math.max(gsZoom/1.5,1);if(gsZoom<=1){gsOffX=0;gsOffY=0;}gsDrawImg();});
+document.getElementById('gs-zfit').addEventListener('click',()=>{gsZoom=1;gsOffX=0;gsOffY=0;gsDrawImg();});
+document.getElementById('gs-clear-ann').addEventListener('click',()=>{gsMarks.length=0;gsDrawImg();gsCounts();});
+document.getElementById('gs-img-clear').addEventListener('click',()=>{gsImg=null;gsMime=null;gsMarks.length=0;gsZoom=1;gsOffX=0;gsOffY=0;document.getElementById('gs-img-input').value='';document.getElementById('gs-viewer').style.display='none';document.getElementById('gs-label').style.borderColor='';gsCounts();});
+function gsMark(e){
+  if(!gsImg)return;e.preventDefault();
+  const ca=document.getElementById('gs-cnv-ann'),rect=ca.getBoundingClientRect();
+  const cli=e.touches?e.changedTouches[0]:e;
+  const px=(cli.clientX-rect.left)/rect.width,py=(cli.clientY-rect.top)/rect.height;
+  const ix=gsOffX+(px*gsImg.naturalWidth/gsZoom),iy=gsOffY+(py*gsImg.naturalHeight/gsZoom);
+  if(gsTool==='erase'){const idx=gsMarks.findIndex(m=>Math.hypot(m.x-ix,m.y-iy)<gsImg.naturalWidth*0.04);if(idx>=0)gsMarks.splice(idx,1);}
+  else gsMarks.push({x:ix,y:iy,t:gsTool});
+  gsDrawImg();gsCounts();
+}
+const gsAnn=document.getElementById('gs-cnv-ann');
+gsAnn.addEventListener('click',gsMark);
+gsAnn.addEventListener('touchend',e=>{if(e.changedTouches.length===1)gsMark(e);},{passive:false});
+gsAnn.addEventListener('touchmove',e=>{if(e.touches.length===2){const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY,d=Math.hypot(dx,dy);if(gsLastDist){gsZoom=Math.min(Math.max(gsZoom*(d/gsLastDist),1),8);gsDrawImg();}gsLastDist=d;e.preventDefault();}},{passive:false});
+gsAnn.addEventListener('touchstart',()=>{gsLastDist=null;},{passive:true});
+
+// GraftScan V2.1 AI — Master Prompt Completo
+document.getElementById('gs-ai-btn').addEventListener('click',async()=>{
+  const key=localStorage.getItem('vsd_key');if(!key||key==='SUA_CHAVE_AQUI'){alert('API Key não configurada.');return;}
+  const solucao=document.getElementById('gs-solucao').value;
+  const tempo=document.getElementById('gs-tempo').value;
+  const npalitos=document.getElementById('gs-npalitos').value;
+  const punch=document.getElementById('gs-punch-v').value||document.getElementById('gs-punch').value;
+  const prompt=document.getElementById('gs-prompt').value.trim();
+  if(!gsImg&&!prompt&&!npalitos){alert('Adicione uma imagem ou descreva o caso.');return;}
+  const mkCtx=gsMarks.length?`\nMarcações médico: FU viáveis=${gsMarks.filter(m=>m.t==='fu').length}, transeccionados=${gsMarks.filter(m=>m.t==='trans').length}, danificados=${gsMarks.filter(m=>m.t==='danif').length}, anéis=${gsMarks.filter(m=>m.t==='anel').length}`:'';
+  const clinCtx=`Modo=${gsModo} | Solução=${solucao||'N/I'} | Tempo=${tempo||'?'} min | Palitos=${npalitos||'?'} | Punch=${punch||'?'} mm${mkCtx}${prompt?'\nDescrição: '+prompt:''}`;
+  const btn=document.getElementById('gs-ai-btn');btn.textContent='⏳ Executando 8 módulos V2.1™...';btn.disabled=true;
+  const rw=document.getElementById('gs-result-wrap'),res=document.getElementById('gs-result');
+  rw.style.display='block';res.textContent='🔬 VISADERM GRAFTSCAN V2.1™ — Inicializando análise...\n\nAguarde execução dos 8 módulos...';
+  const content=[];
+  if(gsImg&&gsImg._b64)content.push({type:'image',source:{type:'base64',media_type:gsMime,data:gsImg._b64}});
+  content.push({type:'text',text:clinCtx});
+  const SYS=`Você é o VISADERM GRAFTSCAN V2.1™ — sistema de análise folicular intraoperatória da Clínica Visaderm, Dr. Rafael Reinert (CRM/SC 16789), Especialista em Transplante Capilar. Blumenau/SC, Brasil. Técnica FUE — sistema Trivellini [9] | Punch 0,70–0,85mm [9] | Solução: Salina gelada (<4h) | HypoThermosol/ATP (>4h) [4].
+
+BASE LITERÁRIA [14 REFS]:
+[1]Rassman 2002 — Definição UF, FUE, integridade estrutural
+[2]ISHRS FUEAC 2019 — FTR, terminologia, densidade 60–100 UF/cm²
+[3]Limmer 1994 — TOB: 2h=95%|4h=90%|6h=86%|24h=79%
+[4]Beehner 2011 — HypoThermosol/ATP superior à salina
+[5]Cooley 2004 — Isquemia-reperfusão; ATP depleção 1–2min
+[6]Kim&Hwang 2002 — Desidratação e temperatura: fatores de risco
+[7]Bernstein 1997 — UF1/2/3/4; ref. 2,2–2,5 f/UF; C=Σ(nᵢ×UFᵢ)/UF_total
+[8]Bernstein 1995 — Integridade morfológica
+[9]Trivellini 2018 — Sistema Trivellini; punch 0,70–0,85mm
+[10]Speranzini 2016 — 40 etapas; critérios macroscópicos
+[11]True 2021 — FTR; lesão ao bulbo/bulge
+[12]Josephitis 2012 — Sobrevivência FUE; taxas referência
+[13]Sinclair 1998 — Miniaturização; fios brancos como marcador
+[14]Norwood 1975 — Classificação Norwood-Hamilton I–VII
+
+MODO A (PALITOS): imagem com palitos/spatulas com grafts em dupla coluna
+MODO B (INDIVIDUAL): plataforma métrica com 1 graft centralizado
+MODO MISTO: processar separado e consolidar no Módulo 3
+
+EXECUTE OBRIGATORIAMENTE OS 8 MÓDULOS:
+
+🔬 VISADERM GRAFTSCAN V2.1™ | CASO ATIVO | [MODO] | [N] PALITOS/GRAFTS
+
+── MÓDULO 1 · RECONHECIMENTO ──
+Modo detectado, nº palitos/grafts visíveis, rótulos, substrato, qualidade da imagem, achados visuais, limitações.
+
+── MÓDULO 2 · CONTAGEM ──
+MODO A: tabela por palito — fileiras estimadas, UFs ±erro, dist. UF1/2/3/4/T, aparência, integridade
+MODO B: tabela graft a graft — UF1/2/3/4/T, morfologia, bulbo, bainha, derma papilar, fios brancos
+
+── MÓDULO 3 · CONSOLIDAÇÃO ──
+| Métrica | Valor |
+Total UFs | Total fios | Fios brancos | Coeficiente C=Σ(nᵢ×UFᵢ)/UF_total [7] | Comparação com ref. 2,2–2,5 [7]
+
+── MÓDULO 4 · QUALIDADE — VQS* (0–100) ──
+| Critério | Pts máx | Pts obtidos | Observação |
+Integridade morfológica [10,11] | 25 | ? |
+Coeficiente f/UF [7] | 20 | ? |
+Umidade/preservação [3,5,6] | 20 | ? |
+Uniformidade [2] | 15 | ? |
+Transecções [2,10,11] | 20 | ? |
+Fios brancos [13] | 0 a -15 | ? |
+VQS TOTAL: XX/100 — GRAU: A(≥85)|B+(70–84)|B(55–69)|C(<55)
+GII* (Graft Integrity Index): XX% — meta ≥90% [12]
+
+── MÓDULO 5 · HEATMAP ──
+Por palito: Topo/Meio/Base com 🟢(excelente)🟡(bom)🟠(atenção)🔴(crítico)
+
+── MÓDULO 6 · RISK SCORE* (0–5) ──
+| Fator | Score (0–1) | Justificativa |
+Tempo de isquemia | | |Temperatura/umidade | | |Taxa transecção | | |Uniformidade | | |Manipulação | |
+TOTAL: X,X — Baixo<1,5|LowMod 1,5–2,4|Mod 2,5–3,4|Alto≥3,5
+
+── MÓDULO 7 · CLASSIFICAÇÃO ──
+Tipo FUE | Receptor alvo | Norwood estimado [14] | Coef. vs ref. [7] | Complexidade técnica
+
+── MÓDULO 8 · DECISÃO FINAL ──
+✅ APROVADO | ⚠️ CONDICIONAL | ❌ REPROVADO
+[4–6 recomendações intraoperatórias específicas e acionáveis]
+
+RODAPÉ:
+"VISADERM GRAFTSCAN V2.1™ | Dr. Rafael Reinert CRM/SC 16789 | Clínica Visaderm — Blumenau/SC | *VQS, GII, Risk Score são índices proprietários Visaderm | Uso interno · Confidencial · v15.0"
+
+REGRAS: Citar [N] em todo dado quantitativo | Asterisco* em índices proprietários | Tabelas para contagens | Técnico e objetivo.`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,system:SYS,messages:[{role:'user',content:content.length?content:[{type:'text',text:clinCtx}]}]})
+    });
+    const data=await r.json();const txt=data.content?.[0]?.text||'Sem resposta.';res.textContent=txt;
+    const vqsM=txt.match(/VQS[^:*]*[:\s]+(\d+)/i);
+    const grauM=txt.match(/GRAU[^:]*:\s*([A-C][+]?)/i)||txt.match(/Grau\s+([A-C][+]?)/i);
+    const giiM=txt.match(/GII[^:*]*[:\s]+(\d+[\.,]?\d*)\s*%?/i);
+    const riskM=txt.match(/TOTAL[^:]*[:\s]+(\d+[,\.]\d+)/i)||txt.match(/Risk[^:]*[:\s]+(\d+[,\.]\d*)/i);
+    const decM=txt.match(/✅\s*APROVADO/i)?'✅':txt.match(/⚠️?\s*CONDICIONAL/i)?'⚠️':txt.match(/❌\s*REPROVADO/i)?'❌':'—';
+    if(vqsM){document.getElementById('gs-score-vqs').textContent=vqsM[1];document.getElementById('gs-vqs').value=vqsM[1];}
+    if(grauM){const g=document.getElementById('gs-score-grau');g.textContent=grauM[1];g.style.color=grauM[1].startsWith('A')?'var(--green)':grauM[1].startsWith('B')?'var(--orange)':'var(--red)';}
+    if(giiM){document.getElementById('gs-score-gii2').textContent=giiM[1]+'%';document.getElementById('gs-gii').value=giiM[1];}
+    if(riskM){const rv=parseFloat(riskM[1].replace(',','.'));const re=document.getElementById('gs-score-risk');re.textContent=rv.toFixed(1);re.style.color=rv<1.5?'var(--green)':rv<2.5?'var(--orange)':'var(--red)';}
+    const decEl=document.getElementById('gs-score-dec');decEl.textContent=decM;decEl.style.color=decM==='✅'?'var(--green)':decM==='⚠️'?'var(--orange)':'var(--red)';
+  }catch(e){res.textContent='Erro: '+e.message;}
+  btn.textContent='🔬 Executar GraftScan V2.1™ — Análise Completa (8 Módulos)';btn.disabled=false;
+});
+
+// ══ PIPELINE ══
+document.getElementById('runBtn').addEventListener('click',async()=>{
+  const key=localStorage.getItem('vsd_key');if(!key||key==='SUA_CHAVE_AQUI'){alert('API Key não configurada.');return;}
+  const d={};
+  FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&el.value)d[id]=el.value;});
+  CHECKS.forEach(id=>{const el=document.getElementById(id);if(el&&el.checked)d[id]=true;});
+  const trico=[...document.querySelectorAll('.tt.sel')].map(t=>t.dataset.val);
+  if(trico.length)d['tricoscopia']=trico.join(', ');
+  d['anexos']={hm:ANEXOS.hm.map(a=>a.nome),ss:ANEXOS.ss.map(a=>a.nome),lab:ANEXOS.lab.map(a=>a.nome),img:ANEXOS.img.map(a=>a.nome)};
+  const ctx=Object.entries(d).map(([k,v])=>k+': '+(typeof v==='object'?JSON.stringify(v):v)).join('\n');
+  const btn=document.getElementById('runBtn');btn.textContent='⏳ Processando...';btn.disabled=true;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,
+        system:'Extraia dados clínicos de prontuário de transplante capilar v15 da Visaderm. Retorne JSON com: nome_caso,data,norwood,tecnica,punch_mm,fu_total,fios_total,coeficiente,vqs_score,gii_score,risk_score,ir_dir,ir_esq,ps_dir,ps_esq,diagnostico_alopecia,tricoscopia,solucao_preservacao,tempo_isquemia,anexos_hm,anexos_ss,resumo_clinico. SOMENTE JSON válido, sem markdown.',
+        messages:[{role:'user',content:'Dados prontuário v15:\n'+ctx}]})
+    });
+    const data=await r.json();let txt=(data.content?.[0]?.text||'{}').replace(/```json|```/g,'').trim();
+    let json={};try{json=JSON.parse(txt);}catch(e){json={resumo_clinico:txt};}
+    document.getElementById('resCard').style.display='block';
+    const dg=document.getElementById('dgrid');dg.innerHTML='';
+    ['nome_caso','data','norwood','tecnica','punch_mm','fu_total','fios_total','coeficiente','vqs_score','gii_score','risk_score','ir_dir','ir_esq','ps_dir','ps_esq'].forEach(k=>{
+      if(json[k]!=null)dg.innerHTML+='<div class="dc"><div class="dcl">'+k.replace(/_/g,' ')+'</div><div class="dcv">'+json[k]+'</div></div>';
+    });
+    document.getElementById('rtxt').textContent=json.resumo_clinico||txt;
+    document.getElementById('scCard').style.display='block';
+    document.getElementById('dl-btn').onclick=()=>{
+      const py='# render_visaderm_v15.py\n# Gerado automaticamente — Visaderm Prontuário Digital v15\n# Dr. Rafael Reinert | CRM/SC 16789 | Blumenau/SC\n\ndata = '+JSON.stringify(json,null,2)+'\n\nprint("Visaderm Pipeline v15 — Dr. Rafael Reinert")\nprint(f"Caso: {data.get(\'nome_caso\',\'N/I\')} | Norwood: {data.get(\'norwood\',\'N/I\')} | FU: {data.get(\'fu_total\',\'N/I\')}")\n';
+      const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([py],{type:'text/plain'}));a.download='render_visaderm_v15.py';a.click();
+    };
+  }catch(e){alert('Erro: '+e.message);}
+  btn.textContent='🤖 Extrair Dados com IA';btn.disabled=false;
+});
+
+// ══ INIT ══
+window.addEventListener('DOMContentLoaded',()=>{
+  if(localStorage.getItem('vsd_auth')==='1'){
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('app').style.display='block';
+    document.getElementById('main-footer').style.display='block';
+  }
+  buildPhotoGrids();
+  loadData();
+});
+</script>
+
+</body>
+</html>
