@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>VISADERM — Prontuário Digital v16</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --n0:#030810;--n1:#060d1a;--n2:#0a1628;--n3:#111d30;--n4:#1a2f4a;--n5:#1e3a5f;
+  --g1:#C9A84C;--g2:#E8C96A;--g3:#a07830;
+  --w:#e2e8f0;--gr:#94a3b8;--gr2:#64748b;
+  --ok:#22c55e;--ok2:#052e16;
+  --wa:#f59e0b;--wa2:#2d1d00;
+  --er:#ef4444;--er2:#2d0a0a;
+  --cr:#dc2626;--cr2:#1a0000;
+  --bl:#3b82f6;--bl2:#1e3a5f;
+  --tl:#14b8a6;--tl2:#042f2e;
+  --pu:#a855f7;--pu2:#2d1654;
+  --fh:'Playfair Display',Georgia,serif;
+  --fb:'DM Sans',system-ui,sans-serif;
+  --r:10px;--rs:6px;--tr:0.18s ease;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--n1);font-family:var(--fb);color:var(--w);overflow:hidden}
+input,textarea,select,button{font-family:var(--fb);outline:none}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:var(--n1)}
+::-webkit-scrollbar-thumb{background:var(--n5);border-radius:2px}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+#LS{position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 30% 40%,#0d1f3c,var(--n0));display:flex;align-items:center;justify-content:center;z-index:9999}
+.lc{background:var(--n2);border:1px solid var(--n4);border-top:3px solid var(--g1);border-radius:16px;padding:40px 36px;width:100%;max-width:360px;text-align:center;box-shadow:0 40px 80px rgba(0,0,0,.7)}
+.ll{font-family:var(--fh);font-size:32px;color:var(--g1);letter-spacing:4px}
+.ls{font-size:9px;color:var(--gr);letter-spacing:3px;margin-bottom:6px;text-transform:uppercase}
+.lv{font-size:9px;color:var(--gr2);margin-bottom:28px}
+.lf{width:100%;background:var(--n1);border:1px solid var(--n4);border-radius:var(--rs);color:var(--w);padding:12px 13px;font-size:14px;margin-bottom:10px;transition:border-color var(--tr)}
+.lf:focus{border-color:var(--g1)}
+.lb{width:100%;background:linear-gradient(135deg,var(--n5),var(--g1));border:none;border-radius:var(--rs);color:#fff;font-weight:700;font-size:15px;padding:14px;margin-top:4px;cursor:pointer}
+.le{color:var(--er);font-size:11px;margin-top:8px;min-height:16px}
+#A{display:none;height:100vh;flex-direction:column}
+#A.on{display:flex}
+.th{background:linear-gradient(135deg,var(--n0) 0%,var(--n5) 100%);border-bottom:2px solid var(--g1);padding:0 14px;display:flex;align-items:center;justify-content:space-between;height:50px;flex-shrink:0}
+.th-b{font-family:var(--fh);font-size:16px;color:var(--g1);letter-spacing:2px;white-space:nowrap}
+.th-b span{font-family:var(--fb);color:var(--g2);font-size:9px;font-weight:300;letter-spacing:3px;margin-left:3px}
+.th-r{display:flex;align-items:center;gap:6px}
+.sv{font-size:10px;color:var(--ok);font-weight:600;white-space:nowrap}
+.wbtn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid;border-radius:6px;padding:4px 7px;font-size:9px;cursor:pointer;white-space:nowrap;transition:all var(--tr)}
+.wdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.xbtn{background:var(--n3);border:1px solid var(--n4);border-radius:5px;color:var(--gr);padding:4px 7px;font-size:10px;cursor:pointer}
+.xbtn:hover{border-color:var(--g1);color:var(--g1)}
+.gt{border-radius:4px;padding:2px 7px;font-size:9px;font-weight:700}
+.pb{background:var(--n2);padding:4px 12px;display:flex;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--n4);flex-shrink:0;align-items:center}
+.pf{display:flex;flex-direction:column}
+.pl{font-size:7px;color:var(--gr2);text-transform:uppercase;letter-spacing:.5px}
+.pv{font-size:10px;color:var(--w);font-weight:500}
+.pv.g{color:var(--g1);font-weight:700}
+.tnav{display:flex;background:var(--n2);border-bottom:2px solid var(--n4);overflow-x:auto;flex-shrink:0;-webkit-overflow-scrolling:touch}
+.tnav::-webkit-scrollbar{display:none}
+.tbtn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 9px;background:transparent;border:none;color:var(--gr2);font-size:8px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all var(--tr);min-width:48px;letter-spacing:.2px}
+.tbtn .ti{font-size:15px}
+.tbtn.on{color:var(--g1);border-bottom-color:var(--g1);background:var(--n3)}
+.live-bar{display:none;background:#030d03;padding:7px 12px;border-bottom:1px solid var(--n4);flex-shrink:0}
+.conn-bar{display:none;background:#0d1f0d;padding:5px 12px;border-bottom:1px solid var(--n4);font-size:10px;flex-shrink:0}
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.pg{display:none;flex:1;flex-direction:column;overflow:hidden}
+.pg.on{display:flex}
+.pgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.itv{display:flex;background:var(--n2);border-bottom:1px solid var(--n4);overflow-x:auto;flex-shrink:0}
+.itv::-webkit-scrollbar{display:none}
+.it{padding:7px 11px;background:transparent;border:none;color:var(--gr2);font-size:9px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all var(--tr)}
+.it.on{color:var(--g1);border-bottom-color:var(--g1);background:var(--n3)}
+.ic{display:none;flex:1;overflow-y:auto;padding:11px}
+.ic.on{display:block}
+.cd{background:var(--n2);border:1px solid var(--n4);border-radius:var(--r);overflow:hidden;margin-bottom:8px}
+.cdh{background:var(--n3);padding:7px 12px;border-bottom:1px solid var(--n4);display:flex;justify-content:space-between;align-items:center}
+.cdt{font-size:10px;font-weight:700;letter-spacing:.4px}
+.cdb{padding:11px}
+.fg{display:flex;flex-direction:column;gap:3px;margin-bottom:7px}
+.fl{font-size:8px;color:var(--gr);text-transform:uppercase;letter-spacing:.5px}
+.fi{background:var(--n1);border:1px solid var(--n4);border-radius:var(--rs);color:var(--w);padding:7px 9px;font-size:12px;width:100%;transition:border-color var(--tr)}
+.fi:focus{border-color:var(--g1)}
+.fi.ok{border-color:var(--ok)}.fi.wa{border-color:var(--wa)}.fi.er{border-color:var(--er)}
+.fs{background:var(--n1);border:1px solid var(--n4);border-radius:var(--rs);color:var(--w);padding:7px 9px;font-size:11px;width:100%}
+.ft{background:var(--n1);border:1px solid var(--n4);border-radius:var(--rs);color:var(--w);padding:7px 9px;font-size:11px;width:100%;resize:vertical;line-height:1.5}
+.ft:focus,.fs:focus{border-color:var(--g1)}
+.fh{font-size:8px;color:var(--gr2)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ga{display:grid;grid-template-columns:repeat(auto-fill,minmax(65px,1fr));gap:7px}
+.bn{border:none;border-radius:var(--rs);padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:opacity var(--tr)}
+.bn:hover{opacity:.85}.bn:disabled{opacity:.45;cursor:not-allowed}
+.bg{background:linear-gradient(135deg,var(--n5),var(--g1));color:#fff}
+.bo{background:var(--n3);border:1px solid var(--n5);color:var(--g1)}
+.bo:hover{border-color:var(--g1)}
+.br{background:var(--er2);border:1px solid var(--er);color:var(--er)}
+.bk{background:var(--ok2);border:1px solid var(--ok);color:var(--ok)}
+.bbl{background:var(--bl2);border:1px solid var(--bl);color:var(--bl)}
+.bw{background:var(--wa2);border:1px solid var(--wa);color:var(--wa)}
+.bf{width:100%;justify-content:center;padding:11px}
+.bs{padding:5px 8px;font-size:10px}
+.sc{background:var(--n2);border:1px solid var(--n4);border-radius:var(--r);padding:11px;display:flex;flex-direction:column;gap:3px}
+.sl{font-size:8px;color:var(--gr2);text-transform:uppercase;letter-spacing:1px}
+.sv2{font-size:20px;font-weight:700;color:var(--g1);font-family:var(--fh)}
+.ss{font-size:10px;color:var(--gr)}
+.tl-lib{color:var(--ok);background:var(--ok2);border:1px solid var(--ok)}
+.tl-ate{color:var(--wa);background:var(--wa2);border:1px solid var(--wa)}
+.tl-rep{color:var(--er);background:var(--er2);border:1px solid var(--er)}
+.tl-con{color:var(--cr);background:var(--cr2);border:1px solid var(--cr)}
+.tp{border-radius:4px;padding:2px 7px;font-size:9px;font-weight:700}
+.ag{display:grid;grid-template-columns:repeat(auto-fill,minmax(65px,1fr));gap:7px}
+.pb2{display:flex;flex-direction:column;gap:2px}
+.pl2{font-size:8px;font-weight:700;color:var(--gr);text-transform:uppercase;letter-spacing:.5px}
+.pi2{background:var(--n1);border:1px solid var(--n4);border-radius:5px;color:var(--w);padding:6px 4px;font-size:12px;width:100%;text-align:center;transition:border-color var(--tr)}
+.pi2.ok{border-color:var(--ok)}.pi2.wa{border-color:var(--wa)}.pi2.er{border-color:var(--er)}
+.gsm{background:var(--n3);border:1px solid var(--n4);border-radius:7px;padding:9px 11px;margin-bottom:7px}
+.gsmt{font-size:10px;font-weight:700;color:var(--g1);margin-bottom:5px;letter-spacing:.4px}
+.gsv{font-size:22px;font-weight:900;font-family:var(--fh)}
+.gsb{height:5px;background:var(--n4);border-radius:3px;overflow:hidden;margin:4px 0}
+.gsf{height:100%;border-radius:3px;transition:width .6s ease}
+.fbtn{padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;border:1px solid var(--n4);background:var(--n3);color:var(--gr);cursor:pointer;transition:all var(--tr)}
+.fbtn.on{background:var(--g1);color:var(--n1);border-color:var(--g1)}
+.chatw{display:flex;flex-direction:column;height:100%;overflow:hidden}
+.chatm{flex:1;overflow-y:auto;padding:11px;display:flex;flex-direction:column;gap:8px}
+.cmsg{max-width:88%;border-radius:9px;padding:8px 11px;font-size:11px;line-height:1.6}
+.cmsg.u{background:var(--n5);align-self:flex-end}
+.cmsg.a{background:var(--n3);border:1px solid var(--n4);align-self:flex-start}
+.cmsg pre{white-space:pre-wrap;font-family:var(--fb);font-size:11px}
+.mlbl{font-size:8px;color:var(--g1);font-weight:700;letter-spacing:1px;margin-bottom:3px;text-transform:uppercase}
+.chatb{padding:8px 11px;border-top:1px solid var(--n4);display:flex;gap:6px;background:var(--n2);flex-shrink:0}
+.chati{flex:1;background:var(--n1);border:1px solid var(--n4);border-radius:6px;color:var(--w);padding:7px 10px;font-size:12px;resize:none;max-height:80px;line-height:1.4}
+.chati:focus{border-color:var(--g1)}
+.abar{display:flex;gap:5px;padding:7px 11px;border-bottom:1px solid var(--n4);overflow-x:auto;flex-shrink:0}
+.abar::-webkit-scrollbar{display:none}
+.achip{background:var(--n3);border:1px solid var(--n4);border-radius:20px;padding:4px 9px;font-size:9px;color:var(--gr);cursor:pointer;white-space:nowrap;transition:all var(--tr)}
+.achip.on{background:var(--n5);border-color:var(--g1);color:var(--g1)}
+.adesc{font-size:9px;color:var(--gr2);padding:4px 11px;background:var(--n1);border-bottom:1px solid var(--n4);flex-shrink:0}
+.igrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:7px}
+.icard{background:var(--n3);border:1px solid var(--n4);border-radius:6px;overflow:hidden;cursor:pointer;position:relative;transition:border-color var(--tr)}
+.icard:hover{border-color:var(--g1)}
+.ith{width:100%;height:76px;object-fit:cover;display:block}
+.iin{padding:4px 5px}
+.inm{font-size:9px;color:var(--g1);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.imt{font-size:8px;color:var(--gr2)}
+.idel{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.75);border:none;color:var(--er);border-radius:3px;width:16px;height:16px;cursor:pointer;font-size:9px;display:flex;align-items:center;justify-content:center}
+.frow{display:flex;align-items:center;gap:8px;background:var(--n3);border:1px solid var(--n4);border-radius:6px;padding:7px 10px;margin-bottom:5px}
+.lbox{position:fixed;inset:0;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;z-index:1000;padding:12px}
+.lbi{background:var(--n2);border:1px solid var(--n5);border-radius:10px;padding:14px;max-width:560px;width:100%;text-align:center;max-height:88vh;overflow-y:auto}
+.lbi img{max-width:100%;max-height:50vh;border-radius:7px}
+.aok{background:var(--ok2);border:1px solid var(--ok);border-radius:5px;padding:7px 10px;font-size:11px;color:var(--ok);margin-bottom:6px}
+.awa{background:var(--wa2);border:1px solid var(--wa);border-radius:5px;padding:7px 10px;font-size:11px;color:var(--wa);margin-bottom:6px}
+.aer{background:var(--er2);border:1px solid var(--er);border-radius:5px;padding:7px 10px;font-size:11px;color:var(--er);margin-bottom:6px}
+.abl{background:var(--bl2);border:1px solid var(--bl);border-radius:5px;padding:7px 10px;font-size:11px;color:var(--bl);margin-bottom:6px}
+.ibn{display:flex;gap:8px;align-items:flex-start;background:#0d1f2d;border:1px solid var(--n5);border-radius:6px;padding:7px 10px;font-size:10px;margin-bottom:7px}
+.ibn strong{color:var(--g1)}
+.spin{width:24px;height:24px;border:2px solid var(--n4);border-top:2px solid var(--g1);border-radius:50%;animation:spin 1s linear infinite;flex-shrink:0}
+.ldbox{display:flex;flex-direction:column;align-items:center;gap:8px;padding:28px;text-align:center}
+.ldst{color:var(--g1);font-size:12px}
+.rbox{background:var(--n1);border:1px solid var(--n4);border-radius:var(--r);padding:11px;overflow-x:auto}
+.rtxt{color:var(--w);font-size:11px;line-height:1.75;white-space:pre-wrap;font-family:var(--fb)}
+.emp{display:flex;flex-direction:column;align-items:center;gap:5px;padding:28px;color:var(--gr2);text-align:center}
+.movl{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:500;padding:12px}
+.mod{background:var(--n2);border:1px solid var(--n4);border-radius:10px;padding:18px;max-width:460px;width:100%;max-height:86vh;overflow-y:auto}
+.modt{font-family:var(--fh);font-size:15px;color:var(--g1);margin-bottom:12px}
+.moda{display:flex;gap:6px;margin-top:14px;justify-content:flex-end}
+.tbl{width:100%;border-collapse:collapse;font-size:10px}
+.tbl th{background:var(--n5);color:var(--w);padding:5px 8px;text-align:left;font-size:9px;letter-spacing:.3px}
+.tbl td{padding:5px 8px;border-bottom:1px solid var(--n4)}
+.tbl tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+.pindis{font-size:22px;letter-spacing:7px;text-align:center;color:var(--g1);font-family:var(--fh);padding:10px;background:var(--n1);border-radius:6px;margin-bottom:9px;min-height:48px}
+.pinpad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:210px;margin:0 auto}
+.pinbtn{background:var(--n3);border:1px solid var(--n4);border-radius:6px;color:var(--w);font-size:18px;font-weight:700;padding:13px;text-align:center;cursor:pointer;transition:all var(--tr)}
+.pinbtn:hover{background:var(--n5);border-color:var(--g1)}
+.nfbox{background:var(--n3);border:2px solid var(--n4);border-radius:8px;padding:14px;font-size:11px}
+.nfhd{text-align:center;border-bottom:2px solid var(--g1);padding-bottom:9px;margin-bottom:9px}
+.nflo{font-family:var(--fh);font-size:15px;color:var(--g1);letter-spacing:2px}
+.nfrow{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--n4);font-size:10px}
+.nftot{font-size:13px;font-weight:700;color:var(--g1);text-align:right;padding-top:7px}
+#vchart,#vc15{background:var(--n1);border:1px solid var(--n4);border-radius:6px;width:100%;height:100px}
+.badge{border-radius:4px;padding:2px 6px;font-size:9px;font-weight:700;white-space:nowrap}
+.b-ok{background:var(--ok2);color:var(--ok);border:1px solid var(--ok)}
+.b-wa{background:var(--wa2);color:var(--wa);border:1px solid var(--wa)}
+.b-er{background:var(--er2);color:var(--er);border:1px solid var(--er)}
+.b-bl{background:var(--bl2);color:var(--bl);border:1px solid var(--bl)}
+.b-g{background:#2d1f00;color:var(--g1);border:1px solid var(--g1)}
+.hn-g{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:4px}
+.hn-b{padding:6px 4px;background:var(--n3);border:2px solid var(--n4);border-radius:5px;color:var(--gr);font-size:10px;font-weight:700;text-align:center;cursor:pointer;transition:all var(--tr)}
+.hn-b.on{background:var(--wa2);border-color:var(--wa);color:var(--wa)}
+.vbi-h{font-family:var(--fh);font-size:14px;color:var(--g1);letter-spacing:1px}
+.fc{background:var(--n3);border:1px solid var(--n4);border-radius:7px;padding:10px;margin-bottom:7px}
+.fc-n{font-size:12px;font-weight:700;color:var(--w);margin-bottom:3px}
+.fc-c{font-size:10px;color:var(--gr);line-height:1.6}
+.fc-i{font-size:10px;color:var(--tl);margin-top:3px}
+.ck{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--w);cursor:pointer;background:var(--n3);padding:5px 9px;border-radius:5px;border:1px solid var(--n4)}
+input[type=checkbox]{accent-color:var(--g1)}
+input[type=radio]{accent-color:var(--g1)}
+.pt-card{background:var(--n3);border:1px solid var(--n4);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:border-color var(--tr);margin-bottom:6px}
+.pt-card:hover{border-color:var(--g1)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.fi2{animation:fi .22s ease}
+@media(max-width:480px){.g3{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr}.th-b span{display:none}}
+</style>
+</head>
+<body>
+<!-- LOGIN -->
+<div id="LS">
+  <div class="lc">
+    <div class="ll">VISADERM</div>
+    <div class="ls">Prontuário Digital — Transplante Capilar</div>
+    <div class="lv">v16.0 • Dr. Rafael Reinert | CRM/SC 16789</div>
+    <input class="lf" id="lu" type="text" placeholder="Usuário" autocomplete="off"/>
+    <input class="lf" id="lp" type="password" placeholder="Senha"/>
+    <button class="lb" onclick="doLogin()">Entrar no Sistema</button>
+    <div class="le" id="le"></div>
+  </div>
+</div>
+<!-- APP -->
+<div id="A">
+  <div class="th">
+    <div class="th-b">VISADERM <span>v16</span></div>
+    <div class="th-r">
+      <span class="sv" id="svb" style="display:none">✓ Salvo</span>
+      <div id="gtier" class="gt" style="display:none"></div>
+      <button class="wbtn" id="wbtn" onclick="doWifi()">
+        <span class="wdot" id="wdot" style="background:#ef4444"></span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" id="wsvg">
+          <path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+          <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="#ef4444"/>
+        </svg>
+        <span id="wlbl" style="font-size:9px;color:#ef4444">WiFi</span>
+      </button>
+      <button class="xbtn" onclick="openM('api-m')">🔑</button>
+    </div>
+  </div>
+  <div class="pb" id="ptbar">
+    <div class="pf"><div class="pl">Paciente</div><div class="pv g" id="pb-n">—</div></div>
+    <div class="pf"><div class="pl">ID</div><div class="pv" id="pb-id">—</div></div>
+    <div class="pf"><div class="pl">Sexo</div><div class="pv" id="pb-s">—</div></div>
+    <div class="pf"><div class="pl">Idade</div><div class="pv" id="pb-i">—</div></div>
+    <div class="pf"><div class="pl">Diagnóstico</div><div class="pv" id="pb-d">—</div></div>
+    <button class="bn bo bs" onclick="openM('pt-m')" style="align-self:center;margin-left:auto">+ Paciente</button>
+  </div>
+  <div class="live-bar" id="live-bar">
+    <span class="badge b-er" style="font-size:10px">🔴 AO VIVO</span>
+    <video id="livevid" autoplay playsinline muted style="width:100%;max-height:150px;object-fit:cover;border-radius:6px;margin-top:5px"></video>
+    <button class="bn bg bs" style="margin-top:5px" onclick="capStream()">📸 Capturar + Analisar</button>
+  </div>
+  <div class="conn-bar" id="conn-bar">
+    <span class="badge b-ok">✅ Conectado</span>
+    <span id="wdev" style="color:#86efac;margin-left:7px"></span>
+  </div>
+  <div class="tnav" id="tnav"></div>
+  <div class="main">
+    <!-- ══ PACIENTE ══ -->
+    <div class="pg on" id="pg-paciente">
+      <div class="itv">
+        <button class="it on" onclick="sit('pac','id')">👤 Identificação</button>
+        <button class="it" onclick="sit('pac','cir')">🔪 Cirúrgico</button>
+        <button class="it" onclick="sit('pac','foto')">📷 Fotos</button>
+        <button class="it" onclick="sit('pac','lista')">📋 Lista</button>
+      </div>
+      <div class="ic on" id="pac-id">
+        <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">👤 Identificação</div></div><div class="cdb">
+          <div class="fg"><div class="fl">Nome Completo *</div><input class="fi" id="pr-nome" oninput="ps()"/></div>
+          <div class="g2">
+            <div class="fg"><div class="fl">CPF</div><input class="fi" id="pr-cpf" placeholder="000.000.000-00" oninput="ps()"/></div>
+            <div class="fg"><div class="fl">Nascimento</div><input class="fi" id="pr-nasc" type="date" oninput="ps();calcId()"/></div>
+          </div>
+          <div class="g2">
+            <div class="fg"><div class="fl">Sexo</div><select class="fs" id="pr-sexo" onchange="ps()"><option value="">Sel.</option><option>Feminino</option><option>Masculino</option><option>Outro</option></select></div>
+            <div class="fg"><div class="fl">Fitzpatrick</div><select class="fs" id="pr-fitz" onchange="ps()"><option value="">Sel.</option><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option></select></div>
+          </div>
+          <div class="g2">
+            <div class="fg"><div class="fl">Telefone</div><input class="fi" id="pr-tel" placeholder="(47) 9 0000-0000" oninput="ps()"/></div>
+            <div class="fg"><div class="fl">E-mail</div><input class="fi" id="pr-email" type="email" oninput="ps()"/></div>
+          </div>
+          <div class="fg"><div class="fl">Endereço</div><input class="fi" id="pr-end" placeholder="Rua, número, bairro, cidade" oninput="ps()"/></div>
+          <div class="g2">
+            <div class="fg"><div class="fl">Profissão</div><input class="fi" id="pr-prof" oninput="ps()"/></div>
+            <div class="fg"><div class="fl">Estado Civil</div><select class="fs" id="pr-eciv" onchange="ps()"><option value="">—</option><option>Solteiro(a)</option><option>Casado(a)</option><option>Divorciado(a)</option><option>Viúvo(a)</option></select></div>
+          </div>
+          <div class="fg"><div class="fl">Diagnóstico Principal</div><input class="fi" id="pr-dx" placeholder="AFF, AGA, Alopecia cicatricial..." oninput="ps()"/></div>
+          <div class="fg"><div class="fl">Observações</div><textarea class="ft" id="pr-obs" rows="2" oninput="ps()"></textarea></div>
+          <button class="bn bg" style="margin-top:4px" onclick="saveCurPt()">💾 Salvar Paciente</button>
+        </div></div>
+      </div>
+      <div class="ic" id="pac-cir">
+        <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">🔪 Dados Cirúrgicos</div></div><div class="cdb">
+          <div class="g2">
+            <div class="fg"><div class="fl">Data Cirurgia</div><input class="fi" id="pr-dtcir" type="date" oninput="ps()"/></div>
+            <div class="fg"><div class="fl">Técnica</div><select class="fs" id="pr-tec" onchange="ps()"><option value="">Sel.</option><option>FUE Manual</option><option>FUE Motor</option><option>FUE Safira</option><option>FUSS/FUT</option><option>Híbrida</option></select></div>
+          </div>
+          <div class="g2">
+            <div class="fg"><div class="fl">Punch (mm)</div><input class="fi" id="pr-punch" type="number" step="0.01" placeholder="0.80" oninput="ps()"/></div>
+            <div class="fg"><div class="fl">Motor</div><select class="fs" id="pr-motor" onchange="ps()"><option value="">Sel.</option><option>ARTAS</option><option>NeoGraft</option><option>SmartGraft</option><option>Manual</option><option>Outro</option></select></div>
+          </div>
+          <div class="g2">
+            <div class="fg"><div class="fl">UF Planejados</div><input class="fi" id="pr-ufpl" type="number" oninput="ps()"/></div>
+            <div class="fg"><div class="fl">UF Realizados</div><input class="fi" id="pr-ufre" type="number" oninput="ps()"/></div>
+          </div>
+          <div class="g2">
+            <div class="fg"><div class="fl">Zona Doadora</div><select class="fs" id="pr-zdoa" onchange="ps()"><option value="">—</option><option>Occipital</option><option>Temporal D</option><option>Temporal E</option><option>Bilateral</option></select></div>
+            <div class="fg"><div class="fl">Zona Receptora</div><select class="fs" id="pr-zrec" onchange="ps()"><option value="">—</option><option>Frontal</option><option>Frontal+Temporal</option><option>Vertex</option><option>Difuso</option><option>Barba</option><option>Sobrancelha</option></select></div>
+          </div>
+          <div class="g2">
+            <div class="fg"><div class="fl">Cirurgião</div><input class="fi" id="pr-cir2" value="Dr. Rafael Reinert" oninput="ps()"/></div>
+            <div class="fg"><div class="fl">CRM</div><input class="fi" id="pr-crm" value="CRM/SC 16789" oninput="ps()"/></div>
+          </div>
+          <div class="fg"><div class="fl">Intercorrências</div><textarea class="ft" id="pr-inter" rows="2" oninput="ps()"></textarea></div>
+          <div class="fg"><div class="fl">Observações cirúrgicas</div><textarea class="ft" id="pr-obsop" rows="2" oninput="ps()"></textarea></div>
+        </div></div>
+      </div>
+      <div class="ic" id="pac-foto">
+        <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px">
+          <button class="bn bo bs" onclick="G('pf-up').click()">📤 Upload Fotos</button>
+          <input type="file" id="pf-up" accept="image/*" multiple hidden onchange="hImgUp(event,'pronFotos','pf-grid','pron')"/>
+        </div>
+        <div id="pf-grid" class="igrid"><div class="emp" style="grid-column:1/-1"><div style="font-size:24px">📷</div><div>Nenhuma foto.</div></div></div>
+      </div>
+      <div class="ic" id="pac-lista">
+        <div style="display:flex;gap:7px;margin-bottom:9px">
+          <button class="bn bg bs" onclick="openM('pt-m')">+ Novo Paciente</button>
+          <button class="bn bo bs" onclick="renderPtList()">↻</button>
+        </div>
+        <div id="pt-list"><div class="emp"><div style="font-size:24px">👤</div><div>Nenhum paciente.</div></div></div>
+      </div>
+    </div>
+
+```
+<!-- ══ PRÉ-OP ══ -->
+<div class="pg" id="pg-preop">
+  <div class="itv">
+    <button class="it on" onclick="sit('pre','anam')">📝 Anamnese</button>
+    <button class="it" onclick="sit('pre','hn')">📊 Hamilton</button>
+    <button class="it" onclick="sit('pre','couro')">🔍 Couro</button>
+    <button class="it" onclick="sit('pre','meds2')">💊 Meds</button>
+    <button class="it" onclick="sit('pre','plan')">📋 Plano</button>
+    <button class="it" onclick="sit('pre','cons')">📄 Consent.</button>
+  </div>
+  <div class="ic on" id="pre-anam">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">📝 Anamnese Pré-Operatória</div></div><div class="cdb">
+      <div class="fg"><div class="fl">Queixa principal</div><textarea class="ft" id="an-qp" rows="2" oninput="ps()"></textarea></div>
+      <div class="g2">
+        <div class="fg"><div class="fl">Início da alopecia</div><input class="fi" id="an-ini" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Progressão</div><select class="fs" id="an-prog" onchange="ps()"><option value="">—</option><option>Lenta</option><option>Moderada</option><option>Rápida</option><option>Estabilizada</option></select></div>
+      </div>
+      <div class="fg"><div class="fl">HDA</div><textarea class="ft" id="an-hda" rows="3" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">HPP — Antecedentes Pessoais</div><textarea class="ft" id="an-hpp" rows="2" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Histórico Familiar de Alopecia</div><textarea class="ft" id="an-hf" rows="2" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Alergias</div><input class="fi" id="an-alrg" placeholder="NKDA ou listar" oninput="ps()"/></div>
+      <div class="fg"><div class="fl">Cirurgias prévias no couro cabeludo</div><textarea class="ft" id="an-cir" rows="2" oninput="ps()"></textarea></div>
+      <div class="g2">
+        <div class="fg"><div class="fl">Tabagismo</div><select class="fs" id="an-tab" onchange="ps()"><option value="">—</option><option>Não fumante</option><option>Ex-fumante</option><option>Fumante ativo</option></select></div>
+        <div class="fg"><div class="fl">Etilismo</div><select class="fs" id="an-etil" onchange="ps()"><option value="">—</option><option>Não</option><option>Ocasional</option><option>Regular</option></select></div>
+      </div>
+      <div class="fg"><div class="fl">Comorbidades</div><textarea class="ft" id="an-comorb" rows="2" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Obs adicionais</div><textarea class="ft" id="an-obs2" rows="2" oninput="ps()"></textarea></div>
+      <button class="bn bg bf" style="margin-top:4px" onclick="genAI('an-rep','an-rept',buildAnamPrompt(),AGENS[4].s)">🤖 Gerar Anamnese Estruturada IA</button>
+      <div id="an-rep" style="display:none;margin-top:7px" class="rbox"><pre class="rtxt" id="an-rept"></pre></div>
+    </div></div>
+  </div>
+  <div class="ic" id="pre-hn">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">📊 Classificação Tricológica</div></div><div class="cdb">
+      <div class="fg"><div class="fl">Hamilton-Norwood (masc.)</div><div class="hn-g" id="hn-grid"></div></div>
+      <div class="fg" style="margin-top:8px"><div class="fl">Ludwig (fem.)</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:3px" id="lud-grid"></div></div>
+      <div class="g2" style="margin-top:8px">
+        <div class="fg"><div class="fl">Densidade doadora (UF/cm²)</div><input class="fi" id="hn-dd" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Densidade receptora (UF/cm²)</div><input class="fi" id="hn-dr" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Calibre médio (mm)</div><input class="fi" id="hn-cal" type="number" step="0.01" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Anágenos (%)</div><input class="fi" id="hn-ana" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Eritema perifolicular</div><select class="fs" id="hn-eri" onchange="ps()"><option value="">—</option><option>Ausente</option><option>Leve</option><option>Moderado</option><option>Intenso</option></select></div>
+        <div class="fg"><div class="fl">Fibrose peripilo</div><select class="fs" id="hn-fib" onchange="ps()"><option value="">—</option><option>Ausente</option><option>Incipiente</option><option>Moderada</option><option>Avançada</option></select></div>
+      </div>
+      <div class="fg"><div class="fl">Classificação tricoscópica</div><input class="fi" id="hn-cls" placeholder="Ex: HN IV, Ludwig II..." oninput="ps()"/></div>
+      <div class="fg"><div class="fl">Observações</div><textarea class="ft" id="hn-obs" rows="2" oninput="ps()"></textarea></div>
+      <button class="bn bo bs" onclick="G('tri-up').click()" style="margin-top:4px">📤 Imagem Tricoscopia</button>
+      <input type="file" id="tri-up" accept="image/*" hidden onchange="hSingleImg(event,'tri-prev')"/>
+      <div id="tri-prev" style="display:none;margin-top:6px"><img id="tri-prev-img" style="max-width:100%;max-height:160px;border-radius:6px"/></div>
+    </div></div>
+  </div>
+  <div class="ic" id="pre-couro">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">🔍 Avaliação do Couro Cabeludo</div></div><div class="cdb">
+      <div class="g2">
+        <div class="fg"><div class="fl">Laxidade</div><select class="fs" id="cs-lax" onchange="ps()"><option value="">—</option><option>Boa</option><option>Moderada</option><option>Reduzida</option></select></div>
+        <div class="fg"><div class="fl">Espessura</div><select class="fs" id="cs-esp" onchange="ps()"><option value="">—</option><option>Normal</option><option>Fino</option><option>Espesso</option></select></div>
+        <div class="fg"><div class="fl">Seborreia</div><select class="fs" id="cs-seb" onchange="ps()"><option value="">—</option><option>Ausente</option><option>Leve</option><option>Moderada</option><option>Intensa</option></select></div>
+        <div class="fg"><div class="fl">Inflamação ativa</div><select class="fs" id="cs-inf" onchange="ps()"><option value="">—</option><option>Ausente</option><option>Leve</option><option>Moderada</option><option>Grave</option></select></div>
+        <div class="fg"><div class="fl">Cicatrizes</div><select class="fs" id="cs-cic" onchange="ps()"><option value="">—</option><option>Não</option><option>Sim — discreta</option><option>Sim — extensa</option></select></div>
+        <div class="fg"><div class="fl">Queloides</div><select class="fs" id="cs-kel" onchange="ps()"><option value="">—</option><option>Não</option><option>Sim</option></select></div>
+      </div>
+      <div class="fg"><div class="fl">Observações</div><textarea class="ft" id="cs-obs" rows="3" oninput="ps()"></textarea></div>
+    </div></div>
+  </div>
+  <div class="ic" id="pre-meds2">
+    <div class="ibn"><span style="font-size:15px">⚠️</span><div><strong>Medicações em uso</strong><br>Registre todos os medicamentos para verificar interações.</div></div>
+    <div id="meds-list"></div>
+    <button class="bn bo bs" onclick="addMed()">+ Medicamento</button>
+    <div class="cd" style="margin-top:9px"><div class="cdh"><div class="cdt" style="color:var(--er)">⛔ Suspender Pré-op</div></div><div class="cdb" style="font-size:10px;color:var(--gr);line-height:1.9">
+      <b style="color:var(--er)">7–10 dias:</b> AAS, Clopidogrel, Ticagrelor, Warfarina, Rivaroxabana, Apixabana, Ômega-3<br>
+      <b style="color:var(--er)">6 meses:</b> Isotretinoína<br><b style="color:var(--er)">14 dias:</b> MAOIs<br>
+      <b style="color:var(--ok)">MANTER:</b> Hidroxicloroquina, betabloqueadores, anti-hipertensivos, finasterida
+    </div></div>
+  </div>
+  <div class="ic" id="pre-plan">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">📋 Planejamento Cirúrgico</div></div><div class="cdb">
+      <div class="g2">
+        <div class="fg"><div class="fl">UF Total Planejados</div><input class="fi" id="pl-uf" type="number" oninput="ps();calcPlan()"/></div>
+        <div class="fg"><div class="fl">Área receptora (cm²)</div><input class="fi" id="pl-area" type="number" oninput="ps();calcPlan()"/></div>
+        <div class="fg"><div class="fl">Densidade alvo (UF/cm²)</div><input class="fi" id="pl-dens" type="number" placeholder="35" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Frontoplastia</div><select class="fs" id="pl-frt" onchange="ps()"><option value="">—</option><option>Não</option><option>Sim — lowering</option><option>Sim — assimétrica</option></select></div>
+      </div>
+      <div id="plan-calc" style="font-size:11px;color:var(--gr);margin-bottom:7px"></div>
+      <div class="fg"><div class="fl">Zonas de implante</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:3px">
+          <label class="ck"><input type="checkbox" id="pz-fr" onchange="ps()"> Frontal</label>
+          <label class="ck"><input type="checkbox" id="pz-te" onchange="ps()"> Temporal</label>
+          <label class="ck"><input type="checkbox" id="pz-vx" onchange="ps()"> Vertex</label>
+          <label class="ck"><input type="checkbox" id="pz-bar" onchange="ps()"> Barba</label>
+          <label class="ck"><input type="checkbox" id="pz-so" onchange="ps()"> Sobrancelha</label>
+        </div>
+      </div>
+      <div class="fg"><div class="fl">Estratégia de distribuição</div><textarea class="ft" id="pl-strat" rows="2" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Restrições / alertas</div><textarea class="ft" id="pl-rest" rows="2" oninput="ps()"></textarea></div>
+      <button class="bn bg bf" style="margin-top:4px" onclick="genAI('plan-rep','plan-rept',`Planejamento FUE:\nUF:${G('pl-uf')?.value}\nÁrea:${G('pl-area')?.value}cm²\nFrontoplastia:${G('pl-frt')?.value}\nEstratégia:${G('pl-strat')?.value||''}`,AGENS[1].s)">🤖 Gerar Plano Cirúrgico com IA</button>
+      <div id="plan-rep" style="display:none;margin-top:7px" class="rbox"><pre class="rtxt" id="plan-rept"></pre></div>
+    </div></div>
+  </div>
+  <div class="ic" id="pre-cons">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">📄 Consentimento Informado</div></div><div class="cdb">
+      <div class="fg"><div class="fl">Riscos explicados ao paciente</div><textarea class="ft" id="cn-risc" rows="3" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Expectativas do paciente</div><textarea class="ft" id="cn-exp" rows="2" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Limitações informadas</div><textarea class="ft" id="cn-lim" rows="2" oninput="ps()"></textarea></div>
+      <div class="g2">
+        <div class="fg"><div class="fl">Data assinatura</div><input class="fi" id="cn-dt" type="date" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Testemunha</div><input class="fi" id="cn-tst" oninput="ps()"/></div>
+      </div>
+      <button class="bn bg bf" style="margin-top:4px" onclick="genAI('cn-rep','cn-rept',`Termo de consentimento FUE.\nRiscos:${G('cn-risc')?.value}\nExpectativas:${G('cn-exp')?.value}\nLimitações:${G('cn-lim')?.value}`,AGENS[1].s)">🤖 Gerar Termo com IA</button>
+      <div id="cn-rep" style="display:none;margin-top:7px" class="rbox"><pre class="rtxt" id="cn-rept"></pre></div>
+    </div></div>
+  </div>
+</div>
+<!-- ══ EXAMES ══ -->
+<div class="pg" id="pg-exames">
+  <div class="itv">
+    <button class="it on" onclick="sit('ex','lab')">🧪 Lab</button>
+    <button class="it" onclick="sit('ex','img2')">🖼 Imagens</button>
+    <button class="it" onclick="sit('ex','derm2')">🔬 Dermato</button>
+  </div>
+  <div class="ic on" id="ex-lab">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">🧪 Exames Laboratoriais</div></div><div class="cdb">
+      <div class="g2"><div class="fg"><div class="fl">Data coleta</div><input class="fi" id="lb-dt" type="date" oninput="ps()"/></div><div class="fg"><div class="fl">Laboratório</div><input class="fi" id="lb-lab" oninput="ps()"/></div></div>
+      <div style="font-size:9px;color:var(--g1);font-weight:700;margin:6px 0 4px">Hemograma</div>
+      <div class="g3">
+        <div class="fg"><div class="fl">Hb (g/dL)</div><input class="fi" id="lb-hb" type="number" step="0.1" oninput="ps();labCk()"/></div>
+        <div class="fg"><div class="fl">Ht (%)</div><input class="fi" id="lb-ht" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Plaquetas</div><input class="fi" id="lb-plaq" oninput="ps();labCk()"/></div>
+        <div class="fg"><div class="fl">Leucócitos</div><input class="fi" id="lb-leu" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">RDW</div><input class="fi" id="lb-rdw" type="number" step="0.1" oninput="ps()"/></div>
+      </div>
+      <div style="font-size:9px;color:var(--g1);font-weight:700;margin:6px 0 4px">Bioquímica</div>
+      <div class="g3">
+        <div class="fg"><div class="fl">Glicemia</div><input class="fi" id="lb-gli" type="number" oninput="ps();labCk()"/></div>
+        <div class="fg"><div class="fl">Creatinina</div><input class="fi" id="lb-crea" type="number" step="0.01" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">TGO/AST</div><input class="fi" id="lb-tgo" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">TGP/ALT</div><input class="fi" id="lb-tgp" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">TSH</div><input class="fi" id="lb-tsh" type="number" step="0.01" oninput="ps();labCk()"/></div>
+        <div class="fg"><div class="fl">T4 livre</div><input class="fi" id="lb-t4" type="number" step="0.01" oninput="ps()"/></div>
+      </div>
+      <div style="font-size:9px;color:var(--g1);font-weight:700;margin:6px 0 4px">Deficiências / Hormônios</div>
+      <div class="g3">
+        <div class="fg"><div class="fl">Ferritina</div><input class="fi" id="lb-ferr" type="number" oninput="ps();labCk()"/></div>
+        <div class="fg"><div class="fl">Ferro sérico</div><input class="fi" id="lb-fe" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Vitamina D</div><input class="fi" id="lb-vitd" type="number" oninput="ps();labCk()"/></div>
+        <div class="fg"><div class="fl">Zinco</div><input class="fi" id="lb-zn" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">DHEA-S</div><input class="fi" id="lb-dhea" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Testosterona total</div><input class="fi" id="lb-test" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">DHT</div><input class="fi" id="lb-dht" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Prolactina</div><input class="fi" id="lb-prol" oninput="ps()"/></div>
+      </div>
+      <div id="lab-alerts" style="margin-top:7px"></div>
+      <button class="bn bg bf" style="margin-top:5px" onclick="genAI('lab-rep','lab-rept',buildLabPrompt(),AGENS[1].s)">🤖 Interpretar com IA</button>
+      <div id="lab-rep" style="display:none;margin-top:7px" class="rbox"><pre class="rtxt" id="lab-rept"></pre></div>
+    </div></div>
+  </div>
+  <div class="ic" id="ex-img2">
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px">
+      <button class="bn bo bs" onclick="G('ex-img-up').click()">📤 Upload</button>
+      <input type="file" id="ex-img-up" accept="image/*" multiple hidden onchange="hImgUp(event,'exImgs','ex-grid','ex')"/>
+    </div>
+    <div id="ex-grid" class="igrid"><div class="emp" style="grid-column:1/-1"><div style="font-size:24px">🖼</div><div>Sem imagens.</div></div></div>
+  </div>
+  <div class="ic" id="ex-derm2">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">🔬 Dermatoscopia / Tricoscopia</div></div><div class="cdb">
+      <div class="g2">
+        <div class="fg"><div class="fl">Equipamento</div><select class="fs" id="dm-eq" onchange="ps()"><option value="">—</option><option>FotoFinder</option><option>TrichoScan Pro</option><option>Dermatoscópio polarizado</option><option>Handyscope</option><option>Outro</option></select></div>
+        <div class="fg"><div class="fl">Data</div><input class="fi" id="dm-dt" type="date" oninput="ps()"/></div>
+      </div>
+      <div class="g3">
+        <div class="fg"><div class="fl">Densidade (UF/cm²)</div><input class="fi" id="dm-dens" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Fios/UF</div><input class="fi" id="dm-fios" type="number" step="0.1" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Anágenos (%)</div><input class="fi" id="dm-ana" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Telógenos (%)</div><input class="fi" id="dm-tel" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Velus (%)</div><input class="fi" id="dm-vel" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Diâmetro médio</div><input class="fi" id="dm-diam" type="number" step="0.01" oninput="ps()"/></div>
+      </div>
+      <div class="fg"><div class="fl">Achados dermatoscópicos</div><textarea class="ft" id="dm-ach" rows="3" oninput="ps()"></textarea></div>
+      <button class="bn bo bs" onclick="G('derm-up').click()" style="margin-top:4px">📤 Imagem</button>
+      <input type="file" id="derm-up" accept="image/*" hidden onchange="hSingleImg(event,'derm-prev')"/>
+      <div id="derm-prev" style="display:none;margin-top:6px"><img id="derm-prev-img" style="max-width:100%;max-height:180px;border-radius:6px"/></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ══ TRANS-OP ══ -->
+<div class="pg" id="pg-transop">
+  <div class="itv">
+    <button class="it on" onclick="sit('tr','dopp')">🔬 Doppler</button>
+    <button class="it" onclick="sit('tr','gs')">🧬 GraftScan</button>
+    <button class="it" onclick="sit('tr','ane2')">💉 Anestesia</button>
+    <button class="it" onclick="sit('tr','opdata')">📊 Dados Op</button>
+    <button class="it" onclick="sit('tr','top')">🤖 Laudo</button>
+  </div>
+
+  <!-- DOPPLER -->
+  <div class="ic on" id="tr-dopp">
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px">
+      <button class="bn bo bs" onclick="G('dop-up').click()">📤 Upload Doppler</button>
+      <button class="bn bo bs" id="dop-cap-btn" style="display:none" onclick="capStream()">📡 Capturar</button>
+      <input type="file" id="dop-up" accept="image/*" hidden onchange="hDopImg(event)"/>
+    </div>
+    <div id="dop-grid" class="igrid" style="margin-bottom:8px"><div class="emp" style="grid-column:1/-1"><div style="font-size:22px">🔬</div><div>Sem imagens.</div></div></div>
+    <!-- Procedimentos -->
+    <div class="cd" style="margin-bottom:8px"><div class="cdh"><div class="cdt" style="color:var(--g1)">Procedimentos Planejados</div></div>
+    <div class="cdb"><div style="display:flex;flex-wrap:wrap;gap:6px" id="proc-boxes">
+      <label class="ck"><input type="checkbox" id="pc0"> FUE Occipital</label>
+      <label class="ck"><input type="checkbox" id="pc1"> FUE Frontal</label>
+      <label class="ck"><input type="checkbox" id="pc2"> FUE Temporal</label>
+      <label class="ck"><input type="checkbox" id="pc3"> FUE Vertex</label>
+      <label class="ck"><input type="checkbox" id="pc4"> Frontoplastia</label>
+    </div></div></div>
+    <!-- Arteries -->
+    <div id="dop-artery-panels"></div>
+    <!-- Config técnica -->
+    <div class="cd" style="margin-bottom:8px"><div class="cdh"><div class="cdt" style="color:var(--g1)">⚙️ Configuração Técnica</div></div><div class="cdb">
+      <div class="ag">
+        <div class="pb2"><div class="pl2">Freq(MHz)</div><input class="pi2" id="tp-freq" type="number" step="0.1" oninput="techCh()"/></div>
+        <div class="pb2"><div class="pl2">Ganho(dB)</div><input class="pi2" id="tp-gain" type="number" oninput="techCh()"/></div>
+        <div class="pb2"><div class="pl2">Prof(mm)</div><input class="pi2" id="tp-depth" type="number" oninput="techCh()"/></div>
+        <div class="pb2"><div class="pl2">Ângulo(°)</div><input class="pi2" id="tp-angle" type="number" oninput="techCh()"/></div>
+        <div class="pb2"><div class="pl2">Vol(mm)</div><input class="pi2" id="tp-vol" type="number" oninput="techCh()"/></div>
+      </div>
+      <div class="awa" id="ang-alert" style="display:none;margin-top:5px">⚠️ Ângulo ideal: 45–60°</div>
+    </div></div>
+    <!-- Contexto -->
+    <div class="cd" style="margin-bottom:8px"><div class="cdh"><div class="cdt" style="color:var(--g1)">🩺 Contexto Clínico</div></div><div class="cdb">
+      <div class="fg"><div class="fl">Diagnóstico / Tipo de alopecia</div><textarea class="ft" id="dop-dx" rows="2" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Estabilização / Atividade</div><input class="fi" id="dop-estab" oninput="ps()"/></div>
+      <div class="fg"><div class="fl">Medicações relevantes</div><input class="fi" id="dop-meds" oninput="ps()"/></div>
+    </div></div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      <button class="bn bg" onclick="genDopReport()" id="dop-rep-btn">🤖 Gerar Laudo Doppler</button>
+      <button class="bn bo bs" id="dop-exp-btn" style="display:none" onclick="expRep('dop-rep-txt','laudo_doppler')">⬇ Exportar</button>
+    </div>
+    <div id="dop-loading" style="display:none" class="ldbox"><div class="spin"></div><div class="ldst" id="dop-ldst">Processando...</div></div>
+    <div id="dop-rep-box" style="display:none;margin-top:8px" class="rbox"><pre class="rtxt" id="dop-rep-txt"></pre></div>
+  </div>
+
+  <!-- GRAFTSCAN -->
+  <div class="ic" id="tr-gs">
+    <div class="ibn"><span style="font-size:15px">🧬</span><div><strong>VISADERM GRAFTSCAN V2.1™</strong><br>Análise intraoperatória — 8 filtros • Zoom 8× • VQS/GII/Risk</div></div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px">
+      <button class="bn bg bs" onclick="G('gs-up').click()">📤 Upload Espátula</button>
+      <input type="file" id="gs-up" accept="image/*" hidden onchange="hGsImg(event)"/>
+    </div>
+    <div id="gs-prev-wrap" style="display:none;margin-bottom:8px">
+      <img id="gs-img-el" style="max-width:100%;max-height:190px;border-radius:6px;border:1px solid var(--n4);transition:filter .3s;transform-origin:center;transition:transform .3s"/>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px" id="gs-filters"></div>
+      <div style="display:flex;gap:5px;margin-top:4px;align-items:center">
+        <button class="bn bo bs" onclick="gsZoom(1)">🔍+</button>
+        <button class="bn bo bs" onclick="gsZoom(-1)">🔍−</button>
+        <span id="gs-zlbl" style="font-size:10px;color:var(--gr)">1×</span>
+      </div>
+    </div>
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">📊 Dados dos Enxertos</div></div><div class="cdb">
+      <div class="g2">
+        <div class="fg"><div class="fl">Zona Anatômica</div><select class="fs" id="gs-zona" onchange="gsSv()"><option value="">—</option><option>Doadora Occipital</option><option>Doadora Temporal D</option><option>Doadora Temporal E</option><option>Receptora Frontal</option><option>Receptora Vertex</option></select></div>
+        <div class="fg"><div class="fl">Sessão nº</div><input class="fi" id="gs-sess" type="number" placeholder="1" oninput="gsSv()"/></div>
+      </div>
+      <div class="g3">
+        <div class="fg"><div class="fl">Total UF</div><input class="fi" id="gs-tot" type="number" oninput="gsCalc()"/></div>
+        <div class="fg"><div class="fl">UF 1 fio</div><input class="fi" id="gs-u1" type="number" oninput="gsCalc()"/></div>
+        <div class="fg"><div class="fl">UF 2 fios</div><input class="fi" id="gs-u2" type="number" oninput="gsCalc()"/></div>
+        <div class="fg"><div class="fl">UF 3 fios</div><input class="fi" id="gs-u3" type="number" oninput="gsCalc()"/></div>
+        <div class="fg"><div class="fl">UF 4+ fios</div><input class="fi" id="gs-u4" type="number" oninput="gsCalc()"/></div>
+        <div class="fg"><div class="fl">Transectados</div><input class="fi" id="gs-tr" type="number" oninput="gsCalc()"/></div>
+        <div class="fg"><div class="fl">Danificados</div><input class="fi" id="gs-dam" type="number" oninput="gsCalc()"/></div>
+        <div class="fg"><div class="fl">Tempo fora (min)</div><input class="fi" id="gs-tempo" type="number" oninput="gsSv()"/></div>
+        <div class="fg"><div class="fl">Temperatura (°C)</div><input class="fi" id="gs-temp" type="number" step="0.1" oninput="gsSv()"/></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><div class="fl">Solução preservação</div><select class="fs" id="gs-sol" onchange="gsSv()"><option value="">—</option><option>SF 0,9%</option><option>HypoThermosol</option><option>ATP-sol</option><option>Ringer Lactato</option><option>PlasmaLyte</option></select></div>
+        <div class="fg"><div class="fl">Método implante</div><select class="fs" id="gs-met" onchange="gsSv()"><option value="">—</option><option>Choi Implanters</option><option>DHI</option><option>Stick-and-Place</option><option>Slot</option></select></div>
+      </div>
+    </div></div>
+    <div class="g2" style="gap:7px;margin-top:8px">
+      <div class="gsm"><div class="gsmt">VQS — Quality Score</div><div class="gsv" id="vqs-v" style="color:var(--g1)">—</div><div class="gsb"><div class="gsf" id="vqs-b" style="background:var(--g1);width:0"></div></div><div style="font-size:9px;color:var(--gr)" id="vqs-c">—</div></div>
+      <div class="gsm"><div class="gsmt">GII — Integrity Index</div><div class="gsv" id="gii-v" style="color:var(--tl)">—</div><div class="gsb"><div class="gsf" id="gii-b" style="background:var(--tl);width:0"></div></div><div style="font-size:9px;color:var(--gr)" id="gii-c">—</div></div>
+      <div class="gsm"><div class="gsmt">Transecção</div><div class="gsv" id="trt-v" style="color:var(--wa)">—</div><div class="gsb"><div class="gsf" id="trt-b" style="background:var(--wa);width:0"></div></div><div style="font-size:9px;color:var(--gr)" id="trt-c">—</div></div>
+      <div class="gsm"><div class="gsmt">Risk Score</div><div class="gsv" id="risk-v" style="color:var(--er)">—</div><div style="font-size:9px;color:var(--gr)" id="risk-c">—</div></div>
+    </div>
+    <div id="gs-dist" style="margin-top:7px"></div>
+    <button class="bn bg bf" style="margin-top:8px" onclick="genGsRep()">🤖 Laudo GraftScan com IA</button>
+    <div id="gs-loading" style="display:none" class="ldbox"><div class="spin"></div><div class="ldst">Analisando enxertos...</div></div>
+    <div id="gs-rep-box" style="display:none;margin-top:7px" class="rbox"><pre class="rtxt" id="gs-rep-txt"></pre></div>
+    <div id="gs-rep-empty" class="emp"><div style="font-size:24px">🧬</div><div>Preencha e gere o laudo.</div></div>
+  </div>
+
+  <!-- ANESTESIA -->
+  <div class="ic" id="tr-ane2">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">💉 Anestesia — ASA / Jejum / Dose</div></div><div class="cdb">
+      <div class="g2">
+        <div class="fg"><div class="fl">Peso (kg)</div><input class="fi" id="ane-peso" type="number" step="0.1" oninput="aneSv();calcDose()"/></div>
+        <div class="fg"><div class="fl">Altura (cm)</div><input class="fi" id="ane-alt" type="number" oninput="aneSv()"/></div>
+        <div class="fg"><div class="fl">Classificação ASA</div><select class="fs" id="ane-asa" onchange="aneSv();showAsa()"><option value="">—</option><option value="I">ASA I</option><option value="II">ASA II</option><option value="III">ASA III</option><option value="IV">ASA IV</option></select></div>
+        <div class="fg"><div class="fl">PA habitual</div><input class="fi" id="ane-pa" placeholder="120/80" oninput="aneSv()"/></div>
+      </div>
+      <div id="asa-info" style="margin-bottom:7px"></div>
+      <div class="fg"><div class="fl">Última refeição (jejum ASA 2023)</div><input class="fi" id="ane-jej" type="datetime-local" oninput="aneSv();calcJejum()"/></div>
+      <div id="jej-res" style="margin-bottom:7px"></div>
+      <div style="font-size:9px;color:var(--g1);font-weight:700;margin-bottom:5px">⚖️ Calculadora de Dose</div>
+      <div class="g2">
+        <div class="fg"><div class="fl">Fármaco</div>
+          <select class="fs" id="calc-drg" onchange="calcDose()">
+            <option value="">Selecione</option>
+            <option value="lido_s">Lidocaína sem epi (max 4,5mg/kg)</option>
+            <option value="lido_c">Lidocaína c/ epinefrina (max 7mg/kg)</option>
+            <option value="bup">Bupivacaína (max 2,5mg/kg)</option>
+            <option value="mid">Midazolam (0,02–0,05mg/kg)</option>
+            <option value="ket">Cetamina (1–4mg/kg)</option>
+            <option value="dex">Dexametasona (0,1–0,2mg/kg)</option>
+            <option value="dip">Dipirona (10–20mg/kg)</option>
+            <option value="ond">Ondansetrona (0,1mg/kg)</option>
+            <option value="pro">Propofol (1–2mg/kg indução)</option>
+          </select>
+        </div>
+        <div class="fg"><div class="fl">Concentração (%)</div><input class="fi" id="calc-conc" type="number" step="0.1" placeholder="2" oninput="calcDose()"/></div>
+      </div>
+      <div id="calc-res" style="font-size:11px;line-height:1.8;padding:8px;background:var(--n1);border-radius:5px;margin-bottom:7px"></div>
+      <div style="font-size:9px;color:var(--g1);font-weight:700;margin-bottom:5px">💊 Interações Medicamentosas</div>
+      <input class="fi" id="drg-srch" placeholder="Buscar medicamento..." oninput="filterDrgs()" style="margin-bottom:6px"/>
+      <div id="drug-list" style="max-height:220px;overflow-y:auto"></div>
+    </div></div>
+    <!-- Aldrete -->
+    <div class="cd" style="margin-top:8px"><div class="cdh"><div class="cdt" style="color:var(--g1)">📊 Escala de Aldrete Modificada</div></div><div class="cdb">
+      <div style="font-size:22px;text-align:center;color:var(--g1);font-family:var(--fh);font-weight:900;padding:6px" id="ald-sc">—/10</div>
+      <div id="ald-res" style="text-align:center;font-size:10px;padding-bottom:5px"></div>
+      <div id="ald-form"></div>
+      <div class="awa" style="font-size:9px;margin-top:5px">Alta liberada com score ≥ 9 pontos</div>
+    </div></div>
+  </div>
+
+  <!-- DADOS OP -->
+  <div class="ic" id="tr-opdata">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">📊 Dados Intraoperatórios</div></div><div class="cdb">
+      <div class="g2">
+        <div class="fg"><div class="fl">Início cirurgia</div><input class="fi" id="op-ini" type="time" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Fim cirurgia</div><input class="fi" id="op-fim" type="time" oninput="ps();calcOpT()"/></div>
+      </div>
+      <div id="op-dur" style="font-size:11px;color:var(--gr);margin-bottom:6px"></div>
+      <div class="g3">
+        <div class="fg"><div class="fl">UF extraídos</div><input class="fi" id="op-ext" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">UF implantados</div><input class="fi" id="op-imp" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Descartados</div><input class="fi" id="op-des" type="number" oninput="ps()"/></div>
+      </div>
+      <div style="font-size:9px;color:var(--g1);font-weight:700;margin:5px 0 4px">Distribuição por zona</div>
+      <div class="g3">
+        <div class="fg"><div class="fl">Frontal</div><input class="fi" id="op-front" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Temporal D</div><input class="fi" id="op-tempd" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Temporal E</div><input class="fi" id="op-tempe" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Vertex</div><input class="fi" id="op-vert" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Linha frontal</div><input class="fi" id="op-lf" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Outros</div><input class="fi" id="op-oth" type="number" oninput="ps()"/></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><div class="fl">PA monitorada</div><input class="fi" id="op-pam" placeholder="120/80" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">SpO2 (%)</div><input class="fi" id="op-spo2" type="number" oninput="ps()"/></div>
+      </div>
+      <div class="fg"><div class="fl">Intercorrências</div><textarea class="ft" id="op-inter" rows="2" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Obs gerais</div><textarea class="ft" id="op-obs" rows="3" oninput="ps()"></textarea></div>
+    </div></div>
+  </div>
+
+  <!-- LAUDO TRANS-OP -->
+  <div class="ic" id="tr-top" style="display:flex;flex-direction:column;gap:7px">
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      <button class="bn bg" onclick="genTransRep()" id="top-btn">🤖 Laudo Trans-Op Completo</button>
+      <button class="bn bo bs" id="top-exp-btn" style="display:none" onclick="expRep('top-txt','laudo_transop')">⬇ Exportar</button>
+    </div>
+    <div id="top-loading" style="display:none" class="ldbox"><div class="spin"></div><div class="ldst">Compilando dados...</div></div>
+    <div id="top-box" style="display:none" class="rbox"><pre class="rtxt" id="top-txt"></pre></div>
+    <div id="top-empty" class="emp"><div style="font-size:26px">📋</div><div>Preencha os dados e gere o laudo.</div></div>
+  </div>
+</div>
+<!-- ══ PÓS-OP ══ -->
+<div class="pg" id="pg-posop">
+  <div class="itv">
+    <button class="it on" onclick="sit('po','cx')">💊 Cuidados</button>
+    <button class="it" onclick="sit('po','ev')">📈 Evolução</button>
+    <button class="it" onclick="sit('po','ret')">📅 Retornos</button>
+    <button class="it" onclick="sit('po','fpo')">📷 Fotos PO</button>
+  </div>
+  <div class="ic on" id="po-cx">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">💊 Cuidados Pós-Operatórios</div></div><div class="cdb">
+      <div class="fg"><div class="fl">Data da cirurgia (D0)</div><input class="fi" id="po-d0" type="date" oninput="ps();calcDpo()"/></div>
+      <div id="po-dias" style="font-size:11px;color:var(--g1);font-weight:600;margin-bottom:7px"></div>
+      <div class="fg"><div class="fl">Prescrição pós-op</div><textarea class="ft" id="po-rx" rows="4" placeholder="Cefalexina 500mg 6/6h 7d&#10;Ibuprofeno 600mg 8/8h 3d&#10;Dexametasona 4mg 1x/d 3d&#10;Pantoprazol 40mg em jejum 7d" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Orientações de higiene</div><textarea class="ft" id="po-hig" rows="3" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Restrições de atividade</div><textarea class="ft" id="po-rst" rows="2" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Proteção solar / capacete</div><textarea class="ft" id="po-cap" rows="2" oninput="ps()"></textarea></div>
+      <button class="bn bg bf" style="margin-top:5px" onclick="genAI('po-rep','po-rept',`Orientações pós-op FUE D0-D365:\nD0 pós-op:${G('po-dias')?.textContent||'D0'}\nPrescrição:${G('po-rx')?.value||''}`,AGENS[6].s)">🤖 Gerar Orientações com IA</button>
+      <div id="po-rep" style="display:none;margin-top:7px" class="rbox"><pre class="rtxt" id="po-rept"></pre></div>
+    </div></div>
+  </div>
+  <div class="ic" id="po-ev">
+    <div id="evol-list" style="margin-bottom:9px"></div>
+    <button class="bn bo bs" onclick="openM('ev-m')">+ Adicionar Evolução</button>
+  </div>
+  <div class="ic" id="po-ret">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">📅 Agendamento de Retornos</div></div><div class="cdb">
+      <div style="font-size:9px;color:var(--g1);font-weight:700;margin-bottom:5px">Protocolo Padrão Visaderm</div>
+      <table class="tbl">
+        <thead><tr><th>Retorno</th><th>Prazo</th><th>Objetivo</th><th>Data</th></tr></thead>
+        <tbody>
+          <tr><td>D+1</td><td>1 dia</td><td>Curativo / dor</td><td><input class="fi" id="r-d1" type="date" style="width:95px;padding:3px"/></td></tr>
+          <tr><td>D+7</td><td>7 dias</td><td>Pontos / avaliação</td><td><input class="fi" id="r-d7" type="date" style="width:95px;padding:3px"/></td></tr>
+          <tr><td>D+30</td><td>30 dias</td><td>Evolução inicial</td><td><input class="fi" id="r-d30" type="date" style="width:95px;padding:3px"/></td></tr>
+          <tr><td>D+90</td><td>3 meses</td><td>Crescimento</td><td><input class="fi" id="r-d90" type="date" style="width:95px;padding:3px"/></td></tr>
+          <tr><td>D+180</td><td>6 meses</td><td>Resultado parcial</td><td><input class="fi" id="r-d180" type="date" style="width:95px;padding:3px"/></td></tr>
+          <tr><td>D+365</td><td>12 meses</td><td>Resultado final</td><td><input class="fi" id="r-d365" type="date" style="width:95px;padding:3px"/></td></tr>
+        </tbody>
+      </table>
+      <button class="bn bg bs" style="margin-top:7px" onclick="ps();alert('Datas salvas!')">💾 Salvar</button>
+    </div></div>
+  </div>
+  <div class="ic" id="po-fpo">
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px">
+      <button class="bn bo bs" onclick="G('po-up').click()">📤 Fotos Pós-op</button>
+      <input type="file" id="po-up" accept="image/*" multiple hidden onchange="hImgUp(event,'poImgs','po-grid','po')"/>
+    </div>
+    <div id="po-grid" class="igrid"><div class="emp" style="grid-column:1/-1"><div style="font-size:24px">📷</div><div>Nenhuma foto.</div></div></div>
+  </div>
+</div>
+
+<!-- ══ FÓRMULAS ══ -->
+<div class="pg" id="pg-formulas">
+  <div class="itv">
+    <button class="it on" onclick="sit('fm','top')">🧪 Tópicos</button>
+    <button class="it" onclick="sit('fm','oral')">💊 Orais</button>
+    <button class="it" onclick="sit('fm','de')">✨ Derm.ethic</button>
+    <button class="it" onclick="sit('fm','cust')">⚗️ Customizada</button>
+  </div>
+  <div class="ic on" id="fm-top" style="padding:11px"><div id="fm-topos"></div></div>
+  <div class="ic" id="fm-oral" style="padding:11px"><div id="fm-orals"></div></div>
+  <div class="ic" id="fm-de" style="padding:11px">
+    <div style="background:linear-gradient(135deg,var(--n3),var(--n2));border:1px solid var(--g1);border-radius:9px;padding:12px;margin-bottom:9px">
+      <div style="font-family:var(--fh);font-size:13px;color:var(--g1);letter-spacing:1px">✨ Derm.ethic Cosméticos</div>
+      <div style="font-size:9px;color:var(--gr);margin-top:2px">Itajaí, SC • Linha exclusiva Visaderm</div>
+    </div>
+    <div id="fm-de-prods"></div>
+  </div>
+  <div class="ic" id="fm-cust">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">⚗️ Fórmula Customizada</div></div><div class="cdb">
+      <div class="fg"><div class="fl">Nome</div><input class="fi" id="fc-n" oninput="ps()"/></div>
+      <div class="fg"><div class="fl">Componentes ativos</div><textarea class="ft" id="fc-c" rows="3" placeholder="Ex: Minoxidil 5% + Caffeine 2%..." oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Veículo</div><input class="fi" id="fc-v" oninput="ps()"/></div>
+      <div class="fg"><div class="fl">Indicação</div><textarea class="ft" id="fc-i" rows="2" oninput="ps()"></textarea></div>
+      <div class="fg"><div class="fl">Modo de uso</div><textarea class="ft" id="fc-u" rows="2" oninput="ps()"></textarea></div>
+      <div class="g2">
+        <div class="fg"><div class="fl">Qtd (mL/g)</div><input class="fi" id="fc-q" type="number" oninput="ps()"/></div>
+        <div class="fg"><div class="fl">Validade (dias)</div><input class="fi" id="fc-vld" type="number" oninput="ps()"/></div>
+      </div>
+      <div style="display:flex;gap:7px;margin-top:5px">
+        <button class="bn bg" onclick="saveFormula()">💾 Salvar</button>
+        <button class="bn bg" onclick="genAI('fc-rep','fc-rept',`Otimize fórmula capilar:\n${G('fc-n')?.value}\nComponentes:${G('fc-c')?.value}\nVeículo:${G('fc-v')?.value}`,AGENS[1].s)">🤖 Otimizar IA</button>
+      </div>
+      <div id="fc-rep" style="display:none;margin-top:7px" class="rbox"><pre class="rtxt" id="fc-rept"></pre></div>
+    </div></div>
+    <div id="custom-formulas" style="margin-top:7px"></div>
+  </div>
+</div>
+
+<!-- ══ FARMÁCIA ══ -->
+<div class="pg" id="pg-farmacia">
+  <div class="itv">
+    <button class="it on" onclick="sit('fa','rx')">💊 Prescrições</button>
+    <button class="it" onclick="sit('fa','prot')">📋 Protocolos</button>
+    <button class="it" onclick="sit('fa','anv')">🏥 ANVISA</button>
+  </div>
+  <div class="ic on" id="fa-rx">
+    <button class="bn bg bs" onclick="openM('rx-m')" style="margin-bottom:9px">+ Nova Prescrição</button>
+    <div id="rx-list"><div class="emp"><div style="font-size:26px">💊</div><div>Nenhuma prescrição.</div></div></div>
+  </div>
+  <div class="ic" id="fa-prot">
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px">
+      <button class="bn bg bs" onclick="loadProt('pre')">📋 Protocolo Pré-op</button>
+      <button class="bn bg bs" onclick="loadProt('pos')">📋 Protocolo Pós-op</button>
+      <button class="bn bo bs" onclick="loadProt('aga')">💊 Manutenção AGA</button>
+      <button class="bn bo bs" onclick="loadProt('aff')">💊 Protocolo AFF</button>
+    </div>
+    <div id="prot-box" style="font-size:11px;color:var(--gr);line-height:1.9;background:var(--n2);border:1px solid var(--n4);border-radius:var(--r);padding:12px"></div>
+  </div>
+  <div class="ic" id="fa-anv">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">🏥 Compliance ANVISA</div></div><div class="cdb" style="font-size:10px;color:var(--gr);line-height:1.9">
+      <b style="color:var(--g1)">Notificação Simplificada (NS):</b><br>Produtos cosméticos de baixo risco. Registro na ANVISA antes da comercialização.<br>
+      <b style="color:var(--g1)">Registro (R):</b><br>Cosméticos de maior risco, medicamentos, correlatos. Processo mais rigoroso com estudos de segurança e eficácia.<br>
+      <b style="color:var(--g1)">CFM — Prescrição médica:</b><br>Receituário padrão para controlados. Receituário especial para psicotrópicos. Notificação de Receita para entorpecentes.<br>
+      <b style="color:var(--g1)">Resolução RDC 752/2022:</b><br>Regulamenta produtos cosméticos. Lista negativa (ingredientes proibidos) e lista positiva (ingredientes com restrição).<br>
+      <b style="color:var(--g1)">RDC 204/2017:</b><br>Boas práticas de manipulação. Aplicável às farmácias de manipulação parceiras.
+    </div></div>
+  </div>
+</div>
+
+<!-- ══ VITAL 15D ══ -->
+<div class="pg" id="pg-vital15d">
+  <div class="itv">
+    <button class="it on" onclick="sit('vt','reg')">❤️ Registrar</button>
+    <button class="it" onclick="sit('vt','graf')">📈 Gráfico</button>
+    <button class="it" onclick="sit('vt','hist2')">📋 Histórico</button>
+  </div>
+  <div class="ic on" id="vt-reg">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">❤️ Sinais Vitais</div></div><div class="cdb">
+      <div class="g3">
+        <div class="fg"><div class="fl">FC (bpm)</div><input class="fi" id="v-fc" type="number" oninput="vCk()"/></div>
+        <div class="fg"><div class="fl">PAS (mmHg)</div><input class="fi" id="v-pas" type="number" oninput="vCk()"/></div>
+        <div class="fg"><div class="fl">PAD (mmHg)</div><input class="fi" id="v-pad" type="number" oninput="vCk()"/></div>
+        <div class="fg"><div class="fl">SpO2 (%)</div><input class="fi" id="v-spo2" type="number" oninput="vCk()"/></div>
+        <div class="fg"><div class="fl">FR (irpm)</div><input class="fi" id="v-fr" type="number" oninput="vCk()"/></div>
+        <div class="fg"><div class="fl">Temp. (°C)</div><input class="fi" id="v-temp" type="number" step="0.1" oninput="vCk()"/></div>
+      </div>
+      <div id="vit-alerts" style="margin-bottom:5px"></div>
+      <div class="g2">
+        <div class="fg"><div class="fl">Dia pós-op</div>
+          <select class="fs" id="v-dia">
+            <option value="0">D0 — Intraop</option>
+            <option value="1">D1</option><option value="2">D2</option><option value="3">D3</option>
+            <option value="4">D4</option><option value="5">D5</option><option value="6">D6</option>
+            <option value="7">D7</option><option value="8">D8</option><option value="9">D9</option>
+            <option value="10">D10</option><option value="11">D11</option><option value="12">D12</option>
+            <option value="13">D13</option><option value="14">D14</option><option value="15">D15</option>
+          </select>
+        </div>
+        <div class="fg"><div class="fl">Obs</div><textarea class="ft" id="v-obs" rows="2"></textarea></div>
+      </div>
+      <button class="bn bg bs" onclick="addVital()">+ Registrar</button>
+    </div></div>
+    <canvas id="vchart" style="margin-top:9px"></canvas>
+  </div>
+  <div class="ic" id="vt-graf">
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px">
+      <button class="bn bo bs" id="vb-fc" onclick="setVC('fc')">FC</button>
+      <button class="bn bo bs" id="vb-pas" onclick="setVC('pas')">PAS</button>
+      <button class="bn bo bs" id="vb-pad" onclick="setVC('pad')">PAD</button>
+      <button class="bn bo bs" id="vb-spo2" onclick="setVC('spo2')">SpO2</button>
+      <button class="bn bo bs" id="vb-temp" onclick="setVC('temp')">Temp</button>
+    </div>
+    <canvas id="vc15"></canvas>
+    <div id="vc-legend" style="font-size:9px;color:var(--gr);margin-top:5px;text-align:center"></div>
+  </div>
+  <div class="ic" id="vt-hist2">
+    <div id="vhist"><div class="emp"><div style="font-size:24px">❤️</div><div>Nenhum registro.</div></div></div>
+  </div>
+</div>
+
+<!-- ══ VBI ══ -->
+<div class="pg" id="pg-vbi">
+  <div class="pgs">
+    <div style="background:linear-gradient(135deg,var(--n3),var(--n2));border:1px solid var(--g1);border-radius:9px;padding:12px;margin-bottom:8px">
+      <div style="font-family:var(--fh);font-size:14px;color:var(--g1);letter-spacing:1px">🧬 VISADERM BIOMARKER INDEX™</div>
+      <div style="font-size:9px;color:var(--gr);margin-top:3px;line-height:1.5">Índice original — análise de biomarcadores da área doadora intraoperatória para personalizar tratamento pós-transplante.</div>
+    </div>
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">📊 Parâmetros VBI</div></div><div class="cdb">
+      <div class="g2">
+        <div class="fg"><div class="fl">Calibre médio doadora (mm)</div><input class="fi" id="vbi-cal" type="number" step="0.01" oninput="calcVbi()"/></div>
+        <div class="fg"><div class="fl">Densidade doadora (UF/cm²)</div><input class="fi" id="vbi-dens" type="number" oninput="calcVbi()"/></div>
+        <div class="fg"><div class="fl">Anágenos doadora (%)</div><input class="fi" id="vbi-ana" type="number" oninput="calcVbi()"/></div>
+        <div class="fg"><div class="fl">Relação fios/UF</div><input class="fi" id="vbi-fios" type="number" step="0.1" oninput="calcVbi()"/></div>
+        <div class="fg"><div class="fl">GII (Integrity Index %)</div><input class="fi" id="vbi-gii" type="number" oninput="calcVbi()"/></div>
+        <div class="fg"><div class="fl">Taxa transecção (%)</div><input class="fi" id="vbi-tr" type="number" oninput="calcVbi()"/></div>
+      </div>
+      <div class="fg"><div class="fl">Morfologia folicular predominante</div>
+        <select class="fs" id="vbi-morf" onchange="calcVbi()">
+          <option value="">—</option>
+          <option value="3">Calibroso, anágeno, múltiplos fios</option>
+          <option value="2">Calibre médio, misto</option>
+          <option value="1">Fino, telógeno predominante</option>
+          <option value="0">Velus / miniaturizado</option>
+        </select>
+      </div>
+      <div id="vbi-res" style="margin-top:9px"></div>
+    </div></div>
+    <button class="bn bg bf" onclick="genAI('vbi-rep','vbi-rept',`VBI Score. Cal:${G('vbi-cal')?.value}mm|Dens:${G('vbi-dens')?.value}|Anag:${G('vbi-ana')?.value}%|Fios/UF:${G('vbi-fios')?.value}|GII:${G('vbi-gii')?.value}%|Trans:${G('vbi-tr')?.value}%|Morf:${G('vbi-morf')?.value}`,AGENS[3].s)">🤖 Análise VBI Completa com IA</button>
+    <div id="vbi-rep" style="display:none;margin-top:7px" class="rbox"><pre class="rtxt" id="vbi-rept"></pre></div>
+  </div>
+</div>
+
+<!-- ══ PIPELINE ══ -->
+<div class="pg" id="pg-pipeline">
+  <div class="chatw">
+    <div class="abar" id="abar"></div>
+    <div class="adesc" id="adesc">Selecione um agente.</div>
+    <div class="chatm" id="chatm"><div style="text-align:center;padding:18px;color:var(--gr2);font-size:10px">Selecione um agente acima e inicie.</div></div>
+    <div class="chatb">
+      <textarea class="chati" id="chat-inp" rows="2" placeholder="Digite... (Enter envia, Shift+Enter nova linha)"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"></textarea>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <button class="bn bg" onclick="sendChat()" id="chat-send" style="padding:8px 10px">▶</button>
+        <button class="bn bo" onclick="clearChat()" style="padding:5px 9px;font-size:9px">✕</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FINANCEIRO ══ -->
+<div class="pg" id="pg-financeiro">
+  <div id="fin-lock" style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:22px">
+    <div style="font-size:30px;margin-bottom:7px">🔐</div>
+    <div style="font-family:var(--fh);font-size:14px;color:var(--g1);margin-bottom:3px">Acesso Restrito</div>
+    <div style="color:var(--gr2);font-size:10px;margin-bottom:14px;text-align:center">PIN de 6 dígitos</div>
+    <div class="pindis" id="pindis">_ _ _ _ _ _</div>
+    <div class="pinpad" id="pinpad"></div>
+    <div style="color:var(--er);font-size:10px;margin-top:7px;min-height:14px" id="pin-err"></div>
+  </div>
+  <div id="fin-cont" style="display:none;flex:1;overflow-y:auto">
+    <div class="pgs">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px">
+        <div style="font-family:var(--fh);font-size:16px;color:var(--g1)">Financeiro</div>
+        <div style="display:flex;gap:6px">
+          <button class="bn bg bs" onclick="openM('fin-m')">+ Lançamento</button>
+          <button class="bn br bs" onclick="lockFin()">🔒</button>
+        </div>
+      </div>
+      <div class="g3">
+        <div class="sc"><div class="sl">Receita Mês</div><div class="sv2" id="fn-rec" style="color:var(--ok)">R$ 0</div></div>
+        <div class="sc"><div class="sl">Despesas</div><div class="sv2" id="fn-des" style="color:var(--er)">R$ 0</div></div>
+        <div class="sc"><div class="sl">Resultado</div><div class="sv2" id="fn-res">R$ 0</div></div>
+      </div>
+      <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">📋 Lançamentos</div></div><div class="cdb" id="fin-list"><div class="emp"><div style="font-size:24px">💰</div><div>Sem lançamentos.</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NFS-e ══ -->
+<div class="pg" id="pg-nfse">
+  <div class="pgs">
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">🧾 NFS-e — Blumenau/SC — ISS 2%</div></div><div class="cdb">
+      <div class="g2">
+        <div class="fg"><div class="fl">Tomador</div><input class="fi" id="nf-tom" oninput="calcNf()"/></div>
+        <div class="fg"><div class="fl">CPF/CNPJ</div><input class="fi" id="nf-cpf" oninput="calcNf()"/></div>
+        <div class="fg"><div class="fl">Data prestação</div><input class="fi" id="nf-dt" type="date" oninput="calcNf()"/></div>
+        <div class="fg"><div class="fl">Competência</div><input class="fi" id="nf-comp" placeholder="MM/AAAA" oninput="calcNf()"/></div>
+      </div>
+      <div class="fg"><div class="fl">Discriminação dos serviços</div><textarea class="ft" id="nf-desc" rows="3" placeholder="Procedimento de Transplante Capilar FUE..." oninput="calcNf()"></textarea></div>
+      <div class="g2">
+        <div class="fg"><div class="fl">Valor bruto (R$)</div><input class="fi" id="nf-val" type="number" step="0.01" oninput="calcNf()"/></div>
+        <div class="fg"><div class="fl">ISS 2% Blumenau/SC</div><input class="fi" id="nf-iss" readonly style="color:var(--g1)"/></div>
+        <div class="fg"><div class="fl">IRRF 1,5%</div><input class="fi" id="nf-irrf" readonly/></div>
+        <div class="fg"><div class="fl">Valor líquido</div><input class="fi" id="nf-liq" readonly style="color:var(--ok)"/></div>
+      </div>
+      <button class="bn bg bf" onclick="prevNfse()">👁 Visualizar NFS-e</button>
+    </div></div>
+    <div id="nf-prev" style="display:none">
+      <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">Pré-visualização</div><button class="bn bo bs" onclick="window.print()">🖨 Imprimir</button></div>
+      <div class="cdb"><div class="nfbox" id="nf-box"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ARQUIVOS ══ -->
+<div class="pg" id="pg-arquivos">
+  <div class="pgs">
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:4px">
+      <button class="bn bg bs" onclick="G('arq-i').click()">🖼 Imagens</button>
+      <button class="bn bo bs" onclick="G('arq-d').click()">📁 Docs</button>
+      <input type="file" id="arq-i" accept="image/*" multiple hidden onchange="hImgUp(event,'arqImgs','arq-grid','arq')"/>
+      <input type="file" id="arq-d" accept=".pdf,.docx,.xlsx,.csv,.txt" multiple hidden onchange="hDoc(event)"/>
+    </div>
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">🖼 Imagens</div></div><div class="cdb" id="arq-grid" class="igrid"><div class="emp"><div style="font-size:24px">🖼</div><div>Sem imagens.</div></div></div></div>
+    <div class="cd"><div class="cdh"><div class="cdt" style="color:var(--g1)">📁 Documentos</div></div><div class="cdb" id="arq-docs"><div class="emp"><div style="font-size:24px">📂</div><div>Sem documentos.</div></div></div></div>
+  </div>
+</div>
+```
+
+  </div><!-- /main -->
+</div><!-- /app -->
+<!-- MODALS -->
+<div class="movl" id="api-m" style="display:none"><div class="mod"><div class="modt">🔑 Chave API Anthropic</div>
+  <p style="font-size:10px;color:var(--gr);margin-bottom:10px">Armazenada somente neste dispositivo.</p>
+  <div class="fg"><div class="fl">sk-ant-...</div><input class="fi" id="api-inp" type="password" placeholder="Cole sua chave"/></div>
+  <div class="moda"><button class="bn bo bs" onclick="closeM('api-m')">Cancelar</button><button class="bn bg bs" onclick="saveApi()">Salvar</button></div>
+</div></div>
+
+<div class="movl" id="pt-m" style="display:none"><div class="mod"><div class="modt">👤 Novo Paciente</div>
+  <div class="fg"><div class="fl">Nome *</div><input class="fi" id="pm-n"/></div>
+  <div class="g2"><div class="fg"><div class="fl">ID</div><input class="fi" id="pm-id" placeholder="VSD..."/></div><div class="fg"><div class="fl">Nasc.</div><input class="fi" id="pm-nb" type="date"/></div></div>
+  <div class="g2"><div class="fg"><div class="fl">Sexo</div><select class="fs" id="pm-s"><option value="">—</option><option>Feminino</option><option>Masculino</option></select></div><div class="fg"><div class="fl">Diagnóstico</div><input class="fi" id="pm-dx"/></div></div>
+  <div class="fg"><div class="fl">Obs</div><textarea class="ft" id="pm-obs" rows="2"></textarea></div>
+  <div class="moda"><button class="bn bo bs" onclick="closeM('pt-m')">Cancelar</button><button class="bn bg bs" onclick="savePt()">Salvar</button></div>
+</div></div>
+
+<div class="movl" id="fin-m" style="display:none"><div class="mod"><div class="modt">💰 Lançamento</div>
+  <div class="fg"><div class="fl">Tipo</div><select class="fs" id="fm-tp"><option value="receita">↑ Receita</option><option value="despesa">↓ Despesa</option></select></div>
+  <div class="fg"><div class="fl">Descrição</div><input class="fi" id="fm-ds"/></div>
+  <div class="g2"><div class="fg"><div class="fl">Valor (R$)</div><input class="fi" id="fm-vl" type="number" step="0.01"/></div><div class="fg"><div class="fl">Data</div><input class="fi" id="fm-dt" type="date"/></div></div>
+  <div class="fg"><div class="fl">Pagamento</div><select class="fs" id="fm-pg"><option>PIX</option><option>Dinheiro</option><option>Cartão Crédito</option><option>Cartão Débito</option><option>Plano de Saúde</option><option>Transferência</option></select></div>
+  <div class="moda"><button class="bn bo bs" onclick="closeM('fin-m')">Cancelar</button><button class="bn bg bs" onclick="saveFin()">Salvar</button></div>
+</div></div>
+
+<div class="movl" id="rx-m" style="display:none"><div class="mod"><div class="modt">💊 Nova Prescrição</div>
+  <div class="fg"><div class="fl">Medicamento</div><input class="fi" id="rx-med"/></div>
+  <div class="g2"><div class="fg"><div class="fl">Dose</div><input class="fi" id="rx-dose" placeholder="500mg"/></div><div class="fg"><div class="fl">Via</div><select class="fs" id="rx-via"><option>VO</option><option>IV</option><option>IM</option><option>SC</option><option>Tópica</option></select></div></div>
+  <div class="fg"><div class="fl">Posologia</div><input class="fi" id="rx-pos" placeholder="1cp 12/12h 7d"/></div>
+  <div class="fg"><div class="fl">Obs</div><textarea class="ft" id="rx-obs" rows="2"></textarea></div>
+  <div class="moda"><button class="bn bo bs" onclick="closeM('rx-m')">Cancelar</button><button class="bn bg bs" onclick="saveRx()">Salvar</button></div>
+</div></div>
+
+<div class="movl" id="ev-m" style="display:none"><div class="mod"><div class="modt">📈 Evolução</div>
+  <div class="g2"><div class="fg"><div class="fl">Data</div><input class="fi" id="ev-dt" type="date"/></div><div class="fg"><div class="fl">Dia PO</div><input class="fi" id="ev-dia" placeholder="D30..."/></div></div>
+  <div class="fg"><div class="fl">Avaliação clínica</div><textarea class="ft" id="ev-av" rows="3"></textarea></div>
+  <div class="fg"><div class="fl">Crescimento observado</div><textarea class="ft" id="ev-cr" rows="2"></textarea></div>
+  <div class="fg"><div class="fl">Queixas / intercorrências</div><textarea class="ft" id="ev-qx" rows="2"></textarea></div>
+  <div class="fg"><div class="fl">Conduta</div><textarea class="ft" id="ev-ct" rows="2"></textarea></div>
+  <div class="moda"><button class="bn bo bs" onclick="closeM('ev-m')">Cancelar</button><button class="bn bg bs" onclick="saveEvol()">Salvar</button></div>
+</div></div>
+
+<div class="lbox" id="lightbox" style="display:none" onclick="closeLB()">
+  <div class="lbi" onclick="event.stopPropagation()">
+    <img id="lb-img" src="" alt=""/>
+    <div id="lb-nm" style="color:var(--g1);font-weight:600;margin-top:7px;font-size:11px"></div>
+    <div id="lb-dt2" style="color:var(--gr2);font-size:9px;margin-top:2px"></div>
+    <div style="display:flex;gap:6px;margin-top:9px;justify-content:center;flex-wrap:wrap">
+      <button class="bn bg bs" id="lb-dop" style="display:none" onclick="analLB()">🤖 Analisar Doppler</button>
+      <a id="lb-dl" class="bn bo bs" download>⬇</a>
+      <button class="bn bo bs" onclick="closeLB()">Fechar</button>
+    </div>
+  </div>
+</div>
+<script>
+// ╔══════════════════════════════════════════════════════════╗
+// ║  VISADERM v16 — Dr. Rafael Reinert | CRM/SC 16789       ║
+// ╚══════════════════════════════════════════════════════════╝
+
+// ── CORE ─────────────────────────────────────────────────
+const SK=‘vsd16’;
+let ST=lST();
+function lST(){try{return JSON.parse(localStorage.getItem(SK)||’{}’)}catch{return{}}}
+function sST(){try{localStorage.setItem(SK,JSON.stringify(ST));showSV()}catch{}}
+let _stt;function ps(){clearTimeout(_stt);_stt=setTimeout(sST,1200)}
+function showSV(){const b=G(‘svb’);if(!b)return;b.style.display=‘inline’;clearTimeout(b._t);b._t=setTimeout(()=>b.style.display=‘none’,2200)}
+const G=id=>document.getElementById(id);
+const fmt2=n=>n.toLocaleString(‘pt-BR’,{minimumFractionDigits:2});
+const fdt=()=>new Date().toLocaleDateString(‘pt-BR’);
+const ftm=()=>new Date().toLocaleTimeString(‘pt-BR’);
+const dl=ms=>new Promise(r=>setTimeout(r,ms));
+
+// ── LOGIN ─────────────────────────────────────────────────
+function doLogin(){
+const u=G(‘lu’).value.trim(),p=G(‘lp’).value.trim();
+if(u===‘visaderm’&&p===‘1234’){G(‘LS’).style.display=‘none’;G(‘A’).classList.add(‘on’);initApp()}
+else G(‘le’).textContent=‘Usuário ou senha incorretos.’;
+}
+G(‘lp’).addEventListener(‘keydown’,e=>{if(e.key===‘Enter’)doLogin()});
+G(‘lu’).addEventListener(‘keydown’,e=>{if(e.key===‘Enter’)G(‘lp’).focus()});
+
+// ── TABS ──────────────────────────────────────────────────
+const TABS=[
+{id:‘paciente’,l:‘PACIENTE’,i:‘👤’},{id:‘preop’,l:‘PRÉ-OP’,i:‘📋’},
+{id:‘exames’,l:‘EXAMES’,i:‘🧪’},{id:‘transop’,l:‘TRANS-OP’,i:‘⚕️’},
+{id:‘posop’,l:‘PÓS-OP’,i:‘💊’},{id:‘formulas’,l:‘FÓRMULAS’,i:‘⚗️’},
+{id:‘farmacia’,l:‘FARMÁCIA’,i:‘🏥’},{id:‘vital15d’,l:‘VITAL 15D’,i:‘❤️’},
+{id:‘vbi’,l:‘VBI’,i:‘🧬’},{id:‘pipeline’,l:‘PIPELINE’,i:‘🤖’},
+{id:‘financeiro’,l:‘FINANCEIRO’,i:‘💰’},{id:‘nfse’,l:‘NFS-e’,i:‘🧾’},
+{id:‘arquivos’,l:‘ARQUIVOS’,i:‘📁’},
+];
+let _pg=‘paciente’;
+function buildTabs(){
+G(‘tnav’).innerHTML=TABS.map(t=>`<button class="tbtn${t.id===_pg?' on':''}" id="tb-${t.id}" onclick="showPg('${t.id}')"><span class="ti">${t.i}</span>${t.l}</button>`).join(’’);
+}
+function showPg(id){
+document.querySelectorAll(’.pg’).forEach(p=>p.classList.remove(‘on’));
+document.querySelectorAll(’.tbtn’).forEach(b=>b.classList.remove(‘on’));
+const pg=G(‘pg-’+id);if(pg)pg.classList.add(‘on’);
+const btn=G(‘tb-’+id);if(btn)btn.classList.add(‘on’);
+_pg=id;
+if(id===‘paciente’)renderPtList();
+if(id===‘financeiro’)renderFinList();
+}
+function sit(prefix,tab){
+const sid=prefix+’-’+tab;
+const pg=G(‘pg-’+_pg);
+if(pg){
+pg.querySelectorAll(’.it’).forEach(b=>{if(b.getAttribute(‘onclick’)?.includes(prefix+’-’))b.classList.remove(‘on’)});
+pg.querySelectorAll(’.ic’).forEach(c=>{if(c.id?.startsWith(prefix+’-’))c.classList.remove(‘on’)});
+}
+const el=G(sid);if(el)el.classList.add(‘on’);
+document.querySelectorAll(’.it’).forEach(b=>{if(b.getAttribute(‘onclick’)===`sit('${prefix}','${tab}')`)b.classList.add(‘on’)});
+}
+
+// ── ARTERIES ──────────────────────────────────────────────
+const ARTS=[
+{k:‘ats’,l:‘ATS — Temporal Superficial’,c:’#C9A84C’,r:{PS:[15,40],ED:[3,8],RI:[0.6,0.75],PI:[0,1.5]}},
+{k:‘ao’,l:‘AO — Occipital’,c:’#4C9AC9’,r:{PS:[12,35],ED:[2,6],RI:[0.6,0.75],PI:[0,1.6]}},
+{k:‘aap’,l:‘AAP — Auricular Posterior’,c:’#9AC94C’,r:{PS:[10,30],ED:[2,5],RI:[0.58,0.72],PI:[0,1.5]}},
+{k:‘ace’,l:‘ACE — Carótida Externa’,c:’#C94C9A’,r:{PS:[20,60],ED:[5,15],RI:[0.55,0.75],PI:[0,1.6]}},
+];
+const TIER={
+liberar:{l:‘LIBERAR’,c:’#22c55e’,bg:’#052e16’,i:‘🟢’,cl:‘tl-lib’},
+atencao:{l:‘ATENÇÃO’,c:’#f59e0b’,bg:’#2d1d00’,i:‘🟡’,cl:‘tl-ate’},
+repetir:{l:‘REPETIR’,c:’#ef4444’,bg:’#2d0a0a’,i:‘🔴’,cl:‘tl-rep’},
+contraindicar:{l:‘CONTRAINDICAR’,c:’#dc2626’,bg:’#1a0000’,i:‘⛔’,cl:‘tl-con’},
+};
+function buildArtPanels(){
+const w=G(‘dop-artery-panels’);if(!w)return;
+w.innerHTML=ARTS.map(a=>`<div class="cd" style="margin-bottom:7px"> <div class="cdh"><div class="cdt" style="color:${a.c}">${a.l}</div><div id="ti-${a.k}" class="tp" style="display:none"></div></div> <div class="cdb"><div class="ag"> ${['PS','ED','SD','RI','PI'].map(p=>`<div class="pb2">
+<div class="pl2">${p}</div>
+<input class="pi2" id="av-${a.k}-${p}" type="number" step="0.01" placeholder="—" oninput="avCh('${a.k}','${p}')"/>
+<div style="font-size:7px;color:var(--gr2)">${a.r[p]?a.r[p][0]+’–’+a.r[p][1]:’’}</div>
+<div id="ps-${a.k}-${p}" style="font-size:7px"></div>
+</div>`).join('')} <div class="pb2"><div class="pl2">Lado</div> <select class="fs pi2" id="av-${a.k}-sd" onchange="avCh('${a.k}','sd')"> <option value="">—</option><option>Dir.</option><option>Esq.</option><option>Bil.</option> </select> </div> </div></div></div>`).join(’’);
+}
+function cParam(v,mn,mx,hi=false){
+if(!v||isNaN(parseFloat(v)))return null;
+const n=parseFloat(v);
+if(hi){if(n>=mn&&n<=mx)return’ok’;if(n>mx*1.2)return’er’;return’wa’}
+if(n>=mn&&n<=mx)return’ok’;if(n>mx*1.3||n<mn*0.5)return’er’;return’wa’;
+}
+function getTier(k,vs){
+const a=ARTS.find(x=>x.k===k);if(!a)return null;
+const c=[vs.PS&&cParam(vs.PS,a.r.PS[0],a.r.PS[1]),vs.ED&&cParam(vs.ED,a.r.ED[0],a.r.ED[1]),
+vs.RI&&cParam(vs.RI,a.r.RI[0],a.r.RI[1],true),vs.PI&&cParam(vs.PI,a.r.PI[0],a.r.PI[1],true)].filter(Boolean);
+if(!c.length)return null;
+if(c.includes(‘er’))return’contraindicar’;
+if(c.filter(x=>x===‘wa’).length>=2)return’repetir’;
+if(c.includes(‘wa’))return’atencao’;
+return’liberar’;
+}
+function avCh(k,p){
+const el=G(`av-${k}-${p}`);if(!el)return;
+if(!ST.av)ST.av={};if(!ST.av[k])ST.av[k]={};
+ST.av[k][p]=el.value;updArtTier(k);updGlobalTier();ps();
+}
+function updArtTier(k){
+const vs=ST.av?.[k]||{};const a=ARTS.find(x=>x.k===k);const tier=getTier(k,vs);
+[‘PS’,‘ED’,‘SD’,‘RI’,‘PI’].forEach(p=>{
+const inp=G(`av-${k}-${p}`);const st=G(`ps-${k}-${p}`);if(!inp)return;
+const ref=a.r[p];if(!ref||!vs[p]){inp.className=‘pi2’;if(st)st.textContent=’’;return}
+const s=cParam(vs[p],ref[0],ref[1],[‘RI’,‘PI’].includes(p));
+inp.className=`pi2 ${s}`;
+if(st){st.style.color=s===‘ok’?’#22c55e’:s===‘wa’?’#f59e0b’:’#ef4444’;st.textContent=s===‘ok’?‘✓’:s===‘wa’?‘⚠’:‘✗’}
+});
+const bd=G(`ti-${k}`);
+if(bd){if(tier){const t=TIER[tier];bd.style.display=‘inline’;bd.className=`tp ${t.cl}`;bd.textContent=`${t.i} ${t.l}`}else bd.style.display=‘none’}
+}
+function updGlobalTier(){
+const ts=ARTS.map(a=>getTier(a.k,ST.av?.[a.k]||{})).filter(Boolean);
+const g=[‘contraindicar’,‘repetir’,‘atencao’,‘liberar’].find(t=>ts.includes(t))||null;
+const el=G(‘gtier’);if(!el)return;
+if(g){const t=TIER[g];el.style.display=‘flex’;el.className=`gt tp ${t.cl}`;el.textContent=`${t.i} ${t.l}`}else el.style.display=‘none’;
+}
+function techCh(){
+if(!ST.tp)ST.tp={};
+[‘freq’,‘gain’,‘depth’,‘angle’,‘vol’].forEach(k=>{const el=G(‘tp-’+k);if(el)ST.tp[k]=el.value});
+const ang=parseFloat(ST.tp.angle||60);const aa=G(‘ang-alert’);if(aa)aa.style.display=(ang<45||ang>60)?‘block’:‘none’;ps();
+}
+
+// ── API ───────────────────────────────────────────────────
+async function callAPI(msgs,sys,maxT=2000){
+const key=ST.apiKey||’’;
+if(!key){alert(‘Configure chave API: botão 🔑’);throw new Error(‘No key’)}
+const r=await fetch(‘https://api.anthropic.com/v1/messages’,{
+method:‘POST’,
+headers:{‘Content-Type’:‘application/json’,‘x-api-key’:key,‘anthropic-version’:‘2023-06-01’,‘anthropic-dangerous-direct-browser-access’:‘true’},
+body:JSON.stringify({model:‘claude-sonnet-4-20250514’,max_tokens:maxT,system:sys,messages:msgs}),
+});
+const txt=await r.text();const d=JSON.parse(txt);
+if(d.error)throw new Error(d.error.message);
+return d.content?.map(c=>c.text||’’).join(’’)||’’;
+}
+async function genAI(repId,txtId,prompt,sys,maxT=1500){
+const rep=G(repId);const txt=G(txtId);if(!rep||!txt)return;
+rep.style.display=‘block’;txt.textContent=‘⏳ Gerando com IA…’;
+try{const r=await callAPI([{role:‘user’,content:prompt}],sys,maxT);txt.textContent=r;if(!ST.rc)ST.rc=0;ST.rc++;sST()}
+catch(e){txt.textContent=’❌ ’+e.message}
+}
+
+// ── DOPPLER REPORT ────────────────────────────────────────
+const DOP_SYS=`VISADERM DOPPLER AI v2.0 | Dr. Rafael Reinert|CRM/SC 16789|Visaderm Day Hospital. PROTOCOLO: 🟢LIBERAR|🟡ATENÇÃO|🔴REPETIR|⛔CONTRAINDICAR ATS:PS15-40|ED3-8|RI0,60-0,75|PI<1,50. AO:PS12-35. AAP:PS10-30. AFF estabilizada≥12m+HCQ=fibrose sequela(não inflamação ativa). AFF ativa=contraindicação frontoplastia. FORMATO:1)Tabela parâmetros+status 2)Classificação por artéria+global 3)Interpretação clínica 4)Implicações por procedimento 5)Adaptações técnicas 6)Manejo medicações 7)Checklist pré-op☐ 8)Parecer final. Encerre:"Cada unidade folicular é singular e irrepetível. Transplantá-la com precisão é ciência. Devolvê-la com naturalidade é arte." — Dr. Rafael Reinert|CRM/SC 16789|Visaderm`;
+
+function buildDopPrompt(){
+const av=ST.av||{},tp=ST.tp||{},pt=ST.curPt;
+const l=[`PACIENTE:${pt?.nome||'N/I'}|ID:${pt?.id||'N/I'}|${pt?.sexo||''}|Data:${fdt()}`];
+ARTS.forEach(a=>{const v=av[a.k]||{};if(Object.values(v).some(x=>x))l.push(`${a.k.toUpperCase()}:PS=${v.PS||'?'}|ED=${v.ED||'?'}|S/D=${v.SD||'?'}|RI=${v.RI||'?'}|PI=${v.PI||'?'}|Lado=${v.sd||'?'}`)});
+l.push(`CONFIG:Freq${tp.freq||'?'}MHz|Ganho${tp.gain||'?'}dB|Ângulo${tp.angle||'?'}°`);
+l.push(`DX:${G('dop-dx')?.value||'N/I'}\nEstab:${G('dop-estab')?.value||'N/I'}\nMeds:${G('dop-meds')?.value||'N/I'}`);
+return l.join(’\n’);
+}
+async function genDopReport(b64=null,mt=‘image/jpeg’){
+G(‘dop-rep-btn’).disabled=true;
+G(‘dop-loading’).style.display=‘flex’;G(‘dop-rep-box’).style.display=‘none’;
+try{
+const tp=buildDopPrompt();
+const content=b64?[{type:‘image’,source:{type:‘base64’,media_type:mt,data:b64}},{type:‘text’,text:`Analise imagem Doppler.\n\n${tp}`}]:tp;
+const r=await callAPI([{role:‘user’,content}],DOP_SYS,2000);
+showDopRep(r);if(!ST.rc)ST.rc=0;ST.rc++;sST();
+}catch(e){showDopRep(’❌ ’+e.message)}
+G(‘dop-loading’).style.display=‘none’;G(‘dop-rep-btn’).disabled=false;
+}
+function showDopRep(t){G(‘dop-rep-box’).style.display=‘block’;G(‘dop-rep-txt’).textContent=t;G(‘dop-exp-btn’).style.display=‘inline-flex’;ST.dopRep=t}
+
+async function runDopAuto(b64,mt=‘image/jpeg’){
+sit(‘tr’,‘dopp’);
+G(‘dop-loading’).style.display=‘flex’;G(‘dop-ldst’).textContent=‘🔍 Etapa 1/3 — OCR parâmetros…’;G(‘dop-rep-box’).style.display=‘none’;
+try{
+const ESYS=`OCR ultrassom Doppler. Responda APENAS JSON puro:{"PS":"","ED":"","SD":"","RI":"","PI":"","GN":"","D":"","F":"","angulo":"","volume":"","lado":"Direito"}`;
+const raw=await callAPI([{role:‘user’,content:[{type:‘image’,source:{type:‘base64’,media_type:mt,data:b64}},{type:‘text’,text:‘Extraia parâmetros. APENAS JSON.’}]}],ESYS,400);
+const p=JSON.parse(raw.replace(/`json|`/g,’’).trim());
+G(‘dop-ldst’).textContent=‘📊 Etapa 2/3 — Populando campos…’;
+if(p.PS||p.RI){
+if(!ST.av)ST.av={};ST.av.ats={PS:p.PS||’’,ED:p.ED||’’,SD:p.SD||’’,RI:p.RI||’’,PI:p.PI||’’,sd:p.lado||’’};
+[‘PS’,‘ED’,‘SD’,‘RI’,‘PI’].forEach(px=>{const el=G(`av-ats-${px}`);if(el)el.value=p[px]||’’});
+updArtTier(‘ats’);updGlobalTier();
+}
+if(p.angulo){if(!ST.tp)ST.tp={};ST.tp.angle=p.angulo.replace(/[^0-9.]/g,’’);const el=G(‘tp-angle’);if(el)el.value=ST.tp.angle}
+await dl(400);G(‘dop-ldst’).textContent=‘🤖 Etapa 3/3 — Gerando laudo…’;
+await genDopReport(b64,mt);
+}catch(e){G(‘dop-loading’).style.display=‘none’;showDopRep(’❌ ’+e.message)}
+}
+
+// ── DOPPLER IMAGES ────────────────────────────────────────
+function hDopImg(e){
+Array.from(e.target.files).forEach(f=>{
+const r=new FileReader();
+r.onload=async ev=>{
+const url=ev.target.result,b64=url.split(’,’)[1],mt=f.type||‘image/jpeg’;
+if(!ST.dopImgs)ST.dopImgs=[];
+ST.dopImgs.unshift({id:Date.now()+Math.random(),url,name:f.name,date:ftm()});
+sST();renderGrid(‘dopImgs’,‘dop-grid’,‘dop’);
+await runDopAuto(b64,mt);
+};r.readAsDataURL(f);
+});e.target.value=’’;
+}
+
+// ── GRAFTSCAN ─────────────────────────────────────────────
+const GS_FILTERS=[‘Normal’,‘Polarizado’,‘UV’,‘RGB-R’,‘RGB-G’,‘RGB-B’,‘Contraste’,‘FLIM’];
+let _gsZ=1;
+function hGsImg(e){
+const f=e.target.files[0];if(!f)return;
+const r=new FileReader();
+r.onload=ev=>{
+const el=G(‘gs-img-el’);el.src=ev.target.result;el.style.filter=‘none’;el.style.transform=‘scale(1)’;_gsZ=1;
+G(‘gs-prev-wrap’).style.display=‘block’;
+const fw=G(‘gs-filters’);fw.innerHTML=GS_FILTERS.map((f2,i)=>`<button class="fbtn${i===0?' on':''}" onclick="gsFilter('${f2}',this)">${f2}</button>`).join(’’);
+};r.readAsDataURL(f);e.target.value=’’;
+}
+function gsFilter(f,btn){
+document.querySelectorAll(’#gs-filters .fbtn’).forEach(b=>b.classList.remove(‘on’));btn.classList.add(‘on’);
+const el=G(‘gs-img-el’);if(!el)return;
+const fs={Normal:‘none’,Polarizado:‘contrast(1.3) saturate(0.7)’,UV:‘hue-rotate(240deg) saturate(2)’,
+‘RGB-R’:‘saturate(3)’,‘RGB-G’:‘saturate(3) hue-rotate(120deg)’,‘RGB-B’:‘saturate(3) hue-rotate(240deg)’,
+Contraste:‘contrast(2.5)’,FLIM:‘invert(1) hue-rotate(180deg)’};
+el.style.filter=fs[f]||‘none’;
+}
+function gsZoom(d){_gsZ=Math.max(0.5,Math.min(8,_gsZ+d));const el=G(‘gs-img-el’);if(el)el.style.transform=`scale(${_gsZ})`;G(‘gs-zlbl’).textContent=_gsZ+‘×’}
+function gsSv(){ps()}
+function gsCalc(){
+const tot=parseFloat(G(‘gs-tot’)?.value||0),u1=parseFloat(G(‘gs-u1’)?.value||0),u2=parseFloat(G(‘gs-u2’)?.value||0),
+u3=parseFloat(G(‘gs-u3’)?.value||0),u4=parseFloat(G(‘gs-u4’)?.value||0),
+tr=parseFloat(G(‘gs-tr’)?.value||0),dam=parseFloat(G(‘gs-dam’)?.value||0);
+if(!tot){[‘vqs’,‘gii’,‘trt’,‘risk’].forEach(k=>{const el=G(k+’-v’);if(el)el.textContent=’—’});G(‘gs-dist’).innerHTML=’’;return}
+const trtP=tot>0?(tr/tot)*100:0,damP=tot>0?(dam/tot)*100:0,gii=tot>0?((tot-tr-dam)/tot)*100:0;
+const avgF=tot>0?((u1+u2*2+u3*3+u4*4)/tot):0;
+let vqs=100-trtP*2-damP*1.5;if(avgF>2.5)vqs+=10;if(avgF>3)vqs+=5;vqs=Math.max(0,Math.min(100,Math.round(vqs)));
+const risk=trtP>10?‘ALTO’:trtP>5?‘MODERADO’:‘BAIXO’,rc=trtP>10?‘var(–er)’:trtP>5?‘var(–wa)’:‘var(–ok)’;
+setGI(‘vqs’,Math.round(vqs),’%’,vqs,‘var(–g1)’,vqs>=80?‘✅ Excelente’:vqs>=60?‘🟡 Adequado’:‘⚠️ Comprometido’);
+setGI(‘gii’,Math.round(gii),’%’,gii,‘var(–tl)’,gii>=90?‘✅ Excelente’:gii>=70?‘🟡 Adequado’:‘⚠️ Comprometido’);
+setGI(‘trt’,trtP.toFixed(1),’%’,Math.min(trtP,30),‘var(–wa)’,trtP<5?‘✅ Aceitável’:trtP<10?‘🟡 Atenção’:‘⚠️ Elevada’);
+const rv=G(‘risk-v’);if(rv){rv.textContent=risk;rv.style.color=rc}const rvc=G(‘risk-c’);if(rvc)rvc.textContent=`Transecção ${trtP.toFixed(1)}%`;
+const dt=G(‘gs-dist’);
+if(dt&&tot)dt.innerHTML=`<table class="tbl"><thead><tr><th>UF</th><th>Qtd</th><th>%</th><th></th></tr></thead><tbody>
+<tr><td>1 fio</td><td>${u1}</td><td>${((u1/tot)*100).toFixed(1)}%</td><td>simples</td></tr>
+<tr><td>2 fios</td><td>${u2}</td><td>${((u2/tot)*100).toFixed(1)}%</td><td>duplos</td></tr>
+<tr><td>3 fios</td><td>${u3}</td><td>${((u3/tot)*100).toFixed(1)}%</td><td>triplos</td></tr>
+<tr><td>4+ fios</td><td>${u4}</td><td>${((u4/tot)*100).toFixed(1)}%</td><td>múltiplos</td></tr>
+<tr><td><b>Total</b></td><td><b>${tot}</b></td><td>100%</td><td>avg ${avgF.toFixed(2)}</td></tr>
+<tr><td colspan="4" style="color:var(--wa)">Transect:${tr}(${trtP.toFixed(1)}%) | Dano:${dam}(${damP.toFixed(1)}%)</td></tr>
+
+  </tbody></table>`;
+  G('gs-rep-empty').style.display='none';
+}
+function setGI(k,v,u,p,c,cl){
+  const sv=G(k+'-v'),sb=G(k+'-b'),sc=G(k+'-c');
+  if(sv){sv.textContent=v+u;sv.style.color=c}if(sb){sb.style.width=Math.min(p,100)+'%';sb.style.background=c}if(sc)sc.textContent=cl;
+}
+async function genGsRep(){
+  G('gs-loading').style.display='flex';G('gs-rep-box').style.display='none';G('gs-rep-empty').style.display='none';
+  const SYS=`VISADERM GRAFTSCAN AI v2.1 | Laudo intraoperatório FUE. VQS, GII, taxa transecção, risk score, recomendações. Dr. Rafael Reinert|CRM/SC 16789|Visaderm.`;
+  const prompt=`Laudo GraftScan:\nTotal:${G('gs-tot')?.value||0}UF|UF1:${G('gs-u1')?.value||0}|UF2:${G('gs-u2')?.value||0}|UF3:${G('gs-u3')?.value||0}|UF4+:${G('gs-u4')?.value||0}\nTransect:${G('gs-tr')?.value||0}|Dano:${G('gs-dam')?.value||0}|Tempo:${G('gs-tempo')?.value||0}min|Temp:${G('gs-temp')?.value||0}°C|Sol:${G('gs-sol')?.value||'N/I'}`;
+  try{const r=await callAPI([{role:'user',content:prompt}],SYS,1500);G('gs-rep-txt').textContent=r;G('gs-rep-box').style.display='block';if(!ST.rc)ST.rc=0;ST.rc++;sST()}
+  catch(e){G('gs-rep-txt').textContent='❌ '+e.message;G('gs-rep-box').style.display='block'}
+  G('gs-loading').style.display='none';
+}
+
+// ── ANESTESIA ─────────────────────────────────────────────
+const DRUGS=[
+{n:‘Warfarina’,r:‘alto’,c:’#ef4444’,o:‘Suspender 5 dias. INR<1,5.’},
+{n:‘Rivaroxabana’,r:‘alto’,c:’#ef4444’,o:‘Suspender 24–48h.’},
+{n:‘Apixabana’,r:‘alto’,c:’#ef4444’,o:‘Suspender 24–48h.’},
+{n:‘AAS’,r:‘moderado’,c:’#f59e0b’,o:‘Suspender 7–10 dias.’},
+{n:‘Clopidogrel’,r:‘alto’,c:’#ef4444’,o:‘Suspender 7–10 dias.’},
+{n:‘Ticagrelor’,r:‘alto’,c:’#ef4444’,o:‘Suspender 5 dias.’},
+{n:‘Isotretinoína’,r:‘alto’,c:’#ef4444’,o:‘Suspender 6 MESES.’},
+{n:‘MAOIs’,r:‘alto’,c:’#ef4444’,o:‘CONTRAINDICADO. Suspender 14 dias.’},
+{n:‘GLP-1 agonistas’,r:‘moderado’,c:’#f59e0b’,o:‘Risco esvaziamento gástrico lento.’},
+{n:‘Metformina’,r:‘baixo’,c:’#22c55e’,o:‘Manter (sem contraste iodado).’},
+{n:‘Betabloqueadores’,r:‘baixo’,c:’#22c55e’,o:‘NUNCA suspender. Manter.’},
+{n:‘Hidroxicloroquina’,r:‘baixo’,c:’#22c55e’,o:‘MANTER. Suspender aumenta risco AFF.’},
+{n:‘Finasterida/Dutasterida’,r:‘baixo’,c:’#22c55e’,o:‘Manter. Sem interação cirúrgica.’},
+{n:‘Minoxidil tópico’,r:‘baixo’,c:’#22c55e’,o:‘Suspender no dia. Retomar pós-op.’},
+{n:‘Minoxidil oral’,r:‘moderado’,c:’#f59e0b’,o:‘Manter c/ cautela. Vasodilatador.’},
+{n:‘SSRIs’,r:‘moderado’,c:’#f59e0b’,o:‘Não suspender. Risco c/ tramadol.’},
+{n:‘Sildenafila/Tadalafila’,r:‘moderado’,c:’#f59e0b’,o:‘Suspender 24–48h. Hipotensão.’},
+{n:‘Anti-hipertensivos’,r:‘baixo’,c:’#22c55e’,o:‘Manter. Monitorar PA.’},
+{n:‘Ômega-3’,r:‘moderado’,c:’#f59e0b’,o:‘Suspender 7 dias. Antiagregante.’},
+{n:‘Corticosteroides crônicos’,r:‘moderado’,c:’#f59e0b’,o:‘Manter. Avaliar dose stress.’},
+];
+const ALD=[
+{k:‘at’,l:‘Atividade Muscular’,o:[{v:2,l:‘4 extremidades’},{v:1,l:‘2 extremidades’},{v:0,l:‘Nenhuma’}]},
+{k:‘re’,l:‘Respiração’,o:[{v:2,l:‘Respira fundo, tosse’},{v:1,l:‘Dispneia’},{v:0,l:‘Apneia’}]},
+{k:‘ci’,l:‘Circulação (PA)’,o:[{v:2,l:‘PA ±20%’},{v:1,l:‘PA ±20–50%’},{v:0,l:‘PA >50% var.’}]},
+{k:‘co’,l:‘Consciência’,o:[{v:2,l:‘Totalmente acordado’},{v:1,l:‘Ao ser chamado’},{v:0,l:‘Não responde’}]},
+{k:‘sp’,l:‘SpO2’,o:[{v:2,l:‘≥92% ar ambiente’},{v:1,l:‘Necessita O2’},{v:0,l:’<90% c/O2’}]},
+];
+function buildDrugList(){
+const w=G(‘drug-list’);if(!w)return;
+w.innerHTML=DRUGS.map(d=>`<div class="fc" data-n="${d.n.toLowerCase()}"><div style="display:flex;justify-content:space-between;gap:7px"><div class="fc-n" style="font-size:11px">${d.n}</div><span class="badge b-${d.r==='alto'?'er':d.r==='moderado'?'wa':'ok'}" style="white-space:nowrap">${d.r}</span></div><div class="fc-c">${d.o}</div></div>`).join(’’);
+}
+function filterDrgs(){const q=G(‘drg-srch’)?.value.toLowerCase()||’’;document.querySelectorAll(’.fc[data-n]’).forEach(c=>c.style.display=c.dataset.n.includes(q)?‘block’:‘none’)}
+function buildAldForm(){
+const w=G(‘ald-form’);if(!w)return;
+w.innerHTML=ALD.map(it=>`<div style="border-bottom:1px solid var(--n4);padding:5px 0"> <div style="font-size:10px;font-weight:600;color:var(--w);margin-bottom:2px">${it.l}</div> ${it.o.map(o=>`<label style="display:flex;align-items:center;gap:4px;font-size:9px;color:var(--gr);margin-top:2px;cursor:pointer"><input type="radio" name="ald-${it.k}" value="${o.v}" onclick="calcAld()"> ${o.l}</label>`).join(’’)}
+
+  </div>`).join('');
+}
+function calcAld(){
+  let tot=0;ALD.forEach(it=>{const s=document.querySelector(`input[name="ald-${it.k}"]:checked`);if(s)tot+=parseInt(s.value)});
+  const sc=G('ald-sc');if(sc)sc.textContent=tot+'/10';
+  const r=G('ald-res');if(r){r.textContent=tot>=9?'✅ ALTA LIBERADA':'⚠️ Manter monitorização';r.style.color=tot>=9?'var(--ok)':'var(--wa)'}
+}
+function aneSv(){
+  if(!ST.ane)ST.ane={};['peso','alt','asa','pa','jej'].forEach(k=>{const el=G('ane-'+k);if(el)ST.ane[k]=el.value});ps();showAsa();calcJejum();
+}
+function showAsa(){
+  const a=G('ane-asa')?.value;const d=G('asa-info');if(!d)return;
+  const m={I:'<div class="aok">✅ ASA I — Saudável. Sem restrições ao procedimento.</div>',
+    II:'<div class="awa">🟡 ASA II — Doença sistêmica leve. Monitorização.</div>',
+    III:'<div class="aer">🔴 ASA III — Doença grave. Avaliar risco-benefício.</div>',
+    IV:'<div class="aer">⛔ ASA IV — Risco de vida. Procedimento eletivo contraindicado.</div>'};
+  d.innerHTML=m[a]||'';
+}
+function calcJejum(){
+  const cej=G('ane-jej')?.value;const r=G('jej-res');if(!r||!cej)return;
+  const h=(new Date()-new Date(cej))/3600000;let txt,cls;
+  if(h>=8){txt=`✅ ${h.toFixed(1)}h — Jejum adequado`;cls='aok'}
+  else if(h>=6){txt=`🟡 ${h.toFixed(1)}h — Adequado para refeição leve`;cls='awa'}
+  else if(h>=2){txt=`⚠️ ${h.toFixed(1)}h — Somente líquidos claros`;cls='awa'}
+  else{txt=`❌ ${h.toFixed(1)}h — Jejum insuficiente`;cls='aer'}
+  r.innerHTML=`<div class="${cls}">${txt}</div>`;
+}
+function calcDose(){
+  const drg=G('calc-drg')?.value,peso=parseFloat(G('ane-peso')?.value||0),conc=parseFloat(G('calc-conc')?.value||2);
+  const r=G('calc-res');if(!r)return;if(!drg||!peso){r.innerHTML='';return}
+  const D={lido_s:{max:4.5,n:'Lidocaína sem vasoconstritor'},lido_c:{max:7,n:'Lidocaína c/ epinefrina'},
+    bup:{max:2.5,n:'Bupivacaína'},mid:{min:.02,max:.05,n:'Midazolam'},ket:{min:1,max:4,n:'Cetamina'},
+    dex:{min:.1,max:.2,n:'Dexametasona'},dip:{min:10,max:20,n:'Dipirona'},ond:{max:.1,n:'Ondansetrona'},pro:{min:1,max:2,n:'Propofol'}};
+  const d=D[drg];if(!d){r.innerHTML='';return}
+  const mmL=(conc/100)*1000,mxMg=d.max*peso,mnMg=d.min?d.min*peso:null;
+  r.innerHTML=`<b style="color:var(--g1)">${d.n}</b> | Peso ${peso}kg | Conc ${conc}% (${mmL}mg/mL)<br>${mnMg?`Mín: <b style="color:var(--ok)">${mnMg.toFixed(1)}mg = ${(mnMg/mmL).toFixed(2)}mL</b> | `:''}Máx: <b style="color:var(--wa)">${mxMg.toFixed(1)}mg = ${(mxMg/mmL).toFixed(2)}mL</b>`;
+}
+
+// ── VITAIS ────────────────────────────────────────────────
+const VREF={fc:{mn:60,mx:100,c:’#ef4444’},pas:{mn:90,mx:140,c:’#3b82f6’},pad:{mn:60,mx:90,c:’#60a5fa’},spo2:{mn:95,mx:100,c:’#22c55e’},fr:{mn:12,mx:20,c:’#a855f7’},temp:{mn:36,mx:37.5,c:’#f59e0b’}};
+let _vcKey=‘fc’;
+function vCk(){
+const al=G(‘vit-alerts’);if(!al)return;let h=’’;
+[{id:‘v-fc’,mn:50,mx:110,msg:‘FC’},{id:‘v-pas’,mn:80,mx:160,msg:‘PAS’},{id:‘v-spo2’,mn:92,mx:101,msg:‘SpO2’},{id:‘v-temp’,mn:35.5,mx:38,msg:‘Temp’}]
+.forEach(c=>{const v=parseFloat(G(c.id)?.value||0);if(v&&(v<c.mn||v>c.mx))h+=`<div class="aer" style="font-size:9px">⚠️ ${c.msg} alterada: ${v}</div>`});
+al.innerHTML=h;
+}
+function addVital(){
+const fc=G(‘v-fc’)?.value,pas=G(‘v-pas’)?.value,pad=G(‘v-pad’)?.value,spo2=G(‘v-spo2’)?.value,fr=G(‘v-fr’)?.value,temp=G(‘v-temp’)?.value,dia=G(‘v-dia’)?.value,obs=G(‘v-obs’)?.value;
+if(!fc&&!pas)return;
+if(!ST.vitals)ST.vitals=[];
+ST.vitals.push({t:ftm(),dia:parseInt(dia||0),fc,pas,pad,spo2,fr,temp,obs});
+if(ST.vitals.length>100)ST.vitals.shift();
+sST();renderVHist();drawVCh(‘vchart’);drawV15(‘vc15’,_vcKey);
+}
+function renderVHist(){
+const h=G(‘vhist’);const vs=ST.vitals||[];
+if(!vs.length){h.innerHTML=’<div class="emp"><div style="font-size:22px">❤️</div><div>Nenhum registro.</div></div>’;return}
+h.innerHTML=vs.slice().reverse().slice(0,30).map(v=>`<div class="fc" style="margin-bottom:4px;font-size:9px;color:var(--gr)"><b style="color:var(--g1)">D${v.dia} ${v.t}</b> — FC:${v.fc||'—'} PA:${v.pas||'—'}/${v.pad||'—'} SpO2:${v.spo2||'—'}% T:${v.temp||'—'}°C${v.obs?` — ${v.obs}`:''}</div>`).join(’’);
+}
+function setVC(k){_vcKey=k;document.querySelectorAll(’[id^=“vb-”]’).forEach(b=>b.classList.remove(‘bg’));const btn=G(‘vb-’+k);if(btn)btn.classList.add(‘bg’);drawV15(‘vc15’,k)}
+function drawVCh(cid){
+const vs=ST.vitals||[];const c=G(cid);if(!c||vs.length<2)return;
+const ctx=c.getContext(‘2d’);const W=c.offsetWidth,H=c.height;c.width=W;
+ctx.fillStyle=’#060d1a’;ctx.fillRect(0,0,W,H);
+const drawL=(key,col)=>{const vals=vs.map(v=>parseFloat(v[key]||0)).filter(x=>x>0);if(!vals.length)return;
+const mn=Math.min(…vals)-5,mx=Math.max(…vals)+5;ctx.beginPath();ctx.strokeStyle=col;ctx.lineWidth=1.5;
+let first=true;vs.forEach((v,i)=>{const val=parseFloat(v[key]||0);if(!val)return;const x=(i/(vs.length-1))*W,y=H-((val-mn)/(mx-mn+1))*H;first?ctx.moveTo(x,y):ctx.lineTo(x,y);first=false});ctx.stroke()};
+drawL(‘fc’,’#ef4444’);drawL(‘pas’,’#3b82f6’);drawL(‘spo2’,’#22c55e’);
+}
+function drawV15(cid,key){
+const c=G(cid);if(!c)return;const vs=ST.vitals||[];const ctx=c.getContext(‘2d’);const W=c.offsetWidth,H=c.height;c.width=W;
+ctx.fillStyle=’#060d1a’;ctx.fillRect(0,0,W,H);
+const byD={};for(let i=0;i<=15;i++)byD[i]=null;
+vs.forEach(v=>{if(parseFloat(v[key]||0))byD[v.dia]=parseFloat(v[key])});
+const vals=Object.values(byD).filter(x=>x!==null);if(!vals.length)return;
+const mn=Math.min(…vals)-5,mx=Math.max(…vals)+5;const col=(VREF[key]||{c:’#C9A84C’}).c;
+const ref=VREF[key];if(ref){const yH=H-((ref.mx-mn)/(mx-mn+1))*H,yL=H-((ref.mn-mn)/(mx-mn+1))*H;ctx.fillStyle=col+‘22’;ctx.fillRect(0,yH,W,yL-yH)}
+ctx.beginPath();ctx.strokeStyle=col;ctx.lineWidth=2;let first=true;
+for(let i=0;i<=15;i++){if(byD[i]===null)continue;const x=(i/15)*W,y=H-((byD[i]-mn)/(mx-mn+1))*H;first?ctx.moveTo(x,y):ctx.lineTo(x,y);first=false}ctx.stroke();
+ctx.fillStyle=’#64748b’;ctx.font=‘8px DM Sans’;for(let i=0;i<=15;i+=3)ctx.fillText(‘D’+i,(i/15)*W-4,H-2);
+const lbl=G(‘vc-legend’);if(lbl)lbl.textContent=`${key.toUpperCase()} — ref: ${ref?.mn||'—'}–${ref?.mx||'—'} ${key==='temp'?'°C':key==='spo2'?'%':''}`;
+}
+
+// ── HAMILTON ──────────────────────────────────────────────
+function buildHnGrid(){
+const w=G(‘hn-grid’);if(w)w.innerHTML=[‘I’,‘II’,‘IIa’,‘III’,‘IIIv’,‘IV’,‘IVa’,‘V’,‘Va’,‘VI’,‘VII’].map(g=>`<div class="hn-b" onclick="setHn('${g}',this)">${g}</div>`).join(’’);
+const lw=G(‘lud-grid’);if(lw)lw.innerHTML=[‘I’,‘II’,‘III’,‘III+’].map(g=>`<div class="hn-b" onclick="setLud('${g}',this)">${g}</div>`).join(’’);
+}
+function setHn(g,btn){document.querySelectorAll(’#hn-grid .hn-b’).forEach(b=>b.classList.remove(‘on’));btn.classList.add(‘on’);if(!ST.pre)ST.pre={};ST.pre.hn=g;ps()}
+function setLud(g,btn){document.querySelectorAll(’#lud-grid .hn-b’).forEach(b=>b.classList.remove(‘on’));btn.classList.add(‘on’);if(!ST.pre)ST.pre={};ST.pre.lud=g;ps()}
+
+// ── FÓRMULAS ──────────────────────────────────────────────
+const TOPOS=[
+{n:‘Minoxidil 5% + Cafeína 2%’,c:‘Minoxidil 5% • Cafeína 2% • Propilenoglicol • Etanol q.s.p.’,i:‘AGA • Pós-FUE D30’,u:‘2×/dia couro seco’},
+{n:‘Minoxidil 5% + Finasterida 0,1%’,c:‘Minoxidil 5% • Finasterida 0,1% • Etanol 70%’,i:‘AGA masc. • Pós-transplante’,u:‘1×/dia noturno’},
+{n:‘Latanoprosta 0,005%’,c:‘Latanoprosta 0,005% • DMSO 2% • Propilenoglicol’,i:‘AFF refratária • Cicatricial’,u:‘1×/dia bordas’},
+{n:‘Clobetasol 0,05% + Minoxidil’,c:‘Clobetasol 0,05% • Minoxidil 3% • Loção’,i:‘AFF ativa c/ inflamação’,u:‘1×/dia 3 meses’},
+{n:‘Treprostinil 0,004%’,c:‘Treprostinil 0,004% • Etanol gel’,i:‘Alopecia refratária’,u:‘1×/dia’},
+];
+const ORAIS=[
+{n:‘Protocolo Pré-op (7 dias)’,c:‘Cefalexina 500mg 6/6h 7d + Omeprazol 20mg em jejum 7d + Dexametasona 4mg IM véspera’,i:‘Início 7 dias antes’},
+{n:‘Protocolo Pós-op D0–D7’,c:‘Cefalexina 500mg 6/6h 7d + Ibuprofeno 600mg 8/8h 3d + Dexametasona 4mg/d 3d + Pantoprazol 40mg 7d’,i:‘Iniciar D0’},
+{n:‘Manutenção AGA’,c:‘Finasterida 1mg/d + Minoxidil oral 0,25–1mg/d + Biotina 10mg/d + Zinco quelado 30mg/d’,i:‘Longo prazo’},
+{n:‘Protocolo AFF Ativo’,c:‘Hidroxicloroquina 400mg/d + Naltrexona 5mg/d + Doxiciclina 100mg/d 3m + Minoxidil tópico’,i:‘Fase inflamatória’},
+{n:‘Suplementação Pós-FUE D30+’,c:‘Sulfato de Zinco 220mg/d 30d + Biotina 10mg/d 3m + Vitamina C 1g/d 30d + Colágeno 10g/d 60d’,i:‘Suporte ao crescimento’},
+];
+const DERMETHIC=[
+{n:‘VSD Follicle Serum™’,c:‘Peptídeos foliculares + Stem Cell Extract + Redensyl 3% + VEGF simuladores’,i:‘Estimulação pós-FUE D30+’,u:‘Noturno 3–4 gotas’},
+{n:‘VSD Scalp Cleanser Pro™’,c:‘Piroctona olamina + Tea Tree 2% + Salicílico 0,5% + Pantenol’,i:‘Limpeza pós-op D3+’,u:‘3×/semana’},
+{n:‘VSD Hydra Shield CC™’,c:‘SPF 50+ capilar + Vitamina E + Vitamina C + Oclusivos’,i:‘Proteção UV área receptora’,u:‘Diariamente ao sol’},
+{n:‘VSD BioActiv Treatment™’,c:‘Procyanidin B2 + Biotina lipossomal + Aminoácidos sulfurados + Cobre quelado’,i:‘Cabelo fino e quebrado’,u:‘1–2×/semana’},
+];
+function buildFormulas(){
+const fw=G(‘fm-topos’);if(fw)fw.innerHTML=TOPOS.map(f=>`<div class="fc"><div class="fc-n">${f.n}</div><div class="fc-c"><b>Componentes:</b> ${f.c}</div><div class="fc-i">📌 ${f.i}</div><div style="font-size:9px;color:var(--gr)">🔄 ${f.u}</div></div>`).join(’’);
+const ow=G(‘fm-orals’);if(ow)ow.innerHTML=ORAIS.map(f=>`<div class="fc"><div class="fc-n">${f.n}</div><div class="fc-c">${f.c}</div><div class="fc-i">📌 ${f.i}</div></div>`).join(’’);
+const dw=G(‘fm-de-prods’);if(dw)dw.innerHTML=DERMETHIC.map(f=>`<div class="fc"><div class="fc-n" style="color:var(--g1)">✨ ${f.n}</div><div class="fc-c"><b>Fórmula:</b> ${f.c}</div><div class="fc-i">📌 ${f.i}</div><div style="font-size:9px;color:var(--gr)">🔄 ${f.u}</div></div>`).join(’’);
+}
+function saveFormula(){
+if(!ST.cForms)ST.cForms=[];ST.cForms.unshift({id:Date.now(),n:G(‘fc-n’)?.value,c:G(‘fc-c’)?.value,v:G(‘fc-v’)?.value,i:G(‘fc-i’)?.value,u:G(‘fc-u’)?.value,dt:fdt()});sST();
+const w=G(‘custom-formulas’);if(w)w.innerHTML=ST.cForms.map(f=>`<div class="fc"><div class="fc-n">${f.n}</div><div class="fc-c">${f.c||''}</div><div class="fc-i">${f.i||''}</div></div>`).join(’’);
+alert(‘Fórmula salva!’);
+}
+
+// ── FARMÁCIA ──────────────────────────────────────────────
+const PROTS={
+pre:`<b style="color:var(--g1)">Pré-operatório (7 dias antes):</b><br>• Cefalexina 500mg — 1cp 6/6h 7d (antibioticoprofilaxia)<br>• Omeprazol 20mg — 1cp em jejum 7d (gastroproteção)<br>• Suspender AAS, anticoagulantes, suplementos<br>• Minoxidil tópico: manter até véspera<br>• Dexametasona 4mg IM — noite antes (anti-edema)<br>• Diazepam 5mg VO — noite antes (se prescrito)`,
+pos:`<b style="color:var(--g1)">Pós-operatório D0–D7:</b><br>• Cefalexina 500mg — 1cp 6/6h 7d<br>• Ibuprofeno 600mg — 1cp 8/8h 3d<br>• Dexametasona 4mg — 1cp/d 3d<br>• Pantoprazol 40mg — 1cp em jejum 7d<br>• Retorno do Minoxidil: D30<br>• Não lavar área receptora: 48h`,
+aga:`<b style="color:var(--g1)">Manutenção AGA — Longo prazo:</b><br>• Finasterida 1mg/d (masc.) ou Espironolactona 25–50mg/d (fem.)<br>• Minoxidil tópico 5% 2×/d ou Minoxidil oral 0,25–1mg/d<br>• Biotina 10mg/d<br>• Zinco quelado 30mg/d<br>• Vitamina D3 (se deficiente)<br>• Retorno a cada 3–6 meses`,
+aff:`<b style="color:var(--g1)">Protocolo AFF (Alopecia Frontal Fibrosante):</b><br>• Hidroxicloroquina 400mg/d (1ª linha)<br>• Naltrexona 5mg/d (low dose)<br>• Doxiciclina 100mg/d por 3 meses<br>• Clobetasol tópico nas bordas<br>• Protetor solar diário área frontal<br>• Evitar cosméticos com parabenos/fragrâncias`,
+};
+function loadProt(k){const b=G(‘prot-box’);if(b)b.innerHTML=PROTS[k]||’’}
+function saveRx(){
+const med=G(‘rx-med’)?.value?.trim();if(!med)return;
+if(!ST.rxs)ST.rxs=[];
+ST.rxs.unshift({id:Date.now(),med,dose:G(‘rx-dose’)?.value,via:G(‘rx-via’)?.value,pos:G(‘rx-pos’)?.value,obs:G(‘rx-obs’)?.value,dt:fdt(),pt:ST.curPt?.nome||’—’});
+sST();closeM(‘rx-m’);renderRxList();
+}
+function renderRxList(){
+const l=G(‘rx-list’);const rxs=ST.rxs||[];
+if(!rxs.length){l.innerHTML=’<div class="emp"><div style="font-size:22px">💊</div><div>Nenhuma prescrição.</div></div>’;return}
+l.innerHTML=rxs.map(r=>`<div class="fc"><div style="display:flex;justify-content:space-between"><div class="fc-n">${r.med} ${r.dose||''}</div><span style="font-size:9px;color:var(--gr2)">${r.dt}</span></div><div class="fc-c">${r.via||''} — ${r.pos||''}</div>${r.pt!=='—'?`<div style="font-size:9px;color:var(--g1)">Paciente: ${r.pt}</div>`:''}<button class="bn br bs" style="margin-top:5px" onclick="delRx('${r.id}')">Remover</button></div>`).join(’’);
+}
+function delRx(id){ST.rxs=(ST.rxs||[]).filter(r=>r.id!=id);sST();renderRxList()}
+
+// ── VBI ───────────────────────────────────────────────────
+function calcVbi(){
+const cal=parseFloat(G(‘vbi-cal’)?.value||0),dens=parseFloat(G(‘vbi-dens’)?.value||0),
+ana=parseFloat(G(‘vbi-ana’)?.value||0),fios=parseFloat(G(‘vbi-fios’)?.value||0),
+gii=parseFloat(G(‘vbi-gii’)?.value||0),tr=parseFloat(G(‘vbi-tr’)?.value||0),
+morf=parseInt(G(‘vbi-morf’)?.value||0);
+if(!cal&&!dens){const r=G(‘vbi-res’);if(r)r.innerHTML=’’;return}
+let sc=0;
+if(cal>=0.07)sc+=25;else if(cal>=0.05)sc+=15;else sc+=5;
+if(dens>=80)sc+=20;else if(dens>=60)sc+=12;else sc+=5;
+if(ana>=85)sc+=15;else if(ana>=70)sc+=8;else sc+=3;
+if(fios>=2.5)sc+=10;else if(fios>=2)sc+=6;else sc+=2;
+if(gii>=90)sc+=15;else if(gii>=70)sc+=8;else sc+=3;
+sc+=morf*3;if(tr<5)sc+=12;else if(tr<10)sc+=6;
+sc=Math.min(100,sc);
+const cls=sc>=75?{l:‘EXCELENTE’,c:‘var(–ok)’}:sc>=50?{l:‘ADEQUADO’,c:‘var(–wa)’}:{l:‘COMPROMETIDO’,c:‘var(–er)’};
+const r=G(‘vbi-res’);if(r)r.innerHTML=`<div class="gsm"><div class="gsmt">VBI Score™</div><div class="gsv" style="color:${cls.c}">${sc}/100</div><div class="gsb"><div class="gsf" style="background:${cls.c};width:${sc}%"></div></div><div style="font-size:9px;color:var(--gr)">${cls.l} — ${sc>=75?'Alto potencial de resultado':sc>=50?'Resultado esperado satisfatório':'Risco de resultado subótimo'}</div></div>`;
+}
+
+// ── PIPELINE ──────────────────────────────────────────────
+const AGENS=[
+{k:‘dopp’,l:‘🔬 Doppler’,d:‘Análise hemodinâmica • Protocolo Visaderm ATS/AO/AAP/ACE’,
+s:`VISADERM DOPPLER AI v2.0 | Dr. Rafael Reinert|CRM/SC 16789|Visaderm. PROTOCOLO:🟢LIBERAR|🟡ATENÇÃO|🔴REPETIR|⛔CONTRAINDICAR. ATS:PS15-40|ED3-8|RI0,60-0,75. AFF estabilizada=fibrose sequela. Encerre:"Cada unidade folicular é singular e irrepetível."`},
+{k:‘clin’,l:‘🩺 Clínico’,d:‘Relatórios • Artigos • Protocolos • Anamneses’,
+s:`VISADERM CLINICAL WRITER | Dr. Rafael Reinert|CRM/SC 16789|Visaderm Day Hospital. Documentos clínicos de alta qualidade em português técnico. CFM, CRM, ASA 2023.`},
+{k:‘carr’,l:‘🎨 Carrossel’,d:‘Instagram • 10 slides 432×540px • @visaderm’,
+s:`VISADERM CAROUSEL AI | @visaderm @dr.rafaelreinert. Visual:432×540px, navy, ouro #C9A84C, Playfair Display. 10 slides estruturados. Obrigatória:"Cada unidade folicular é singular e irrepetível." — Dr. Rafael Reinert|Visaderm. Nunca expor pacientes.`},
+{k:‘vbi’,l:‘🧬 VBI’,d:‘Visaderm Biomarker Index • Pesquisa clínica’,
+s:`VBI RESEARCH ADVISOR | Dr. Rafael Reinert. Apoie o VBI — índice de biomarcadores doadores intraop para personalizar pós-FUE. Rigor científico.`},
+{k:‘anam’,l:‘📋 Anamnese’,d:‘Pré-op estruturado • ASA 2023 • Risco cirúrgico’,
+s:`VISADERM ANAMNESE AI | Avalie pré-op para FUE: CFM, ASA 2023. Estrutura: QP, HDA, HPP, meds, alergias, ASA, exames indicados, recomendações.`},
+{k:‘gsai’,l:‘🧬 GraftScan’,d:‘Análise enxertos • VQS/GII • Laudo intraop’,
+s:`VISADERM GRAFTSCAN AI v2.1 | Laudo intraoperatório FUE. VQS, GII, transecção, risk score. Dr. Rafael Reinert|CRM/SC 16789.`},
+{k:‘poop’,l:‘💊 Pós-op’,d:‘Orientações recuperação • Protocolos D0–D365’,
+s:`VISADERM POSOP AI | Orientações pós-op completas FUE. Prescrições, higiene, restrições, expectativas D0–D365, alertas complicações. Dr. Rafael Reinert|Visaderm.`},
+];
+let _ag=AGENS[0],_hist=[],_cld=false;
+function buildAgBar(){
+const b=G(‘abar’);if(!b)return;
+b.innerHTML=AGENS.map(a=>`<div class="achip" id="ac-${a.k}" onclick="setAg('${a.k}')">${a.l}</div>`).join(’’);
+}
+function setAg(k){
+_ag=AGENS.find(a=>a.k===k)||AGENS[0];_hist=[];
+document.querySelectorAll(’.achip’).forEach(c=>c.classList.remove(‘on’));
+const ch=G(‘ac-’+k);if(ch)ch.classList.add(‘on’);
+const d=G(‘adesc’);if(d)d.textContent=_ag.d;
+const m=G(‘chatm’);if(m)m.innerHTML=`<div style="text-align:center;padding:16px;color:var(--gr2);font-size:10px">Agente <b style="color:var(--g1)">${_ag.l}</b> ativo.</div>`;
+}
+async function sendChat(){
+if(_cld)return;const inp=G(‘chat-inp’);const msg=inp.value.trim();if(!msg)return;
+inp.value=’’;_hist.push({role:‘user’,content:msg});appMsg(‘u’,msg);
+_cld=true;G(‘chat-send’).disabled=true;const thk=appMsg(‘a’,‘⏳…’);
+try{const r=await callAPI([…_hist],_ag.s,2000);_hist.push({role:‘assistant’,content:r});thk.querySelector(‘pre’).textContent=r;if(!ST.rc)ST.rc=0;ST.rc++;sST()}
+catch(e){thk.querySelector(‘pre’).textContent=‘❌ ‘+e.message}
+_cld=false;G(‘chat-send’).disabled=false;
+}
+function appMsg(r,t){const m=G(‘chatm’);const d=document.createElement(‘div’);d.className=`cmsg ${r} fi2`;d.innerHTML=`<div class="mlbl">${r==='u'?'Você':_ag.l}</div><pre>${t}</pre>`;m.appendChild(d);m.scrollTop=m.scrollHeight;return d}
+function clearChat(){_hist=[];const m=G(‘chatm’);if(m)m.innerHTML=’<div style="text-align:center;padding:16px;color:var(--gr2);font-size:10px">Conversa limpa.</div>’}
+
+// ── PATIENTS ──────────────────────────────────────────────
+function saveCurPt(){
+const nome=G(‘pr-nome’)?.value?.trim();if(!nome){alert(‘Nome é obrigatório’);return}
+if(!ST.pts)ST.pts=[];
+const nasc=G(‘pr-nasc’)?.value;const idade=nasc?String(Math.floor((new Date()-new Date(nasc))/31557600000)):’’;
+const pt={id:G(‘pr-id’)?.value||`VSD${Date.now()}`,nome,nasc,idade,sexo:G(‘pr-sexo’)?.value,fitz:G(‘pr-fitz’)?.value,cpf:G(‘pr-cpf’)?.value,tel:G(‘pr-tel’)?.value,email:G(‘pr-email’)?.value,end:G(‘pr-end’)?.value,prof:G(‘pr-prof’)?.value,dx:G(‘pr-dx’)?.value,obs:G(‘pr-obs’)?.value,dt:fdt()};
+const idx=ST.pts.findIndex(p=>p.id===pt.id);idx>=0?ST.pts[idx]=pt:ST.pts.unshift(pt);
+ST.curPt=pt;sST();updPtBar();renderPtList();alert(‘Paciente salvo!’);
+}
+function savePt(){
+const nome=G(‘pm-n’)?.value?.trim();if(!nome){alert(‘Nome obrigatório’);return}
+if(!ST.pts)ST.pts=[];
+const nasc=G(‘pm-nb’)?.value;const idade=nasc?String(Math.floor((new Date()-new Date(nasc))/31557600000)):’’;
+const pt={id:G(‘pm-id’)?.value||`VSD${Date.now()}`,nome,nasc,idade,sexo:G(‘pm-s’)?.value,dx:G(‘pm-dx’)?.value,obs:G(‘pm-obs’)?.value,dt:fdt()};
+ST.pts.unshift(pt);ST.curPt=pt;sST();closeM(‘pt-m’);updPtBar();renderPtList();loadPtForm(pt);
+}
+function loadPtForm(pt){if(!pt)return;[‘nome’,‘cpf’,‘nasc’,‘sexo’,‘fitz’,‘tel’,‘email’,‘end’,‘prof’,‘dx’,‘obs’].forEach(k=>{const el=G(‘pr-’+k);if(el)el.value=pt[k]||’’})}
+function selPt(id){const pt=(ST.pts||[]).find(p=>p.id===id);if(!pt)return;ST.curPt=pt;sST();updPtBar();loadPtForm(pt);showPg(‘paciente’);sit(‘pac’,‘id’)}
+function updPtBar(){const pt=ST.curPt;G(‘pb-n’).textContent=pt?.nome||’—’;G(‘pb-id’).textContent=pt?.id||’—’;G(‘pb-s’).textContent=pt?.sexo||’—’;G(‘pb-i’).textContent=pt?.idade?pt.idade+’ anos’:’—’;G(‘pb-d’).textContent=pt?.dx||’—’}
+function renderPtList(){
+const l=G(‘pt-list’);const pts=ST.pts||[];
+if(!pts.length){l.innerHTML=’<div class="emp"><div style="font-size:22px">👤</div><div>Nenhum paciente.</div></div>’;return}
+l.innerHTML=pts.map(p=>`<div class="pt-card" onclick="selPt('${p.id}')"><div style="font-size:12px;font-weight:700">${p.nome}</div><div style="font-size:9px;color:var(--gr2)">${p.id} • ${p.sexo||'—'} • ${p.idade?p.idade+' anos':'—'} • ${p.dx||'—'}</div></div>`).join(’’);
+}
+function calcId(){const n=G(‘pr-nasc’)?.value;if(n){const i=Math.floor((new Date()-new Date(n))/31557600000);G(‘pb-i’).textContent=i+’ anos’;if(ST.curPt)ST.curPt.idade=String(i)}}
+
+// ── MISC PREOP ────────────────────────────────────────────
+let _mRows=0;
+function addMed(){_mRows++;const id=‘mr’+_mRows;const w=G(‘meds-list’);const d=document.createElement(‘div’);d.id=id;d.className=‘fc’;d.style.cssText=‘display:flex;gap:5px;align-items:center;margin-bottom:5px’;d.innerHTML=`<input class="fi" placeholder="Medicamento" style="flex:2" oninput="ps()"/><input class="fi" placeholder="Dose" style="flex:1" oninput="ps()"/><input class="fi" placeholder="Há quanto tempo" style="flex:1" oninput="ps()"/><button class="bn br bs" onclick="G('${id}').remove()">✕</button>`;w.appendChild(d)}
+function calcPlan(){const uf=parseFloat(G(‘pl-uf’)?.value||0),area=parseFloat(G(‘pl-area’)?.value||0);const r=G(‘plan-calc’);if(!r)return;if(uf&&area)r.textContent=`Densidade: ${(uf/area).toFixed(1)} UF/cm²`;else r.textContent=’’}
+function buildLabPrompt(){return[‘hb’,‘ht’,‘plaq’,‘leu’,‘gli’,‘crea’,‘tgo’,‘tgp’,‘tsh’,‘t4’,‘ferr’,‘fe’,‘vitd’,‘zn’,‘test’,‘prol’].map(k=>{const el=G(‘lb-’+k);return el?.value?k.toUpperCase()+’:’+el.value:null}).filter(Boolean).join(’ | ‘)}
+function buildAnamPrompt(){return[‘qp’,‘hda’,‘hpp’,‘hf’,‘alrg’,‘cir’,‘comorb’,‘obs2’].map(k=>{const el=G(‘an-’+k);return el?.value?k.toUpperCase()+’:’+el.value:null}).filter(Boolean).join(’\n’)}
+function labCk(){
+const a=G(‘lab-alerts’);if(!a)return;let h=’’;
+const hb=parseFloat(G(‘lb-hb’)?.value||0);if(hb&&hb<11)h+=`<div class="aer" style="font-size:9px">⚠️ Hb baixa (${hb}) — anemia</div>`;
+const pl=parseFloat(G(‘lb-plaq’)?.value||0);if(pl&&pl<100000)h+=`<div class="aer" style="font-size:9px">⚠️ Plaquetopenia — risco hemorrágico</div>`;
+const gl=parseFloat(G(‘lb-gli’)?.value||0);if(gl&&gl>200)h+=`<div class="aer" style="font-size:9px">⚠️ Hiperglicemia — controle pré-op</div>`;
+const ts=parseFloat(G(‘lb-tsh’)?.value||0);if(ts&&(ts<0.4||ts>4.5))h+=`<div class="awa" style="font-size:9px">⚠️ TSH alterado</div>`;
+const fe=parseFloat(G(‘lb-ferr’)?.value||0);if(fe&&fe<30)h+=`<div class="awa" style="font-size:9px">⚠️ Ferritina baixa (${fe}) — anemia ferropriva</div>`;
+const vd=parseFloat(G(‘lb-vitd’)?.value||0);if(vd&&vd<20)h+=`<div class="awa" style="font-size:9px">⚠️ Deficiência Vit D (${vd})</div>`;
+a.innerHTML=h;
+}
+
+// ── PÓS-OP ────────────────────────────────────────────────
+function calcDpo(){const d0=G(‘po-d0’)?.value;const el=G(‘po-dias’);if(!el)return;if(!d0){el.textContent=’’;return}const d=Math.floor((new Date()-new Date(d0))/86400000);el.textContent=`D+${d} pós-operatório`}
+function saveEvol(){
+if(!ST.evols)ST.evols=[];
+ST.evols.push({dt:G(‘ev-dt’)?.value,dia:G(‘ev-dia’)?.value,av:G(‘ev-av’)?.value,cr:G(‘ev-cr’)?.value,qx:G(‘ev-qx’)?.value,ct:G(‘ev-ct’)?.value,date:fdt()});
+sST();closeM(‘ev-m’);renderEvolList();
+}
+function renderEvolList(){
+const l=G(‘evol-list’);const evols=ST.evols||[];
+if(!evols.length){l.innerHTML=’<div class="emp"><div style="font-size:22px">📈</div><div>Nenhuma evolução.</div></div>’;return}
+l.innerHTML=evols.slice().reverse().map(e=>`<div class="fc"><b style="color:var(--g1)">${e.dia||''} — ${e.dt||''}</b><div style="font-size:10px;color:var(--gr);margin-top:2px">${e.av||''}</div>${e.cr?`<div style="font-size:9px;color:var(--ok)">Crescimento: ${e.cr}</div>`:''}</div>`).join(’’);
+}
+
+// ── TRANS-OP ──────────────────────────────────────────────
+async function genTransRep(){
+const btn=G(‘top-btn’);btn.disabled=true;
+G(‘top-loading’).style.display=‘flex’;G(‘top-box’).style.display=‘none’;G(‘top-empty’).style.display=‘none’;
+const SYS=`VISADERM TRANS-OP REPORT AI | Compile dados intraop em laudo cirúrgico completo. Dr. Rafael Reinert|CRM/SC 16789|Visaderm.`;
+const data=`CIR: ${G('op-ini')?.value}–${G('op-fim')?.value}\nUF: ext:${G('op-ext')?.value||0} imp:${G('op-imp')?.value||0}\nPA:${G('op-pam')?.value||'N/I'} SpO2:${G('op-spo2')?.value||'N/I'}%\nVQS:${G('vqs-v')?.textContent} GII:${G('gii-v')?.textContent}\nInter:${G('op-inter')?.value||'Nenhuma'}`;
+try{const r=await callAPI([{role:‘user’,content:data}],SYS,1500);G(‘top-txt’).textContent=r;G(‘top-box’).style.display=‘block’;G(‘top-exp-btn’).style.display=‘inline-flex’;if(!ST.rc)ST.rc=0;ST.rc++;sST()}
+catch(e){G(‘top-txt’).textContent=’❌ ’+e.message;G(‘top-box’).style.display=‘block’}
+G(‘top-loading’).style.display=‘none’;btn.disabled=false;
+}
+function calcOpT(){const i=G(‘op-ini’)?.value,f=G(‘op-fim’)?.value;const r=G(‘op-dur’);if(!r||!i||!f)return;const d=((new Date(‘1970-01-01T’+f)-new Date(‘1970-01-01T’+i))/60000);r.textContent=`Duração: ${Math.floor(d/60)}h${(d%60).toString().padStart(2,'0')}min`}
+
+// ── FINANCEIRO ────────────────────────────────────────────
+let _pe=’’,_pu=false;
+const DP=‘123456’;
+function buildPin(){
+const g=G(‘pinpad’);if(!g)return;
+const ns=[1,2,3,4,5,6,7,8,9];for(let i=ns.length-1;i>0;i–){const j=Math.floor(Math.random()*(i+1));[ns[i],ns[j]]=[ns[j],ns[i]]}
+const lay=[…ns,‘✕’,0,‘✓’];
+g.innerHTML=lay.map(d=>`<div class="pinbtn" onclick="pinP('${d}')">${d}</div>`).join(’’);
+}
+function pinP(d){if(d===‘✕’)_pe=’’;else if(d===‘✓’)verPin();else if(_pe.length<6)_pe+=d;updPin()}
+function updPin(){const e=G(‘pindis’);if(e)e.textContent=_pe?*pe.split(’’).map(()=>‘●’).join(’ ‘):’* _ _ _ _ _’}
+function verPin(){
+if(_pe===(ST.pin||DP)){_pu=true;G(‘fin-lock’).style.display=‘none’;G(‘fin-cont’).style.display=‘block’;renderFinList()}
+else{G(‘pin-err’).textContent=‘PIN incorreto.’;_pe=’’;updPin();setTimeout(()=>G(‘pin-err’).textContent=’’,2200)}
+}
+function lockFin(){_pu=false;_pe=’’;buildPin();updPin();G(‘fin-lock’).style.display=‘flex’;G(‘fin-cont’).style.display=‘none’}
+function saveFin(){
+const ds=G(‘fm-ds’)?.value?.trim();const vl=parseFloat(G(‘fm-vl’)?.value||0);if(!ds||!vl)return;
+if(!ST.fin)ST.fin=[];
+ST.fin.unshift({id:Date.now(),tipo:G(‘fm-tp’)?.value,desc:ds,valor:vl,data:G(‘fm-dt’)?.value,pagto:G(‘fm-pg’)?.value});
+sST();closeM(‘fin-m’);renderFinList();
+}
+function renderFinList(){
+const fin=ST.fin||[];const now=new Date();const ym=now.getFullYear()+’-’+(now.getMonth()+1).toString().padStart(2,‘0’);
+const mes=fin.filter(f=>f.data?.startsWith(ym));
+const rec=mes.filter(f=>f.tipo===‘receita’).reduce((s,f)=>s+f.valor,0);
+const des=mes.filter(f=>f.tipo===‘despesa’).reduce((s,f)=>s+f.valor,0);const res=rec-des;
+const er=G(‘fn-rec’);if(er)er.textContent=‘R$ ‘+fmt2(rec);const ed=G(‘fn-des’);if(ed)ed.textContent=‘R$ ‘+fmt2(des);
+const eRes=G(‘fn-res’);if(eRes){eRes.textContent=‘R$ ‘+fmt2(res);eRes.style.color=res>=0?‘var(–ok)’:‘var(–er)’}
+const l=G(‘fin-list’);if(!l)return;
+if(!fin.length){l.innerHTML=’<div class="emp"><div style="font-size:22px">💰</div><div>Sem lançamentos.</div></div>’;return}
+l.innerHTML=`<table class="tbl"><thead><tr><th>Data</th><th>Descrição</th><th>Tipo</th><th>Valor</th><th></th></tr></thead><tbody> ${fin.slice(0,50).map(f=>`<tr><td style="font-size:9px">${f.data||’—’}</td><td>${f.desc}</td><td style="color:${f.tipo==='receita'?'var(--ok)':'var(--er)'}">${f.tipo===‘receita’?‘↑’:‘↓’}</td><td style="color:${f.tipo==='receita'?'var(--ok)':'var(--er)'}">R$ ${fmt2(f.valor)}</td><td><button class="bn br bs" onclick="delFin('${f.id}')">✕</button></td></tr>`).join(’’)}
+
+  </tbody></table>`;
+}
+function delFin(id){ST.fin=(ST.fin||[]).filter(f=>f.id!=id);sST();renderFinList()}
+
+// ── NFS-e ─────────────────────────────────────────────────
+function calcNf(){const v=parseFloat(G(‘nf-val’)?.value||0);const iss=v*0.02,irrf=v*0.015,liq=v-iss;const fv=x=>’R$ ’+fmt2(x);const e1=G(‘nf-iss’);if(e1)e1.value=fv(iss);const e2=G(‘nf-irrf’);if(e2)e2.value=fv(irrf);const e3=G(‘nf-liq’);if(e3)e3.value=fv(liq)}
+function prevNfse(){
+const v=parseFloat(G(‘nf-val’)?.value||0),iss=v*0.02,liq=v-iss,num=Math.floor(Math.random()*900000)+100000;
+const b=G(‘nf-box’);if(!b)return;const fv=x=>‘R$ ‘+fmt2(x);
+b.innerHTML=`<div class="nfhd"><div class="nflo">VISADERM</div><div style="font-size:9px;color:var(--gr)">Day Hospital | CNPJ 00.000.000/0001-00 | Blumenau–SC | ISS 2%</div><div style="color:var(--g1);font-weight:700;font-size:11px;margin-top:5px">NFS-e Nº ${num} | Competência: ${G(‘nf-comp’)?.value||’—’}</div></div>
+
+  <div class="nfrow"><span><b>Prestador</b></span><span>Dr. Rafael Reinert | CRM/SC 16789</span></div>
+  <div class="nfrow"><span><b>Tomador</b></span><span>${G('nf-tom')?.value||'—'}</span></div>
+  <div class="nfrow"><span><b>CPF/CNPJ</b></span><span>${G('nf-cpf')?.value||'—'}</span></div>
+  <div class="nfrow"><span><b>Data</b></span><span>${G('nf-dt')?.value||'—'}</span></div>
+  <div class="nfrow"><span><b>Serviços</b></span><span style="max-width:55%;text-align:right;font-size:9px">${G('nf-desc')?.value||'—'}</span></div>
+  <div class="nfrow"><span><b>Valor bruto</b></span><span>${fv(v)}</span></div>
+  <div class="nfrow"><span><b>ISS 2% Blumenau/SC</b></span><span style="color:var(--wa)">- ${fv(iss)}</span></div>
+  <div class="nftot">Valor líquido: ${fv(liq)}</div>
+  <div style="text-align:center;color:var(--gr2);font-size:8px;margin-top:9px">Visaderm Day Hospital • Blumenau, SC • ${fdt()}</div>`;
+  G('nf-prev').style.display='block';
+  if(v>0){if(!ST.fin)ST.fin=[];ST.fin.unshift({id:Date.now(),tipo:'receita',desc:`NFS-e ${num} — ${G('nf-tom')?.value||'Paciente'}`,valor:liq,data:G('nf-dt')?.value||new Date().toISOString().split('T')[0],pagto:'NFS-e'});sST()}
+}
+
+// ── IMAGES ────────────────────────────────────────────────
+const IMG_MAP={dop:{key:‘dopImgs’,grid:‘dop-grid’},pron:{key:‘pronFotos’,grid:‘pf-grid’},ex:{key:‘exImgs’,grid:‘ex-grid’},po:{key:‘poImgs’,grid:‘po-grid’},arq:{key:‘arqImgs’,grid:‘arq-grid’}};
+function hImgUp(e,stKey,gridId,pool){
+Array.from(e.target.files).forEach(f=>{
+const r=new FileReader();
+r.onload=ev=>{if(!ST[stKey])ST[stKey]=[];ST[stKey].unshift({id:Date.now()+Math.random(),url:ev.target.result,name:f.name,date:ftm(),pool});sST();renderGrid(stKey,gridId,pool)};
+r.readAsDataURL(f);
+});e.target.value=’’;
+}
+function renderGrid(stKey,gridId,pool){
+const g=G(gridId);if(!g)return;const imgs=ST[stKey]||[];
+if(!imgs.length){g.className=’’;g.innerHTML=`<div class="emp" style="grid-column:1/-1"><div style="font-size:22px">🖼</div><div>Sem imagens.</div></div>`;return}
+g.className=‘igrid’;g.innerHTML=imgs.map(i=>`<div class="icard" onclick="openLB('${i.id}','${pool}')"><img class="ith" src="${i.url}"/><div class="iin"><div class="inm">${i.name}</div><div class="imt">${i.date}</div></div><button class="idel" onclick="event.stopPropagation();delImg('${i.id}','${pool}')">✕</button></div>`).join(’’);
+}
+function delImg(id,pool){const m=IMG_MAP[pool];if(!m)return;ST[m.key]=(ST[m.key]||[]).filter(i=>i.id!=id);sST();renderGrid(m.key,m.grid,pool)}
+
+function hSingleImg(e,prevId){
+const f=e.target.files[0];if(!f)return;const r=new FileReader();
+r.onload=ev=>{const w=G(prevId);const img=G(prevId+’-img’);if(w&&img){img.src=ev.target.result;w.style.display=‘block’}};
+r.readAsDataURL(f);e.target.value=’’;
+}
+function hDoc(e){
+Array.from(e.target.files).forEach(f=>{
+const r=new FileReader();
+r.onload=ev=>{if(!ST.docs)ST.docs=[];ST.docs.unshift({id:Date.now()+Math.random(),name:f.name,date:ftm(),size:(f.size/1024).toFixed(1)+’ KB’,type:f.type,data:ev.target.result});sST();renderDocs()};
+r.readAsDataURL(f);
+});e.target.value=’’;
+}
+function renderDocs(){
+const l=G(‘arq-docs’);const docs=ST.docs||[];if(!docs.length){l.innerHTML=’<div class="emp"><div style="font-size:22px">📂</div><div>Sem documentos.</div></div>’;return}
+const ic={PDF:‘📄’,DOCX:‘📝’,DOC:‘📝’,XLSX:‘📊’,CSV:‘📊’,TXT:‘📃’};
+l.innerHTML=docs.map(f=>{const ext=f.name.split(’.’).pop().toUpperCase();return`<div class="frow"><div style="font-size:18px">${ic[ext]||'📎'}</div><div style="flex:1"><div style="font-size:11px;font-weight:600">${f.name}</div><div style="font-size:8px;color:var(--gr2)">${f.date} • ${f.size}</div></div><a href="${f.data}" download="${f.name}" class="bn bo bs">⬇</a><button class="bn br bs" onclick="delDoc('${f.id}')">✕</button></div>`}).join(’’);
+}
+function delDoc(id){ST.docs=(ST.docs||[]).filter(d=>d.id!=id);sST();renderDocs()}
+
+// ── LIGHTBOX ──────────────────────────────────────────────
+let _lbId=null,_lbPl=’’;
+function openLB(id,pool){
+_lbId=id;_lbPl=pool;const m=IMG_MAP[pool];if(!m)return;
+const img=(ST[m.key]||[]).find(i=>i.id==id);if(!img)return;
+G(‘lb-img’).src=img.url;G(‘lb-nm’).textContent=img.name;G(‘lb-dt2’).textContent=img.date;
+const dl=G(‘lb-dl’);dl.href=img.url;dl.download=img.name;
+G(‘lb-dop’).style.display=pool===‘dop’?‘inline-flex’:‘none’;
+G(‘lightbox’).style.display=‘flex’;
+}
+function closeLB(){G(‘lightbox’).style.display=‘none’}
+async function analLB(){const img=(ST.dopImgs||[]).find(i=>i.id==_lbId);if(!img)return;closeLB();showPg(‘transop’);sit(‘tr’,‘dopp’);await runDopAuto(img.url.split(’,’)[1],‘image/jpeg’)}
+
+// ── WI-FI ─────────────────────────────────────────────────
+const WCFG={disconnected:{l:‘WiFi’,c:’#ef4444’,p:false},scanning:{l:‘Buscando…’,c:’#f59e0b’,p:true},connected:{l:‘Conectado’,c:’#22c55e’,p:false},streaming:{l:‘Ao vivo’,c:’#3b82f6’,p:true}};
+let _ws=‘disconnected’,_lsm=null;
+function updWifi(){
+const cfg=WCFG[_ws];const dot=G(‘wdot’);const lbl=G(‘wlbl’);const svg=G(‘wsvg’);const btn=G(‘wbtn’);
+if(dot){dot.style.background=cfg.c;dot.style.animation=cfg.p?‘pulse 1s infinite’:‘none’}
+if(lbl){lbl.textContent=cfg.l;lbl.style.color=cfg.c}
+if(svg)svg.setAttribute(‘stroke’,cfg.c);if(btn)btn.style.borderColor=cfg.c;
+G(‘live-bar’).style.display=_ws===‘streaming’?‘block’:‘none’;
+G(‘conn-bar’).style.display=_ws===‘connected’?‘block’:‘none’;
+const cb=G(‘dop-cap-btn’);if(cb)cb.style.display=_ws===‘streaming’?‘inline-flex’:‘none’;
+}
+async function doWifi(){
+if(_ws!==‘disconnected’){_ws=‘disconnected’;if(_lsm){_lsm.getTracks().forEach(t=>t.stop());_lsm=null}updWifi();return}
+_ws=‘scanning’;updWifi();await dl(1800);
+try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:‘environment’}});_lsm=s;_ws=‘streaming’;G(‘wdev’).textContent=‘Câmera ao vivo’;const v=G(‘livevid’);if(v)v.srcObject=s}
+catch{_ws=‘connected’;G(‘wdev’).textContent=‘Dispositivo conectado’}
+updWifi();
+}
+async function capStream(){
+const vid=G(‘livevid’);if(!vid)return;
+const c=document.createElement(‘canvas’);c.width=vid.videoWidth;c.height=vid.videoHeight;
+c.getContext(‘2d’).drawImage(vid,0,0);const url=c.toDataURL(‘image/jpeg’,.85),b64=url.split(’,’)[1];
+if(!ST.dopImgs)ST.dopImgs=[];ST.dopImgs.unshift({id:Date.now(),url,name:`wifi_${Date.now()}.jpg`,date:ftm()});
+sST();renderGrid(‘dopImgs’,‘dop-grid’,‘dop’);await runDopAuto(b64,‘image/jpeg’);
+}
+
+// ── API / MODAL ───────────────────────────────────────────
+function openM(id){G(id).style.display=‘flex’}
+function closeM(id){G(id).style.display=‘none’}
+function saveApi(){ST.apiKey=G(‘api-inp’)?.value?.trim();sST();closeM(‘api-m’);alert(‘Chave API salva!’)}
+function expRep(txtId,fname){const t=G(txtId)?.textContent||’’;const a=document.createElement(‘a’);a.href=URL.createObjectURL(new Blob([t],{type:‘text/plain’}));a.download=`${fname}_${new Date().toISOString().split('T')[0]}.txt`;a.click()}
+
+// ── LOAD STATE ────────────────────────────────────────────
+function loadState(){
+const av=ST.av||{},tp=ST.tp||{};
+ARTS.forEach(a=>{const v=av[a.k]||{};[‘PS’,‘ED’,‘SD’,‘RI’,‘PI’].forEach(p=>{const el=G(`av-${a.k}-${p}`);if(el)el.value=v[p]||’’});const sl=G(`av-${a.k}-sd`);if(sl)sl.value=v.sd||’’;updArtTier(a.k)});
+[‘freq’,‘gain’,‘depth’,‘angle’,‘vol’].forEach(k=>{const el=G(‘tp-’+k);if(el)el.value=tp[k]||’’});
+if(ST.dopRep)showDopRep(ST.dopRep);
+if(ST.curPt){loadPtForm(ST.curPt);updPtBar()}
+if(ST.apiKey){const i=G(‘api-inp’);if(i)i.value=ST.apiKey}
+renderPtList();renderVHist();renderEvolList();renderFinList();renderRxList();renderDocs();
+Object.values(IMG_MAP).forEach(m=>renderGrid(m.key,m.grid,Object.keys(IMG_MAP).find(k=>IMG_MAP[k]===m)));
+updGlobalTier();
+if(ST.gs?.rep){G(‘gs-rep-box’).style.display=‘block’;G(‘gs-rep-txt’).textContent=ST.gs.rep;G(‘gs-rep-empty’).style.display=‘none’}
+}
+
+// ── INIT ──────────────────────────────────────────────────
+function initApp(){
+buildTabs();buildArtPanels();buildDrugList();buildAldForm();buildAgBar();setAg(‘dopp’);
+buildPin();buildHnGrid();buildFormulas();loadState();updWifi();
+gsCalc();setVC(‘fc’);
+}
+
+document.addEventListener(‘keydown’,e=>{if(e.key===‘Escape’){[‘api-m’,‘pt-m’,‘fin-m’,‘rx-m’,‘ev-m’].forEach(id=>{const el=G(id);if(el)el.style.display=‘none’});closeLB()}});
+</script>
+
+</body>
+</html>
